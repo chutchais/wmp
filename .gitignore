@@ -1,0 +1,7 @@
+*.pyc
+shopfloor/*.pyc
+shopfloor/migrations/*.pyc
+shopfloor/migrations/*.py
+db.sqlite3
+
+
