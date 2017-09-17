@@ -12,7 +12,7 @@ STATUS_CHOICES = (
 class Bom(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
@@ -23,12 +23,15 @@ class Bom(models.Model):
 	def __str__(self):
 		return self.name
 
+	def item_count(self):
+		return self.parts.count()
+
 class BomDetail(models.Model):
 	rd = models.CharField(max_length=50)
 	pn = models.CharField(max_length=50)
 	bom = models.ForeignKey('Bom', related_name='parts')
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	customer_pn = models.CharField(max_length=50,blank=True, null=True)
@@ -42,12 +45,13 @@ class BomDetail(models.Model):
 		return ('%s : %s' % (self.rd,self.pn))
 
 	class Meta:
-		unique_together = ('rd','pn','bom')
+		unique_together = ('rd','pn','bom','alt_pn')
 
 class Operation(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	customer_name = models.CharField(max_length=50,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
@@ -57,13 +61,14 @@ class Operation(models.Model):
 	user = models.ForeignKey('auth.User',blank=True,null=True)
 	
 	def __str__(self):
-		return self.name
+		return ('%s : %s' % (self.name,self.title))
 
 # Routing Configuration
 class Routing(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
@@ -75,10 +80,19 @@ class Routing(models.Model):
 		return self.name
 
 class RoutingDetail(models.Model):
+	FIRST='F'
+	LAST='L'
+	NORMAL = 'N'
+	OPERATION_POS_CHOICES = (
+	        (FIRST, 'First Operation'),
+	        (LAST, 'Last Operation'),
+	        (NORMAL, 'Normal'),
+	    )
 	operation = models.ForeignKey('Operation', related_name='routings')
 	routing = models.ForeignKey('Routing', related_name='operations')
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	position = models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	next_pass = models.ForeignKey('Operation', related_name='nextpass')
@@ -94,13 +108,16 @@ class RoutingDetail(models.Model):
 
 
 class Product(models.Model):
-	name = models.CharField(max_length=50)
+	name = models.CharField(max_length=50,primary_key=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	pn  = models.CharField(max_length=50,blank=True, null=True)
 	rev  = models.CharField(max_length=50,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	routing = models.ForeignKey('Routing', related_name='products',blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
-	customer_name = models.CharField(max_length=50,blank=True, null=True)
+	customer_pn = models.CharField(max_length=50,blank=True, null=True)
 	customer_rev  = models.CharField(max_length=50,blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date = models.DateTimeField(auto_now_add=True)
@@ -110,16 +127,16 @@ class Product(models.Model):
 	def __str__(self):
 		return self.name
 
-	class Meta:
-		unique_together = ('name','rev')
 
 
 
 class WorkOrder(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)
-	description = models.CharField(max_length=255,blank=True, null=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	product = models.ForeignKey('Product', related_name='workorders')
+	routing = models.ForeignKey('Routing', related_name='workorders',blank=True, null=True)
 	qty = models.IntegerField(default=0)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
@@ -135,6 +152,7 @@ class WorkOrder(models.Model):
 class SerialNumber(models.Model):
 	number = models.CharField(max_length=100)
 	workorder = models.ForeignKey('WorkOrder', related_name='units')
+	description = models.TextField(max_length=255,blank=True, null=True)
 	registered_date = models.DateTimeField(auto_now_add=True)
 	current_operation = models.ForeignKey('Operation', related_name='onprocess')
 	last_operation = models.ForeignKey('Operation', related_name='justpass')
@@ -147,6 +165,7 @@ class SerialNumber(models.Model):
 
 	def __str__(self):
 		return ('%s on %s' % (self.number,self.workorder))
+
 
 class Performing(models.Model):
 	sn = models.ForeignKey('SerialNumber', related_name='performings')

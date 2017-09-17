@@ -1,7 +1,10 @@
 *.pyc
+shopfloor/__pycache__/*.pcy
 shopfloor/*.pyc
+shopfloor/migrations/
 shopfloor/migrations/*.pyc
 shopfloor/migrations/*.py
+shopfloor/migrations/__pycache__/*.pcy
 db.sqlite3
 
 
