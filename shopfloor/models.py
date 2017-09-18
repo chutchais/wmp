@@ -152,7 +152,10 @@ class WorkOrder(models.Model):
 class SerialNumber(models.Model):
 	number = models.CharField(max_length=100)
 	workorder = models.ForeignKey('WorkOrder', related_name='units')
+	slug = models.SlugField(unique=True,blank=True, null=True)
 	description = models.TextField(max_length=255,blank=True, null=True)
+	category1 = models.CharField(max_length=50,blank=True, null=True)
+	category2 = models.CharField(max_length=50,blank=True, null=True)
 	registered_date = models.DateTimeField(auto_now_add=True)
 	current_operation = models.ForeignKey('Operation', related_name='onprocess')
 	last_operation = models.ForeignKey('Operation', related_name='justpass')
@@ -160,6 +163,7 @@ class SerialNumber(models.Model):
 	finished_date = models.DateTimeField(blank=True, null=True)
 	wip = models.BooleanField(verbose_name = 'Work In Process',default=True)
 	perform_start_date = models.DateTimeField(blank=True, null=True)
+	perform_operation = models.ForeignKey('Operation', related_name='onperform',blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	user = models.ForeignKey('auth.User',blank=True,null=True)
 

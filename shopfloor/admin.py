@@ -94,7 +94,18 @@ class WorkOrderAdmin(admin.ModelAdmin):
         ('Routing Control',{'fields': ['routing']}),
     ]
 admin.site.register(WorkOrder,WorkOrderAdmin)
-# admin.site.register(WorkOrder)
-admin.site.register(SerialNumber)
+
+
+class SerialNumberAdmin(admin.ModelAdmin):
+    search_fields = ['number','workorder','description']
+    list_filter = ['current_operation','wip']
+    list_display = ('number','workorder','current_operation','wip')
+    # list_editable = ('color','move_performa')
+    fieldsets = [
+        ('Basic Information',{'fields': ['number','workorder','description','category1','category2']}),
+        ('Routing Control',{'fields': ['wip','current_operation','last_operation','last_modified_date']}),
+        ('Performing',{'fields': ['perform_operation','perform_start_date']}),
+    ]
+admin.site.register(SerialNumber,SerialNumberAdmin)
 
 
