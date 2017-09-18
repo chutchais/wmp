@@ -1,5 +1,7 @@
-*.pyc
 shopfloor/__pycache__/*.pcy
+shopfloor/__pycache__/*.py
+shopfloor/__pycache__/admin.cpython-36.pyc
+shopfloor/__pycache__/models.cpython-36.pyc
 shopfloor/*.pyc
 shopfloor/migrations/
 shopfloor/migrations/*.pyc
