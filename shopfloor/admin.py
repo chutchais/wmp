@@ -13,12 +13,12 @@ from .models import (Bom,
 					 )
 
 class BomAdmin(admin.ModelAdmin):
-    search_fields = ['name','description','category1','category2']
+    search_fields = ['name','title','description','category1','category2']
     list_filter = ['category1','category2','status']
     list_display = ('name','description','item_count','category1','category2','status','user')
     # list_editable = ('color','move_performa')
     fieldsets = [
-        ('Basic Information',{'fields': ['name','description','category1','category2','status','user']}),
+        ('Basic Information',{'fields': ['name','title','description','category1','category2','status','user']}),
     ]
 admin.site.register(Bom,BomAdmin)
 

@@ -11,6 +11,7 @@ STATUS_CHOICES = (
 # Master data Model
 class Bom(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
