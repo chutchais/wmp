@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'api/performing/', include("performing.api.urls", namespace='performing-api')),
     url(r'api/serialnumber/', include("serialnumber.api.urls", namespace='serialnumber-api')),
+    url(r'api/workorder/', include("workorder.api.urls", namespace='workorder-api')),
 ]
 
 # if settings.DEBUG:
