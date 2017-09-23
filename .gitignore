@@ -10,6 +10,9 @@ serialnumber/api/__pycache__/**
 workorder/__pycache__/**
 workorder/api/__pycache__/**
 
+**/__pycache__/**
+**/api/__pycache__/**
+
 
 shopfloor/migrations/
 

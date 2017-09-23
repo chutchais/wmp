@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     # API
     'performing',
     'serialnumber',
-    'workorder'
+    'workorder',
+    'product'
 ]
 
 MIDDLEWARE = [

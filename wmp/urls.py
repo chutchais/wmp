@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'api/performing/', include("performing.api.urls", namespace='performing-api')),
     url(r'api/serialnumber/', include("serialnumber.api.urls", namespace='serialnumber-api')),
     url(r'api/workorder/', include("workorder.api.urls", namespace='workorder-api')),
+    url(r'api/product/', include("product.api.urls", namespace='product-api')),
 ]
 
 # if settings.DEBUG:
