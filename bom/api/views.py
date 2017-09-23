@@ -25,51 +25,51 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import Routing
-from .serialize import (RoutingListSerializer,
-						RoutingCreateSerializer,
-						RoutingDetailSerializer,
-						RoutingUpdateSerializer)
+from shopfloor.models import Bom
+from .serialize import (BomListSerializer,
+						BomCreateSerializer,
+						BomDetailSerializer,
+						BomUpdateSerializer)
 
 
 
-class RoutingListAPIView(ListAPIView):
+class BomListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
-	serializer_class = RoutingListSerializer
+	serializer_class = BomListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
 	search_fields = ['name']
 	def get_queryset(self,*args,**kwargs):
 		queryset_list =None #Booking.objects.all()
 		name = self.request.GET.get("name")
 		if name != None :
-			queryset_list = Routing.objects.filter(
+			queryset_list = Bom.objects.filter(
 					Q(name__icontains = name))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 
-class RoutingDetailAPIView(RetrieveAPIView):
-	queryset= Routing.objects.all()
-	serializer_class = RoutingDetailSerializer
+class BomDetailAPIView(RetrieveAPIView):
+	queryset= Bom.objects.all()
+	serializer_class = BomDetailSerializer
 	lookup_field = 'slug'
 	# print ("vessel details")
 
-class RoutingDeleteAPIView(DestroyAPIView):
-	queryset= Routing.objects.all()
-	serializer_class= RoutingDetailSerializer
+class BomDeleteAPIView(DestroyAPIView):
+	queryset= Bom.objects.all()
+	serializer_class= BomDetailSerializer
 	lookup_field='slug'
 	# permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
 
 
-class RoutingCreateAPIView(CreateAPIView):
-	queryset= Routing.objects.all()
-	serializer_class= RoutingCreateSerializer
+class BomCreateAPIView(CreateAPIView):
+	queryset= Bom.objects.all()
+	serializer_class= BomCreateSerializer
 	# permission_classes = [IsAuthenticated]
 
 # 	def perform_create(self,serializer):
 # 		print ('Voy is %s' % self.kwargs.get('voy'))
 # 		serializer.save()
-class RoutingUpdateAPIView(RetrieveUpdateDestroyAPIView):
-	queryset=Routing.objects.all()
-	serializer_class=RoutingUpdateSerializer
+class BomUpdateAPIView(RetrieveUpdateDestroyAPIView):
+	queryset=Bom.objects.all()
+	serializer_class=BomUpdateSerializer
 	lookup_field='slug'
 

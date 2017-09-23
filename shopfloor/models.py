@@ -168,7 +168,7 @@ class RoutingDetail(models.Model):
 	        (LAST, 'Last Operation'),
 	        (NORMAL, 'Normal'),
 	    )
-	operation = models.ForeignKey('Operation', related_name='routings')
+	operation = models.ForeignKey('Operation', related_name='routings',blank=True, null=True)
 	routing = models.ForeignKey('Routing', related_name='operations')
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	position = models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)

@@ -26,6 +26,10 @@ urlpatterns = [
     url(r'api/workorder/', include("workorder.api.urls", namespace='workorder-api')),
     url(r'api/product/', include("product.api.urls", namespace='product-api')),
     url(r'api/operation/', include("operation.api.urls", namespace='operation-api')),
+    url(r'api/routing/', include("routing.api.urls", namespace='routing-api')),
+    url(r'api/routing-detail/', include("routingdetail.api.urls", namespace='routingdetail-api')),
+    url(r'api/bom/', include("bom.api.urls", namespace='bom-api')),
+    url(r'api/bom-detail/', include("bomdetail.api.urls", namespace='bomdetail-api')),
 ]
 
 # if settings.DEBUG:

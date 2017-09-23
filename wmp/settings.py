@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'shopfloor',
     # API
-    'performing',
-    'serialnumber',
-    'workorder',
-    'product'
+    # 'performing',
+    # 'serialnumber',
+    # 'workorder',
+    # 'product'
 ]
 
 MIDDLEWARE = [

@@ -4,9 +4,11 @@ from rest_framework.serializers import (
 	SerializerMethodField
 	)
 
+from rest_framework import serializers
+
 
 from shopfloor.models import Routing
-# from shipper.api.serialize import ShipperSerializer
+from routingdetail.api.serialize import RoutingDetailListSerializer
 # from vessel.api.serialize import VesselSerializer
 
 routing_detail_url=HyperlinkedIdentityField(
@@ -24,7 +26,9 @@ class RoutingListSerializer(ModelSerializer):
 	# vessel = VesselSerializer()
 	class Meta:
 		model = Routing
+		# exclude = ('users',)
 		# fields ='__all__'
+		# depth = 1
 		fields =[
 			'name',
 			'title',
@@ -36,9 +40,34 @@ class RoutingListSerializer(ModelSerializer):
 		]
 
 class RoutingDetailSerializer(ModelSerializer):
+	# details =  RoutingDetailListSerializer()
+	# operations = serializers.StringRelatedField(many=True)
+	# operations = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+	# operations = serializers.HyperlinkedRelatedField(
+	# 			        many=True,
+	# 			        read_only=True,
+	# 			        view_name='routing-api:detail'
+	# 			    )
+	# operations = serializers.SlugRelatedField(
+ #        many=True,
+ #        read_only=True,
+ #        slug_field='slug'
+ #     )
+	operations = RoutingDetailListSerializer(many=True, read_only=True)
 	class Meta:
 		model = Routing
-		fields ='__all__'
+		# fields ='__all__'
+		fields =[
+			'name',
+			'title',
+			# 'url',
+			# 'details',
+			'description',
+			'category1',
+			'category2',
+			'user',
+			'operations'
+		]
 
 class RoutingCreateSerializer (ModelSerializer):
 	class Meta:
@@ -46,7 +75,6 @@ class RoutingCreateSerializer (ModelSerializer):
 		fields =[
 			'name',
 			'title',
-			'url',
 			'description',
 			'category1',
 			'category2',
