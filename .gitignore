@@ -1,7 +1,14 @@
 shopfloor/__pycache__/**
+shopfloor/api/__pycache__/**
+
 performing/__pycache__/**
+performing/api/__pycache__/**
+
 serialnumber/__pycache__/**
+serialnumber/api/__pycache__/**
+
 workorder/__pycache__/**
+workorder/api/__pycache__/**
 
 
 shopfloor/migrations/
