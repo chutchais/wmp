@@ -52,6 +52,10 @@ class ProductCreateSerializer (ModelSerializer):
 			'category2',
 			'user'
 		]
+		
+		# def perform_create(self, serializer):
+  #   serializer.save(owner=self.request.user)
+
 
 class ProductUpdateSerializer (ModelSerializer):
 	class Meta:
