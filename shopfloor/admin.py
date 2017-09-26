@@ -59,7 +59,7 @@ admin.site.register(Operation,OperationAdmin)
 admin.site.register(Performing)
 
 class ProductAdmin(admin.ModelAdmin):
-    search_fields = ['name','title','description','category1','category2','customer_pn','routing']
+    search_fields = ['name','title','description','pn','customer_pn']
     list_filter = ['pn','category1','category2','customer_pn']
     list_display = ('name','title','pn','rev','customer_pn','customer_rev','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
@@ -98,7 +98,7 @@ admin.site.register(RoutingDetail,RoutingDetailAdmin)
 
 
 class WorkOrderAdmin(admin.ModelAdmin):
-    search_fields = ['name','title','description','product','category1','category2']
+    search_fields = ['name','title','description','product__name','category1','category2']
     list_filter = ['product','category1','category2']
     list_display = ('name','title','product','qty','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')

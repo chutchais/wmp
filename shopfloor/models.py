@@ -111,7 +111,7 @@ def create_operation_slug(instance, new_slug=None):
     slug = slugify(default_slug)
     if new_slug is not None:
         slug = new_slug
-    qs = Product.objects.filter(slug=slug)
+    qs = Operation.objects.filter(slug=slug)
     exists = qs.exists()
     if exists:
         new_slug = "%s-%s" %(slug,qs.first().id)
@@ -146,7 +146,7 @@ def create_routing_slug(instance, new_slug=None):
     slug = slugify(default_slug)
     if new_slug is not None:
         slug = new_slug
-    qs = Product.objects.filter(slug=slug)
+    qs = Routing.objects.filter(slug=slug)
     exists = qs.exists()
     if exists:
         new_slug = "%s-%s" %(slug,qs.first().id)
@@ -191,7 +191,7 @@ def create_routingdetail_slug(instance, new_slug=None):
     slug = slugify(default_slug)
     if new_slug is not None:
         slug = new_slug
-    qs = Product.objects.filter(slug=slug)
+    qs = RoutingDetail.objects.filter(slug=slug)
     exists = qs.exists()
     if exists:
         new_slug = "%s-%s" %(slug,qs.first().id)
