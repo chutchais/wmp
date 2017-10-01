@@ -3,7 +3,9 @@ from django.contrib import admin
 # Register your models here.
 from .models import (Bom,
 					 BomDetail,
+                     Item,ItemList,
 					 Operation,
+                     Parameter,ParameterSet,
 					 Performing,
 					 Product,
 					 Routing,
@@ -40,6 +42,9 @@ class BomDetailAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['rd','pn','bom','alt_pn','description','category1','category2','user']}),
         ('Customer Information',{'fields': ['customer_pn']}),
     ]
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(BomDetailAdmin, self).save_model(request, obj, form, change)
 admin.site.register(BomDetail,BomDetailAdmin)
 
 
@@ -54,8 +59,12 @@ class OperationAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['name','title','slug','description','category1','category2','user']}),
         ('Customer Information',{'fields': ['customer_name']}),
     ]
-admin.site.register(Operation,OperationAdmin)
 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(OperationAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(Operation,OperationAdmin)
 admin.site.register(Performing)
 
 class ProductAdmin(admin.ModelAdmin):
@@ -66,11 +75,15 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('user','slug')
     fieldsets = [
         ('Basic Information',{'fields': ['name','title','slug','pn','rev','description','category1','category2','user']}),
+        ('Work Order Control',{'fields': ['regexp']}),
         ('Customer Information',{'fields': ['customer_pn','customer_rev']}),
         ('Routing Control',{'fields': ['routing']}),
     ]
-admin.site.register(Product,ProductAdmin)
 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(ProductAdmin, self).save_model(request, obj, form, change)
+admin.site.register(Product,ProductAdmin)
 
 class RoutingAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','category1','category2']
@@ -81,8 +94,11 @@ class RoutingAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
     ]
-admin.site.register(Routing,RoutingAdmin)
 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingAdmin, self).save_model(request, obj, form, change)
+admin.site.register(Routing,RoutingAdmin)
 
 class RoutingDetailAdmin(admin.ModelAdmin):
     search_fields = ['operation','routing__name','description','category1','category2']
@@ -94,8 +110,11 @@ class RoutingDetailAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['operation','routing','description','slug','category1','category2','user']}),
         ('Next Operation Information',{'fields': ['position','next_pass','next_fail']}),
     ]
-admin.site.register(RoutingDetail,RoutingDetailAdmin)
 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingDetailAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingDetail,RoutingDetailAdmin)
 
 class WorkOrderAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','product__name','category1','category2']
@@ -105,10 +124,14 @@ class WorkOrderAdmin(admin.ModelAdmin):
     readonly_fields = ('user','slug')
     fieldsets = [
         ('Basic Information',{'fields': ['name','title','product','qty','description','slug','category1','category2','user']}),
+        ('Serial Number Control',{'fields': ['regexp']}),
         ('Routing Control',{'fields': ['routing']}),
     ]
-admin.site.register(WorkOrder,WorkOrderAdmin)
 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(WorkOrderAdmin, self).save_model(request, obj, form, change)
+admin.site.register(WorkOrder,WorkOrderAdmin)
 
 class SerialNumberAdmin(admin.ModelAdmin):
     search_fields = ['number','workorder','description']
@@ -121,4 +144,60 @@ class SerialNumberAdmin(admin.ModelAdmin):
         ('Performing',{'fields': ['current_operation',('perform_operation','perform_start_date')]}),
         ('Last Performance',{'classes': ('collapse','wide', 'extrapretty'),'fields': ['last_operation','last_result','last_modified_date','routing']}),
         ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(SerialNumberAdmin, self).save_model(request, obj, form, change)
 admin.site.register(SerialNumber,SerialNumberAdmin)
+
+
+class ItemListline(admin.TabularInline):
+    model = ItemList
+    extra = 1
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(ItemListline, self).save_model(request, obj, form, change)
+
+class ItemAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','product__name','category1','category2']
+    list_filter = ['input_type','product','category1','category2']
+    list_display = ('name','title','input_type','product','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+    inlines=[ItemListline]
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','product','description','slug','category1','category2','user']}),
+        ('Input Type',{'fields': ['input_type','help_text']}),
+        ('Text Box Information',{'fields': ['default_value','regexp']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(ItemAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(Item,ItemAdmin)
+
+
+class ParameterSetInline(admin.TabularInline):
+    model = ParameterSet
+    extra = 1 # how many rows to show
+
+class ParameterAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description']
+    list_filter = []
+    list_display = ('name','title','item_count','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+    inlines=[ParameterSetInline]
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','slug','user']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(ParameterAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(Parameter,ParameterAdmin)

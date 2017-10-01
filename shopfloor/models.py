@@ -212,6 +212,7 @@ class Product(models.Model):
 	rev  = models.CharField(max_length=50,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	routing = models.ForeignKey('Routing', related_name='products',blank=True, null=True)
+	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
 	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
@@ -255,6 +256,7 @@ class WorkOrder(models.Model):
 	product = models.ForeignKey('Product', related_name='workorders')
 	routing = models.ForeignKey('Routing', related_name='workorders',blank=True, null=True)
 	qty = models.IntegerField(default=0)
+	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
@@ -363,3 +365,120 @@ def pre_save_performing_receiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(pre_save_performing_receiver, sender=Performing)
 
+# Parameter Configuration
+class Item(models.Model):
+	TEXTBOX ='TEXT'
+	LIST ='LIST'
+	RADIO ='RADIO'
+	OPTION = 'OPTION'
+	SCRIPT ='SCRIPT'
+	PARAM_TYPE_CHOICES = (
+	        (TEXTBOX, 'Text Box'),
+	        (LIST, 'List Box'),
+	        (OPTION, 'Check Box'),
+	        (SCRIPT, 'Script Data'),
+	    )
+	name = models.CharField(max_length=50)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
+	product = models.ForeignKey('Product', related_name='parameters',blank=True, null=True)
+	slug = models.SlugField(unique=True,blank=True, null=True)
+	help_text = models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
+	input_type = models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
+	default_value = models.CharField(verbose_name='Default Value',max_length=100,blank=True, null=True)
+	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
+	category1 = models.CharField(max_length=50,blank=True, null=True)
+	category2 = models.CharField(max_length=50,blank=True, null=True)
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date = models.DateTimeField(auto_now_add=True)
+	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+	def __str__(self):
+		return ('%s of %s' % (self.name,self.product))
+
+def create_item_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s-%s' % (instance.name,instance.product )
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = Item.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_item_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_item_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_item_slug(instance)
+
+pre_save.connect(pre_save_item_receiver, sender=Item)
+
+class ItemList(models.Model):
+	name = models.CharField(max_length=50)
+	value = models.CharField(max_length=50)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	default = models.BooleanField(default=False)
+	parameter = models.ForeignKey('Item', related_name='lists')
+	ordered = models.IntegerField(default=1)
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date = models.DateTimeField(auto_now_add=True)
+	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+	def __str__(self):
+		return ('%s of %s' % (self.name,self.parameter))
+
+class Parameter(models.Model):
+	name = models.CharField(max_length=50,primary_key=True)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	slug = models.SlugField(unique=True,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
+	items = models.ManyToManyField(Item, through='ParameterSet')
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date = models.DateTimeField(auto_now_add=True)
+	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.name))
+
+	def item_count(self):
+		return self.items.count()
+
+def create_parameter_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s' % (instance.name)
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = Parameter.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_parameter_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_parameter_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_parameter_slug(instance)
+
+pre_save.connect(pre_save_parameter_receiver, sender=Parameter)
+
+class ParameterSet(models.Model):
+	parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE)
+	item = models.ForeignKey(Item, on_delete=models.CASCADE)
+	ordered = models.IntegerField(default=1)
+	required = models.BooleanField(default=False)
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date = models.DateTimeField(auto_now_add=True)
+	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+	def __str__(self):
+		return ('%s of %s' % (self.item,self.parameter))
+
+
+# End Parameter Configuration
