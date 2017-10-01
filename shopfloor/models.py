@@ -420,6 +420,7 @@ class ItemList(models.Model):
 	name = models.CharField(max_length=50)
 	value = models.CharField(max_length=50)
 	title = models.CharField(max_length=100,blank=True, null=True)
+	slug = models.SlugField(unique=True,blank=True, null=True)
 	default = models.BooleanField(default=False)
 	parameter = models.ForeignKey('Item', related_name='lists')
 	ordered = models.IntegerField(default=1)
@@ -430,6 +431,25 @@ class ItemList(models.Model):
 
 	def __str__(self):
 		return ('%s of %s' % (self.name,self.parameter))
+
+def create_itemlist_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s-%s' % (instance.name,instance.parameter )
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = ItemList.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_itemlist_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_itemlist_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_itemlist_slug(instance)
+
+pre_save.connect(pre_save_itemlist_receiver, sender=ItemList)
 
 class Parameter(models.Model):
 	name = models.CharField(max_length=50,primary_key=True)

@@ -29,7 +29,10 @@ urlpatterns = [
     url(r'api/routing/', include("routing.api.urls", namespace='routing-api')),
     url(r'api/routing-detail/', include("routingdetail.api.urls", namespace='routingdetail-api')),
     url(r'api/bom/', include("bom.api.urls", namespace='bom-api')),
-    url(r'api/bom-detail/', include("bomdetail.api.urls", namespace='bomdetail-api')),
+    url(r'api/bomdetail/', include("bomdetail.api.urls", namespace='bomdetail-api')),
+    url(r'api/parameter/', include("parameter.api.urls", namespace='parameter-api')),
+    url(r'api/item/', include("item.api.urls", namespace='item-api')),
+    url(r'api/itemlist/', include("itemlist.api.urls", namespace='itemlist-api')),
 ]
 
 # if settings.DEBUG:

@@ -151,6 +151,25 @@ class SerialNumberAdmin(admin.ModelAdmin):
 admin.site.register(SerialNumber,SerialNumberAdmin)
 
 
+class ItemListAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','value','parameter__name']
+    list_filter = []
+    list_display = ('name','title','value','parameter','ordered')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','parameter','slug','user']}),
+        ('Value',{'fields': ['value','default']}),
+        ('Ordering',{'fields': ['ordered']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(ItemListAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(ItemList,ItemListAdmin)
+
 class ItemListline(admin.TabularInline):
     model = ItemList
     extra = 1
