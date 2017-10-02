@@ -3,6 +3,13 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 
+from pygments.lexers import get_all_lexers
+from pygments.styles import get_all_styles
+
+LEXERS = [item for item in get_all_lexers() if item[1]]
+LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
+STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
+
 # Create your models here.
 ACTIVE='A'
 DEACTIVE='D'
@@ -502,3 +509,23 @@ class ParameterSet(models.Model):
 
 
 # End Parameter Configuration
+
+class Snippet(models.Model):
+	title = models.CharField(max_length=100, blank=True, default='')
+	slug = models.SlugField(unique=True,blank=True, null=True)
+	code = models.TextField()
+	linenos = models.BooleanField(default=False)
+	language = models.CharField(choices=LANGUAGE_CHOICES, default='VB.net', max_length=100)
+	style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
+	category1 = models.CharField(max_length=50,blank=True, null=True)
+	category2 = models.CharField(max_length=50,blank=True, null=True)
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date = models.DateTimeField(auto_now_add=True)
+	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.title))
+
+	class Meta:
+		ordering = ('created_date',)
