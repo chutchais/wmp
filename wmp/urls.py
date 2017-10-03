@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'api/parameter/', include("parameter.api.urls", namespace='parameter-api')),
     url(r'api/item/', include("item.api.urls", namespace='item-api')),
     url(r'api/itemlist/', include("itemlist.api.urls", namespace='itemlist-api')),
+    url(r'api/snippet/', include("snippet.api.urls", namespace='snippet-api')),
 ]
 
 # if settings.DEBUG:

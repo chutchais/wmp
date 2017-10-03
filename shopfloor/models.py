@@ -511,7 +511,9 @@ class ParameterSet(models.Model):
 # End Parameter Configuration
 
 class Snippet(models.Model):
-	title = models.CharField(max_length=100, blank=True, default='')
+	name = models.CharField(max_length=100)
+	title = models.CharField(max_length=100,blank=True, null=True)
+	description = models.TextField(max_length=255,blank=True, null=True)
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	code = models.TextField()
 	linenos = models.BooleanField(default=False)
@@ -525,7 +527,26 @@ class Snippet(models.Model):
 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
 	def __str__(self):
-		return ('%s' % (self.title))
+		return ('%s' % (self.name))
 
 	class Meta:
 		ordering = ('created_date',)
+
+def create_snippet_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s' % (instance.name)
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = Snippet.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_snippet_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_snippet_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_snippet_slug(instance)
+
+pre_save.connect(pre_save_snippet_receiver, sender=Snippet)
