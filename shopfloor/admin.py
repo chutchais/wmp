@@ -10,7 +10,7 @@ from .models import (Bom,
 					 Performing,
 					 Product,
 					 Routing,
-					 RoutingDetail,
+					 RoutingDetail,RoutingDetailParameterSet,
 					 SerialNumber,
                      Snippet,
 					 WorkOrder,
@@ -103,12 +103,21 @@ class RoutingAdmin(admin.ModelAdmin):
         super(RoutingAdmin, self).save_model(request, obj, form, change)
 admin.site.register(Routing,RoutingAdmin)
 
+
+class RoutingDetailParameterInline(admin.TabularInline):
+    model = RoutingDetailParameterSet
+    extra = 1 # how many rows to show
+    verbose_name = 'Parameter Configuration'
+    verbose_name_plural = 'Parameter Configuration'
+
 class RoutingDetailAdmin(admin.ModelAdmin):
     search_fields = ['operation','routing__name','description','category1','category2']
-    list_filter = ['category1','category2']
+    list_filter = ['routing','category1','category2']
     list_display = ('operation','routing','position','next_pass','next_fail','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
+    inlines=[RoutingDetailParameterInline]
+
     fieldsets = [
         ('Basic Information',{'fields': ['operation','routing','description','slug','category1','category2','user']}),
         ('Next Operation Information',{'fields': ['position','next_pass','next_fail']}),
@@ -215,7 +224,7 @@ class ParameterAdmin(admin.ModelAdmin):
     inlines=[ParameterSetInline]
 
     fieldsets = [
-        ('Basic Information',{'fields': ['name','title','slug','user']}),
+        ('Basic Information',{'fields': ['name','title','description','slug','user']}),
     ]
 
     def save_model(self, request, obj, form, change):
