@@ -2,7 +2,8 @@ from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
 	SerializerMethodField,
-	StringRelatedField
+	StringRelatedField,
+	SlugRelatedField
 	)
 
 
@@ -45,6 +46,7 @@ class ItemDetailSerializer(ModelSerializer):
 	# shipper = ShipperSerializer(allow_null=True)
 	lists = ItemListListSerializer(many=True, read_only=True)
 	# lists = StringRelatedField(many=True)
+	snippet =SlugRelatedField (many=False,read_only=True,slug_field='slug')
 
 	class Meta:
 		model = Item
@@ -59,6 +61,8 @@ class ItemDetailSerializer(ModelSerializer):
 			'default_value',
 			'regexp',
 			'user',
+			'snippet',
+			'expected_return'
 		]
 
 class ItemCreateSerializer (ModelSerializer):

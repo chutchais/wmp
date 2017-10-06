@@ -199,6 +199,14 @@ class Item(models.Model):
 	created_date = models.DateTimeField(auto_now_add=True)
 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
 	user = models.ForeignKey('auth.User',blank=True,null=True)
+	snippet = models.ForeignKey('Snippet', related_name='items',verbose_name='Snippet Code',blank=True, null=True)
+	expected_return = models.CharField(verbose_name='Expected Return',default='TRUE',max_length=100,blank=True, null=True)
+
+	# @property
+	def has_validation_code(self):
+		return True if (self.snippet) else False
+	has_validation_code.boolean =True
+	has_validation_code.short_description = 'Has Validation'
 
 	def __str__(self):
 		return ('%s of %s' % (self.name,self.product))

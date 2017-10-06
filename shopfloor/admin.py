@@ -193,15 +193,17 @@ class ItemListline(admin.TabularInline):
 class ItemAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','product__name','category1','category2']
     list_filter = ['input_type','product','category1','category2']
-    list_display = ('name','title','input_type','product','created_date')
+    list_display = ('name','title','input_type','has_validation_code','description','created_date')
     # list_editable = ('color','move_performa')
-    readonly_fields = ('user','slug')
+    readonly_fields = ('user','slug','has_validation_code')
     inlines=[ItemListline]
 
+
     fieldsets = [
-        ('Basic Information',{'fields': ['name','title','product','description','slug','category1','category2','user']}),
+        ('Basic Information',{'fields': ['name','title','product','description','has_validation_code','slug','category1','category2','user']}),
         ('Input Type',{'fields': ['input_type','help_text']}),
         ('Text Box Information',{'fields': ['default_value','regexp']}),
+        ('Validation Code',{'fields': ['snippet','expected_return']}),
     ]
 
     def save_model(self, request, obj, form, change):
@@ -214,6 +216,7 @@ admin.site.register(Item,ItemAdmin)
 class ParameterSetInline(admin.TabularInline):
     model = ParameterSet
     extra = 1 # how many rows to show
+    # fields =('item','item__title')
 
 class ParameterAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description']
