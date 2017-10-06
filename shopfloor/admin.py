@@ -9,7 +9,8 @@ from .models import (Bom,
                      Parameter,ParameterSet,
 					 Performing,
 					 Product,
-					 Routing,RoutingAccept,RoutingExcept,RoutingDetailAcceptSet,RoutingDetailExceptSet,
+					 Routing,RoutingAccept,RoutingExcept,RoutingDetailAcceptSet,
+                     RoutingDetailExceptSet,RoutingNext,RoutingDetailNextSet,
 					 RoutingDetail,RoutingDetailParameterSet,
 					 SerialNumber,
                      Snippet,
@@ -122,13 +123,19 @@ class RoutingExceptSetInline(admin.TabularInline):
     verbose_name = 'Exceptance'
     verbose_name_plural = 'Exceptance Code'
 
+class RoutingNextSetInline(admin.TabularInline):
+    model = RoutingDetailNextSet
+    extra = 1 # how many rows to show
+    verbose_name = 'Next Operation Code'
+    verbose_name_plural = 'Next Operation Code'
+
 class RoutingDetailAdmin(admin.ModelAdmin):
     search_fields = ['operation','routing__name','description','category1','category2']
     list_filter = ['routing','category1','category2']
     list_display = ('operation','routing','position','next_pass','next_fail','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
-    inlines=[RoutingAcceptSetInline,RoutingExceptSetInline,RoutingDetailParameterInline]
+    inlines=[RoutingAcceptSetInline,RoutingExceptSetInline,RoutingNextSetInline,RoutingDetailParameterInline]
 
     fieldsets = [
         ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
@@ -311,3 +318,20 @@ class RoutingExceptAdmin(admin.ModelAdmin):
         obj.user = request.user
         super(RoutingExceptAdmin, self).save_model(request, obj, form, change)
 admin.site.register(RoutingExcept,RoutingExceptAdmin)
+
+class RoutingNextAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','category1','category2']
+    list_filter = ['category1','category2']
+    list_display = ('name','title','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Except Code',{'fields': ['snippet']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingNextAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingNext,RoutingNextAdmin)
