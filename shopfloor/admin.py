@@ -9,7 +9,7 @@ from .models import (Bom,
                      Parameter,ParameterSet,
 					 Performing,
 					 Product,
-					 Routing,
+					 Routing,RoutingAccept,RoutingExcept,RoutingDetailAcceptSet,RoutingDetailExceptSet,
 					 RoutingDetail,RoutingDetailParameterSet,
 					 SerialNumber,
                      Snippet,
@@ -110,17 +110,29 @@ class RoutingDetailParameterInline(admin.TabularInline):
     verbose_name = 'Parameter Configuration'
     verbose_name_plural = 'Parameter Configuration'
 
+class RoutingAcceptSetInline(admin.TabularInline):
+    model = RoutingDetailAcceptSet
+    extra = 1 # how many rows to show
+    verbose_name = 'Acceptance'
+    verbose_name_plural = 'Acceptance Code'
+
+class RoutingExceptSetInline(admin.TabularInline):
+    model = RoutingDetailExceptSet
+    extra = 1 # how many rows to show
+    verbose_name = 'Exceptance'
+    verbose_name_plural = 'Exceptance Code'
+
 class RoutingDetailAdmin(admin.ModelAdmin):
     search_fields = ['operation','routing__name','description','category1','category2']
     list_filter = ['routing','category1','category2']
     list_display = ('operation','routing','position','next_pass','next_fail','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
-    inlines=[RoutingDetailParameterInline]
+    inlines=[RoutingAcceptSetInline,RoutingExceptSetInline,RoutingDetailParameterInline]
 
     fieldsets = [
-        ('Basic Information',{'fields': ['operation','routing','description','slug','category1','category2','user']}),
-        ('Next Operation Information',{'fields': ['position','next_pass','next_fail']}),
+        ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
+        ('Next Operation Information (Default)',{'fields': ['next_pass','next_fail']}),
     ]
 
     def save_model(self, request, obj, form, change):
@@ -218,6 +230,8 @@ class ParameterSetInline(admin.TabularInline):
     extra = 1 # how many rows to show
     # fields =('item','item__title')
 
+
+
 class ParameterAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description']
     list_filter = []
@@ -262,3 +276,38 @@ class SnippetAdmin(admin.ModelAdmin):
         super(SnippetAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Snippet,SnippetAdmin)
+
+
+class RoutingAcceptAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','category1','category2']
+    list_filter = ['category1','category2']
+    list_display = ('name','title','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Accept Code',{'fields': ['snippet']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingAcceptAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingAccept,RoutingAcceptAdmin)
+
+class RoutingExceptAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','category1','category2']
+    list_filter = ['category1','category2']
+    list_display = ('name','title','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Except Code',{'fields': ['snippet']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingExceptAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingExcept,RoutingExceptAdmin)
