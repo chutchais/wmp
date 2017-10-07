@@ -342,8 +342,8 @@ def pre_save_parameter_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_parameter_receiver, sender=Parameter)
 
 class ParameterSet(models.Model):
-	parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE)
-	item = models.ForeignKey(Item, on_delete=models.CASCADE)
+	parameter = models.ForeignKey(Parameter,related_name='parametersets', on_delete=models.CASCADE)
+	item = models.ForeignKey(Item, related_name='parametersets',on_delete=models.CASCADE)
 	ordered = models.IntegerField(default=1)
 	required = models.BooleanField(default=False)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
@@ -353,6 +353,8 @@ class ParameterSet(models.Model):
 
 	def __str__(self):
 		return ('%s of %s' % (self.item,self.parameter))
+	class Meta:
+		ordering = ['ordered',]
 
 
 # End Parameter Configuration

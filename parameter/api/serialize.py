@@ -1,11 +1,13 @@
 from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
-	SerializerMethodField
+	SerializerMethodField,
+	HyperlinkedModelSerializer,
+	ReadOnlyField
 	)
 
 
-from shopfloor.models import Parameter
+from shopfloor.models import Parameter,ParameterSet
 from item.api.serialize import ItemListSerializer
 # from vessel.api.serialize import VesselSerializer
 
@@ -29,24 +31,46 @@ class ParameterListSerializer(ModelSerializer):
 			'title',
 			'item_count',
 			'description',
-			'user',
-			'url'
+			'url',
 		]
 
+# class ParameterSetSerializer(HyperlinkedModelSerializer):
+#     # name = ReadOnlyField(source='Parameter.name')
+#     # x = ItemListSerializer(read_only=True, many=True)
+#     class Meta:
+#         model = ParameterSet
+#         fields = ('ordered', )
+
+class ParameterSetSerializer(HyperlinkedModelSerializer ):
+	name = ReadOnlyField(source='item.name')
+	title = ReadOnlyField(source='item.title')
+	description = ReadOnlyField(source='item.description')
+	input_type = ReadOnlyField(source='item.input_type')
+	default_value = ReadOnlyField(source='item.default_value')
+	regexp = ReadOnlyField(source='item.regexp')
+	# 'url',
+	slug = ReadOnlyField(source='item.slug')
+	status = ReadOnlyField(source='item.status')
+	class Meta:
+		model = ParameterSet
+		fields = ['name','title','description','input_type','default_value','regexp','ordered','status','slug']
 
 class ParameterDetailSerializer(ModelSerializer):
-	items = ItemListSerializer(read_only=True, many=True)
+	# items = ItemListSerializer(read_only=True, many=True)
+	items = ParameterSetSerializer(source='parametersets', many=True)
 	class Meta:
 		model = Parameter
-		# fields ='__all__'
-		fields =[
-			'name',
-			'title',
-			'items',
-			'description',
-			'items',
-			'user'
-		]
+		fields ='__all__'
+		# # depth = 1
+		# fields =[
+		# 	'name',
+		# 	'title',
+		# 	'items',
+		# 	'description',
+		# 	'items',
+		# 	'user'
+		# ]
+
 class ParameterCreateSerializer (ModelSerializer):
 	class Meta:
 		model = Parameter

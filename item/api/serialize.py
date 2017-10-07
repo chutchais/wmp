@@ -3,8 +3,17 @@ from rest_framework.serializers import (
 	HyperlinkedIdentityField,
 	SerializerMethodField,
 	StringRelatedField,
-	SlugRelatedField
+	SlugRelatedField,
+	HyperlinkedModelSerializer,
+	ReadOnlyField
 	)
+# from rest_framework.serializers import (
+# 	ModelSerializer,
+# 	HyperlinkedIdentityField,
+# 	SerializerMethodField,
+# 	HyperlinkedModelSerializer,
+# 	ReadOnlyField
+# 	)
 
 
 from shopfloor.models import Item
@@ -26,6 +35,7 @@ class ItemListSerializer(ModelSerializer):
 	lists = ItemListListSerializer(many=True, read_only=True)
 	# lists = StringRelatedField(many=True)
 
+
 	class Meta:
 		model = Item
 		# fields ='__all__'
@@ -38,8 +48,8 @@ class ItemListSerializer(ModelSerializer):
 			'lists',
 			'default_value',
 			'regexp',
-			'user',
-			'url'
+			'url',
+			'status'
 		]
 
 class ItemDetailSerializer(ModelSerializer):
