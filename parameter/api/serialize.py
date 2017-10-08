@@ -32,6 +32,7 @@ class ParameterListSerializer(ModelSerializer):
 			'item_count',
 			'description',
 			'url',
+			'slug'
 		]
 
 # class ParameterSetSerializer(HyperlinkedModelSerializer):

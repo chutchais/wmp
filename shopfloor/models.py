@@ -221,7 +221,8 @@ class Item(models.Model):
 	PARAM_TYPE_CHOICES = (
 	        (TEXTBOX, 'Text Box'),
 	        (LIST, 'List Box'),
-	        (OPTION, 'Check Box'),
+	        (RADIO, 'Radio Box'),
+	        (OPTION, 'Option Box'),
 	        (SCRIPT, 'Script Data'),
 	    )
 	name = models.CharField(max_length=50)

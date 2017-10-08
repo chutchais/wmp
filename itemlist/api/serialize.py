@@ -32,7 +32,8 @@ class ItemListListSerializer(ModelSerializer):
 			'default',
 			'ordered',
 			'user',
-			'url'
+			'url',
+			'status'
 		]
 
 class ItemListDetailSerializer(ModelSerializer):
