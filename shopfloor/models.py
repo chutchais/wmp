@@ -250,11 +250,11 @@ class Item(models.Model):
 	has_validation_code.short_description = 'Has Validation'
 
 	def __str__(self):
-		return ('%s of %s' % (self.name,self.product))
+		return ('%s : %s' % (self.name,self.input_type))
 
 def create_item_slug(instance, new_slug=None):
     # import datetime
-    default_slug = '%s-%s' % (instance.name,instance.product )
+    default_slug = '%s-%s' % (instance.name,instance.input_type)
     slug = slugify(default_slug)
     if new_slug is not None:
         slug = new_slug

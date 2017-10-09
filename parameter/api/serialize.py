@@ -49,12 +49,13 @@ class ParameterSetSerializer(HyperlinkedModelSerializer ):
 	input_type = ReadOnlyField(source='item.input_type')
 	default_value = ReadOnlyField(source='item.default_value')
 	regexp = ReadOnlyField(source='item.regexp')
+
 	# 'url',
 	slug = ReadOnlyField(source='item.slug')
 	status = ReadOnlyField(source='item.status')
 	class Meta:
 		model = ParameterSet
-		fields = ['name','title','description','input_type','default_value','regexp','ordered','status','slug']
+		fields = ['name','title','description','input_type','default_value','regexp','ordered','status','slug','required']
 
 class ParameterDetailSerializer(ModelSerializer):
 	# items = ItemListSerializer(read_only=True, many=True)
