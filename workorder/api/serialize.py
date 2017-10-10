@@ -34,7 +34,8 @@ class WorkOrderListSerializer(ModelSerializer):
 			'routing',
 			'category1',
 			'category2',
-			'user'
+			'user',
+			'slug'
 		]
 
 class WorkOrderDetailSerializer(ModelSerializer):

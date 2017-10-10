@@ -38,7 +38,7 @@ class RoutingDetailListSerializer(ModelSerializer):
 			'description',
 			'category1',
 			'category2',
-			'user'
+			'slug'
 		]
 
 class RoutingDetailDetailSerializer(ModelSerializer):

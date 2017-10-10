@@ -150,7 +150,7 @@ admin.site.register(RoutingDetail,RoutingDetailAdmin)
 class WorkOrderAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','product__name','category1','category2']
     list_filter = ['product','category1','category2']
-    list_display = ('name','title','product','qty','description','category1','category2','created_date')
+    list_display = ('name','title','product','routing','qty','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
     fieldsets = [

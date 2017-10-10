@@ -8,6 +8,7 @@ from rest_framework.serializers import (
 from shopfloor.models import SerialNumber
 # from shipper.api.serialize import ShipperSerializer
 # from vessel.api.serialize import VesselSerializer
+from workorder.api.serialize import WorkOrderListSerializer
 
 serialnumber_detail_url=HyperlinkedIdentityField(
 		view_name='serialnumber-api:detail',
@@ -22,20 +23,21 @@ class SerialNumberListSerializer(ModelSerializer):
 	url = serialnumber_detail_url
 	# shipper = ShipperSerializer(allow_null=True)
 	# vessel = VesselSerializer()
+	# workorder= WorkOrderListSerializer()
 	class Meta:
 		model = SerialNumber
 		# fields ='__all__'
 		fields =[
 			'number',
+			'slug',
 			'workorder',
 			'url',
-			'description',
-			'category1',
-			'category2',
+			'wip',
 			'routing',
 			'current_operation',
-			'user'
+			'last_operation'
 		]
+		depth =3
 
 class SerialNumberDetailSerializer(ModelSerializer):
 	class Meta:

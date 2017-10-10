@@ -41,9 +41,11 @@ class SerialNumberListAPIView(ListAPIView):
 	def get_queryset(self,*args,**kwargs):
 		queryset_list =None #Booking.objects.all()
 		number = self.request.GET.get("number")
+		wip = self.request.GET.get("wip")
 		if number != None :
 			queryset_list = SerialNumber.objects.filter(
-					Q(number__icontains = number))
+					Q(number = number) &
+					Q(wip = True if wip=='true' else False))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 

@@ -40,10 +40,12 @@ class RoutingDetailListAPIView(ListAPIView):
 	search_fields = ['name']
 	def get_queryset(self,*args,**kwargs):
 		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
-		if name != None :
+		route = self.request.GET.get("route")
+		operation = self.request.GET.get("operation")
+		if route != None and operation != None  :
 			queryset_list = RoutingDetail.objects.filter(
-					Q(routing__slug = name))
+					Q(routing__name = route)&
+					Q(operation__name = operation))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 
