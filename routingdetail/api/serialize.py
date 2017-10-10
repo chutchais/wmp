@@ -42,10 +42,10 @@ class RoutingDetailListSerializer(ModelSerializer):
 		]
 
 class RoutingDetailDetailSerializer(ModelSerializer):
-	parameter = ParameterListSerializer (many=True, read_only=True)
-	accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	except_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	# parameter = ParameterListSerializer (many=True, read_only=True)
+	# accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	# except_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	# next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 
 	# parameter = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	# accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
@@ -63,6 +63,7 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 			'except_code',
 			'next_code'
 		]
+		depth=2
 
 class RoutingDetailCreateSerializer (ModelSerializer):
 	class Meta:
