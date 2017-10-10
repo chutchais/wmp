@@ -233,7 +233,7 @@ class Item(models.Model):
 	help_text = models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
 	input_type = models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
 	default_value = models.CharField(verbose_name='Default Value',max_length=100,blank=True, null=True)
-	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
+	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='\w')
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
