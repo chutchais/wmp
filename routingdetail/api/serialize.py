@@ -50,10 +50,10 @@ class RoutingDetailNextSetSerializer(HyperlinkedModelSerializer ):
 
 	# 'url',
 	# slug = SlugRelatedField(source='routingnext.slug')
-	snippet = SlugRelatedField(source='routingnext.snippet',many=False,read_only=True,slug_field='slug')
+	slug = SlugRelatedField(source='routingnext.snippet',many=False,read_only=True,slug_field='slug')
 	class Meta:
 		model = RoutingDetailNextSet
-		fields = ['title','ordered','status','operation','snippet']
+		fields = ['title','ordered','status','operation','slug']
 
 class RoutingDetailDetailSerializer(ModelSerializer):
 	# parameter = ParameterListSerializer (many=True, read_only=True)
