@@ -2,11 +2,13 @@ from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
 	SerializerMethodField,
-	SlugRelatedField
+	SlugRelatedField,
+	HyperlinkedModelSerializer,
+	ReadOnlyField
 	)
 
 
-from shopfloor.models import RoutingDetail
+from shopfloor.models import RoutingDetail,RoutingDetailNextSet
 # from shipper.api.serialize import ShipperSerializer
 # from vessel.api.serialize import VesselSerializer
 
@@ -41,6 +43,18 @@ class RoutingDetailListSerializer(ModelSerializer):
 			'slug'
 		]
 
+class RoutingDetailNextSetSerializer(HyperlinkedModelSerializer ):
+	# name = ReadOnlyField(source='routingdetail.name')
+	# title = ReadOnlyField(source='routingdetail.title')
+	# description = ReadOnlyField(source='RoutingExcept.description')
+
+	# 'url',
+	# slug = SlugRelatedField(source='routingnext.slug')
+	snippet = SlugRelatedField(source='routingnext.snippet',many=False,read_only=True,slug_field='slug')
+	class Meta:
+		model = RoutingDetailNextSet
+		fields = ['title','ordered','status','operation','snippet']
+
 class RoutingDetailDetailSerializer(ModelSerializer):
 	# parameter = ParameterListSerializer (many=True, read_only=True)
 	# accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
@@ -51,7 +65,7 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 	# accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	# except_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	# next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-
+	next_code =  RoutingDetailNextSetSerializer(source='routingdetailsets', many=True)
 	class Meta:
 		model = RoutingDetail
 		fields ='__all__'
@@ -61,7 +75,10 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 			'parameter',
 			'accept_code',
 			'except_code',
-			'next_code'
+			'next_code',
+			'next_pass',
+			'next_fail'
+
 		]
 		depth=2
 
