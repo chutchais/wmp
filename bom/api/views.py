@@ -22,10 +22,9 @@ from rest_framework.permissions import (
 	IsAuthenticatedOrReadOnly,
 	)
 
-# from .serialize import VoySerializer,VoyDetailSerializer
-# from berth.models import Voy
 
-from shopfloor.models import Bom
+from bom.models import Bom
+
 from .serialize import (BomListSerializer,
 						BomCreateSerializer,
 						BomDetailSerializer,
@@ -37,10 +36,10 @@ class BomListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = BomListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
+		queryset_list = Bom.objects.all()
+		name = self.request.GET.get("q")
 		if name != None :
 			queryset_list = Bom.objects.filter(
 					Q(name__icontains = name))

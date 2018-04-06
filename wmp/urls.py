@@ -21,6 +21,15 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # Page
+    url(r'^bom/',include('bom.urls',namespace='bom')),
+    url(r'^bom-detail/',include('bom_detail.urls',namespace='bom_detail')),
+    url(r'^operation/',include('operation.urls',namespace='operation')),
+    
+    # API
+    url(r'api/bom/', include("bom.api.urls", namespace='bom-api')),
+    url(r'api/bom-detail/', include("bom_detail.api.urls", namespace='bom_detail-api')),
+
     url(r'api/performing/', include("performing.api.urls", namespace='performing-api')),
     url(r'api/serialnumber/', include("serialnumber.api.urls", namespace='serialnumber-api')),
     url(r'api/workorder/', include("workorder.api.urls", namespace='workorder-api')),
@@ -28,8 +37,8 @@ urlpatterns = [
     url(r'api/operation/', include("operation.api.urls", namespace='operation-api')),
     url(r'api/routing/', include("routing.api.urls", namespace='routing-api')),
     url(r'api/routingdetail/', include("routingdetail.api.urls", namespace='routingdetail-api')),
-    url(r'api/bom/', include("bom.api.urls", namespace='bom-api')),
-    url(r'api/bomdetail/', include("bomdetail.api.urls", namespace='bomdetail-api')),
+    
+    
     url(r'api/parameter/', include("parameter.api.urls", namespace='parameter-api')),
     url(r'api/item/', include("item.api.urls", namespace='item-api')),
     url(r'api/itemlist/', include("itemlist.api.urls", namespace='itemlist-api')),

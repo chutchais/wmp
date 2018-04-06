@@ -1,0 +1,5 @@
+<ul>
+{% for object in object_list %}
+	<li><a href="{% url 'bom:detail' object.slug %}">{{object.name}}</a></li>
+{% endfor %}
+</ul>

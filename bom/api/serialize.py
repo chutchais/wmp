@@ -5,8 +5,8 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import Bom
-from bomdetail.api.serialize import BomDetailListSerializer
+from bom.models import Bom
+from bom_detail.api.serialize import BomDetailListSerializer
 # from vessel.api.serialize import VesselSerializer
 
 bom_detail_url=HyperlinkedIdentityField(

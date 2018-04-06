@@ -1,22 +1,9 @@
-shopfloor/__pycache__/**
-shopfloor/api/__pycache__/**
 
-performing/__pycache__/**
-performing/api/__pycache__/**
-
-serialnumber/__pycache__/**
-serialnumber/api/__pycache__/**
-
-workorder/__pycache__/**
-workorder/api/__pycache__/**
 
 **/__pycache__/**
 **/api/__pycache__/**
+**/migrations/
 
 
-shopfloor/migrations/
-
-wmp/__pycache__/**
-wmp/__pycache__/**
 
 db.sqlite3

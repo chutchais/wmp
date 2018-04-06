@@ -5,12 +5,11 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import BomDetail
-# from shipper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+from bom_detail.models import Bom_Detail
+
 
 bomdetail_detail_url=HyperlinkedIdentityField(
-		view_name='bomdetail-api:detail',
+		view_name='bom_detail-api:detail',
 		lookup_field='slug'
 		)
 
@@ -23,7 +22,7 @@ class BomDetailListSerializer(ModelSerializer):
 	# shipper = ShipperSerializer(allow_null=True)
 	# vessel = VesselSerializer()
 	class Meta:
-		model = BomDetail
+		model = Bom_Detail
 		# fields ='__all__'
 		fields =[
 			'rd',
@@ -36,12 +35,12 @@ class BomDetailListSerializer(ModelSerializer):
 
 class BomDetailDetailSerializer(ModelSerializer):
 	class Meta:
-		model = BomDetail
+		model = Bom_Detail
 		fields ='__all__'
 
 class BomDetailCreateSerializer (ModelSerializer):
 	class Meta:
-		model = BomDetail
+		model = Bom_Detail
 		fields =[
 			'rd',
 			'pn',
@@ -57,7 +56,7 @@ class BomDetailCreateSerializer (ModelSerializer):
 
 class BomDetailUpdateSerializer (ModelSerializer):
 	class Meta:
-		model = BomDetail
+		model = Bom_Detail
 		fields =[
 			'rd',
 			'pn',

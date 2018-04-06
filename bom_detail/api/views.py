@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import BomDetail
+from bom_detail.models import Bom_Detail
 from .serialize import (BomDetailListSerializer,
 						BomDetailCreateSerializer,
 						BomDetailDetailSerializer,
@@ -37,10 +37,10 @@ class BomDetailListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = BomDetailListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
+		queryset_list =Bom_Detail.objects.all()
+		name = self.request.GET.get("q")
 		if name != None :
 			queryset_list = BomDetail.objects.filter(
 					Q(bom__name = name))
@@ -48,20 +48,20 @@ class BomDetailListAPIView(ListAPIView):
 	# pagination_class = PostPageNumberPagination
 
 class BomDetailDetailAPIView(RetrieveAPIView):
-	queryset= BomDetail.objects.all()
+	queryset= Bom_Detail.objects.all()
 	serializer_class = BomDetailDetailSerializer
 	lookup_field = 'slug'
 	# print ("vessel details")
 
 class BomDetailDeleteAPIView(DestroyAPIView):
-	queryset= BomDetail.objects.all()
+	queryset= Bom_Detail.objects.all()
 	serializer_class= BomDetailDetailSerializer
 	lookup_field='slug'
 	# permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
 
 
 class BomDetailCreateAPIView(CreateAPIView):
-	queryset= BomDetail.objects.all()
+	queryset= Bom_Detail.objects.all()
 	serializer_class= BomDetailCreateSerializer
 	# permission_classes = [IsAuthenticated]
 
@@ -69,7 +69,7 @@ class BomDetailCreateAPIView(CreateAPIView):
 # 		print ('Voy is %s' % self.kwargs.get('voy'))
 # 		serializer.save()
 class BomDetailUpdateAPIView(RetrieveUpdateDestroyAPIView):
-	queryset=BomDetail.objects.all()
+	queryset=Bom_Detail.objects.all()
 	serializer_class=BomDetailUpdateSerializer
 	lookup_field='slug'
 
