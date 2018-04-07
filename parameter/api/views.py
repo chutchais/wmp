@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import Parameter
+from parameter.models import Parameter
 from .serialize import (ParameterListSerializer,
 						ParameterCreateSerializer,
 						ParameterDetailSerializer,

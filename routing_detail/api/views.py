@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import RoutingDetail
+from routing_detail.models import RoutingDetail
 from .serialize import (RoutingDetailListSerializer,
 						RoutingDetailCreateSerializer,
 						RoutingDetailDetailSerializer,

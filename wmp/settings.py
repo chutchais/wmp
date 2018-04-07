@@ -45,13 +45,14 @@ INSTALLED_APPS = [
     'item_list',
     'operation',
     'parameter',
+    'performing',
     'product',
     'routing',
     'routing_accept',
     'routing_detail',
     'routing_next',
     'routing_reject',
-    'shopfloor',
+    'serialnumber',
     'snippet',
     'workorder'
     # API

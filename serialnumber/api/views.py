@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import SerialNumber
+from serialnumber.models import SerialNumber
 from .serialize import (SerialNumberListSerializer,
 						SerialNumberCreateSerializer,
 						SerialNumberDetailSerializer,
@@ -37,9 +37,9 @@ class SerialNumberListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = SerialNumberListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['number']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
+		queryset_list =SerialNumber.objects.all()
 		number = self.request.GET.get("number")
 		wip = self.request.GET.get("wip")
 		if number != None :

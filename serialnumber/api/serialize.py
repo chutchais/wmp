@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import SerialNumber
+from serialnumber.models import SerialNumber
 # from shipper.api.serialize import ShipperSerializer
 # from vessel.api.serialize import VesselSerializer
 from workorder.api.serialize import WorkOrderListSerializer

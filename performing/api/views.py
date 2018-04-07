@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import Performing
+from performing.models import Performing
 from .serialize import (PerformingListSerializer,
 						PerformingCreateSerializer,
 						PerformingDetailSerializer,
@@ -39,7 +39,7 @@ class PerformingListAPIView(ListAPIView):
 	filter_backends = [SearchFilter,OrderingFilter]
 	search_fields = ['sn']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
+		queryset_list = Performing.objects.all()
 		number = self.request.GET.get("number")
 		if number != None :
 			queryset_list = Performing.objects.filter(

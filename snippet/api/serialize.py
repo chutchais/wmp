@@ -6,7 +6,7 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import Snippet
+from snippet.models import Snippet
 # from itemlist.api.serialize import ItemListListSerializer
 # from vessel.api.serialize import VesselSerializer
 
