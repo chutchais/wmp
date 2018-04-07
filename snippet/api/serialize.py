@@ -35,8 +35,7 @@ class SnippetListSerializer(ModelSerializer):
 			'category1',
 			'category2',
 			'user',
-			'url',
-			'ordered'
+			'url'
 		]
 
 class SnippetDetailSerializer(ModelSerializer):

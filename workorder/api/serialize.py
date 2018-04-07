@@ -5,9 +5,7 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import WorkOrder
-# from shipper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+from workorder.models import WorkOrder
 
 workorder_detail_url=HyperlinkedIdentityField(
 		view_name='workorder-api:detail',

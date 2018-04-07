@@ -37,10 +37,10 @@ class ParameterListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = ParameterListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
+		queryset_list = Parameter.objects.all()
+		name = self.request.GET.get('q')
 		if name != None :
 			queryset_list = Parameter.objects.filter(
 					Q(name__icontains = name))

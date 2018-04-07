@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import WorkOrder
+from workorder.models import WorkOrder
 from .serialize import (WorkOrderListSerializer,
 						WorkOrderCreateSerializer,
 						WorkOrderDetailSerializer,
@@ -37,10 +37,10 @@ class WorkOrderListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = WorkOrderListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
+		queryset_list = WorkOrder.objects.all()
+		name = self.request.GET.get('q')
 		if name != None :
 			queryset_list = WorkOrder.objects.filter(
 					Q(name__icontains = name))

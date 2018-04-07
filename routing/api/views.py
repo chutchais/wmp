@@ -22,10 +22,8 @@ from rest_framework.permissions import (
 	IsAuthenticatedOrReadOnly,
 	)
 
-# from .serialize import VoySerializer,VoyDetailSerializer
-# from berth.models import Voy
 
-from shopfloor.models import Routing
+from routing.models import Routing
 from .serialize import (RoutingListSerializer,
 						RoutingCreateSerializer,
 						RoutingDetailSerializer,
@@ -37,10 +35,10 @@ class RoutingListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = RoutingListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		name = self.request.GET.get("name")
+		queryset_list = Routing.objects.all()
+		name = self.request.GET.get('q')
 		if name != None :
 			queryset_list = Routing.objects.filter(
 					Q(name__icontains = name))

@@ -5,12 +5,12 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import ItemList
+from item_list.models import ItemList
 # from shipper.api.serialize import ShipperSerializer
 # from vessel.api.serialize import VesselSerializer
 
 itemlist_detail_url=HyperlinkedIdentityField(
-		view_name='itemlist-api:detail',
+		view_name='item_list-api:detail',
 		lookup_field='slug'
 		)
 
@@ -47,7 +47,6 @@ class ItemListCreateSerializer (ModelSerializer):
 		fields =[
 			'name',
 			'title',
-			'description',
 			'user'
 		]
 
@@ -57,7 +56,6 @@ class ItemListUpdateSerializer (ModelSerializer):
 		fields =[
 			'name',
 			'title',
-			'description',
 			'user'
 		]
 

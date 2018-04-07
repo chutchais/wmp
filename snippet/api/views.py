@@ -25,7 +25,7 @@ from rest_framework.permissions import (
 # from .serialize import VoySerializer,VoyDetailSerializer
 # from berth.models import Voy
 
-from shopfloor.models import Snippet
+from snippet.models import Snippet
 from .serialize import (SnippetListSerializer,
 						SnippetCreateSerializer,
 						SnippetDetailSerializer,
@@ -39,7 +39,7 @@ class SnippetListAPIView(ListAPIView):
 	filter_backends = [SearchFilter,OrderingFilter]
 	search_fields = ['name']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
+		queryset_list = Snippet.objects.all()
 		name = self.request.GET.get("name")
 		if name != None :
 			queryset_list = Snippet.objects.filter(

@@ -8,14 +8,14 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import RoutingDetail,RoutingDetailNextSet
-# from shipper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+from routing_detail.models import (	RoutingDetail,
+									RoutingDetailNextSet)
+
 
 from parameter.api.serialize import ParameterListSerializer
 
 routingdetail_detail_url=HyperlinkedIdentityField(
-		view_name='routingdetail-api:detail',
+		view_name='routing_detail-api:detail',
 		lookup_field='slug'
 		)
 
@@ -74,7 +74,7 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 			'operation',
 			'parameter',
 			'accept_code',
-			'except_code',
+			'reject_code',
 			'next_code',
 			'next_pass',
 			'next_fail'

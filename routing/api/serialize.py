@@ -7,8 +7,8 @@ from rest_framework.serializers import (
 from rest_framework import serializers
 
 
-from shopfloor.models import Routing
-from routingdetail.api.serialize import RoutingDetailListSerializer
+from routing.models import Routing
+from routing_detail.api.serialize import RoutingDetailListSerializer
 # from vessel.api.serialize import VesselSerializer
 
 routing_detail_url=HyperlinkedIdentityField(

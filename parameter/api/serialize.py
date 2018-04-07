@@ -7,7 +7,7 @@ from rest_framework.serializers import (
 	)
 
 
-from shopfloor.models import Parameter,ParameterSet
+from parameter.models import Parameter,ParameterSet
 from item.api.serialize import ItemListSerializer
 # from vessel.api.serialize import VesselSerializer
 

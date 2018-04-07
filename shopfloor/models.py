@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
-
+from django.urls import reverse
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 
@@ -12,6 +12,19 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 
 
 from operation.models import Operation
+from product.models import Product
+from routing.models import Routing
+from routing_detail.models import RoutingDetail
+from item.models import Item
+from snippet.models import Snippet
+from parameter.models import Parameter
+
+# from routing_accept.models import RoutingAccept
+# from routing_reject.models import RoutingReject
+# from routing_next.models import RoutingNext
+
+from workorder.models import WorkOrder
+
 # Create your models here.
 ACTIVE='A'
 DEACTIVE='D'
@@ -20,46 +33,46 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
-class Snippet(models.Model):
-	name = models.CharField(max_length=100)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	code = models.TextField()
-	linenos = models.BooleanField(default=False)
-	language = models.CharField(choices=LANGUAGE_CHOICES, default='VB.net', max_length=100)
-	style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class Snippet(models.Model):
+# 	name = models.CharField(max_length=100)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	code = models.TextField()
+# 	linenos = models.BooleanField(default=False)
+# 	language = models.CharField(choices=LANGUAGE_CHOICES, default='VB.net', max_length=100)
+# 	style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s' % (self.name))
+# 	def __str__(self):
+# 		return ('%s' % (self.name))
 
-	class Meta:
-		ordering = ('created_date',)
+# 	class Meta:
+# 		ordering = ('created_date',)
 
-def create_snippet_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Snippet.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_snippet_slug(instance, new_slug=new_slug)
-    return slug
+# def create_snippet_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Snippet.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_snippet_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_snippet_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_snippet_slug(instance)
+# def pre_save_snippet_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_snippet_slug(instance)
 
-pre_save.connect(pre_save_snippet_receiver, sender=Snippet)
+# pre_save.connect(pre_save_snippet_receiver, sender=Snippet)
 # Master data Model
 # class Bom(models.Model):
 # 	name = models.CharField(max_length=50,primary_key=True)
@@ -173,449 +186,449 @@ pre_save.connect(pre_save_snippet_receiver, sender=Snippet)
 
 # pre_save.connect(pre_save_operation_receiver, sender=Operation)
 
-class Product(models.Model):
-	name = models.CharField(max_length=50,primary_key=True)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	pn  = models.CharField(max_length=50,blank=True, null=True)
-	rev  = models.CharField(max_length=50,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	routing = models.ForeignKey('Routing', related_name='products',blank=True, null=True)
-	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
-	description = models.TextField(max_length=255,blank=True, null=True)
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	customer_pn = models.CharField(max_length=50,blank=True, null=True)
-	customer_rev  = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class Product(models.Model):
+# 	name = models.CharField(max_length=50,primary_key=True)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	pn  = models.CharField(max_length=50,blank=True, null=True)
+# 	rev  = models.CharField(max_length=50,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	routing = models.ForeignKey('Routing', related_name='products',blank=True, null=True)
+# 	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	customer_pn = models.CharField(max_length=50,blank=True, null=True)
+# 	customer_rev  = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 	
-	def __str__(self):
-		return self.name
+# 	def __str__(self):
+# 		return self.name
 
-def create_product_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Product.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_product_slug(instance, new_slug=new_slug)
-    return slug
+# def create_product_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Product.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_product_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_product_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_product_slug(instance)
+# def pre_save_product_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_product_slug(instance)
 
-pre_save.connect(pre_save_product_receiver, sender=Product)
+# pre_save.connect(pre_save_product_receiver, sender=Product)
 
 # Parameter Configuration
-class Item(models.Model):
-	TEXTBOX ='TEXT'
-	LIST ='LIST'
-	RADIO ='RADIO'
-	OPTION = 'OPTION'
-	SCRIPT ='SCRIPT'
-	PARAM_TYPE_CHOICES = (
-	        (TEXTBOX, 'Text Box'),
-	        (LIST, 'List Box'),
-	        (RADIO, 'Radio Box'),
-	        (OPTION, 'Option Box'),
-	        (SCRIPT, 'Script Data'),
-	    )
-	name = models.CharField(max_length=50)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	product = models.ForeignKey('Product', related_name='parameters',blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	help_text = models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
-	input_type = models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
-	default_value = models.CharField(verbose_name='Default Value',max_length=100,blank=True, null=True)
-	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='\w')
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
-	snippet = models.ForeignKey('Snippet', related_name='items',verbose_name='Snippet Code',blank=True, null=True)
-	expected_return = models.CharField(verbose_name='Expected Return',default='TRUE',max_length=100,blank=True, null=True)
+# class Item(models.Model):
+# 	TEXTBOX ='TEXT'
+# 	LIST ='LIST'
+# 	RADIO ='RADIO'
+# 	OPTION = 'OPTION'
+# 	SCRIPT ='SCRIPT'
+# 	PARAM_TYPE_CHOICES = (
+# 	        (TEXTBOX, 'Text Box'),
+# 	        (LIST, 'List Box'),
+# 	        (RADIO, 'Radio Box'),
+# 	        (OPTION, 'Option Box'),
+# 	        (SCRIPT, 'Script Data'),
+# 	    )
+# 	name = models.CharField(max_length=50)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	product = models.ForeignKey(Product, related_name='parameters',blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	help_text = models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
+# 	input_type = models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
+# 	default_value = models.CharField(verbose_name='Default Value',max_length=100,blank=True, null=True)
+# 	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='\w')
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
+# 	snippet = models.ForeignKey('Snippet', related_name='items',verbose_name='Snippet Code',blank=True, null=True)
+# 	expected_return = models.CharField(verbose_name='Expected Return',default='TRUE',max_length=100,blank=True, null=True)
 
-	# @property
-	def has_validation_code(self):
-		return True if (self.snippet) else False
-	has_validation_code.boolean =True
-	has_validation_code.short_description = 'Has Validation'
+# 	# @property
+# 	def has_validation_code(self):
+# 		return True if (self.snippet) else False
+# 	has_validation_code.boolean =True
+# 	has_validation_code.short_description = 'Has Validation'
 
-	def __str__(self):
-		return ('%s : %s' % (self.name,self.input_type))
+# 	def __str__(self):
+# 		return ('%s : %s' % (self.name,self.input_type))
 
-def create_item_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s-%s' % (instance.name,instance.input_type)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Item.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_item_slug(instance, new_slug=new_slug)
-    return slug
+# def create_item_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s-%s' % (instance.name,instance.input_type)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Item.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_item_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_item_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_item_slug(instance)
+# def pre_save_item_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_item_slug(instance)
 
-pre_save.connect(pre_save_item_receiver, sender=Item)
+# pre_save.connect(pre_save_item_receiver, sender=Item)
 
-class ItemList(models.Model):
-	name = models.CharField(max_length=50)
-	value = models.CharField(max_length=50)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	default = models.BooleanField(default=False)
-	parameter = models.ForeignKey('Item', related_name='lists')
-	ordered = models.IntegerField(default=1)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class ItemList(models.Model):
+# 	name = models.CharField(max_length=50)
+# 	value = models.CharField(max_length=50)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	default = models.BooleanField(default=False)
+# 	parameter = models.ForeignKey(Item, related_name='lists')
+# 	ordered = models.IntegerField(default=1)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s of %s' % (self.name,self.parameter))
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.name,self.parameter))
 
-def create_itemlist_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s-%s' % (instance.name,instance.parameter )
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = ItemList.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_itemlist_slug(instance, new_slug=new_slug)
-    return slug
+# def create_itemlist_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s-%s' % (instance.name,instance.parameter )
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = ItemList.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_itemlist_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_itemlist_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_itemlist_slug(instance)
+# def pre_save_itemlist_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_itemlist_slug(instance)
 
-pre_save.connect(pre_save_itemlist_receiver, sender=ItemList)
+# pre_save.connect(pre_save_itemlist_receiver, sender=ItemList)
 
-class Parameter(models.Model):
-	name = models.CharField(max_length=50,primary_key=True)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	items = models.ManyToManyField(Item, through='ParameterSet')
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class Parameter(models.Model):
+# 	name = models.CharField(max_length=50,primary_key=True)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	items = models.ManyToManyField(Item, through='ParameterSet')
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s' % (self.name))
+# 	def __str__(self):
+# 		return ('%s' % (self.name))
 
-	def item_count(self):
-		return self.items.count()
+# 	def item_count(self):
+# 		return self.items.count()
 
-def create_parameter_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Parameter.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_parameter_slug(instance, new_slug=new_slug)
-    return slug
+# def create_parameter_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Parameter.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_parameter_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_parameter_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_parameter_slug(instance)
+# def pre_save_parameter_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_parameter_slug(instance)
 
-pre_save.connect(pre_save_parameter_receiver, sender=Parameter)
+# pre_save.connect(pre_save_parameter_receiver, sender=Parameter)
 
-class ParameterSet(models.Model):
-	parameter = models.ForeignKey(Parameter,related_name='parametersets', on_delete=models.CASCADE)
-	item = models.ForeignKey(Item, related_name='parametersets',on_delete=models.CASCADE)
-	ordered = models.IntegerField(default=1)
-	required = models.BooleanField(default=False)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class ParameterSet(models.Model):
+# 	parameter = models.ForeignKey(Parameter,related_name='parametersets', on_delete=models.CASCADE)
+# 	item = models.ForeignKey(Item, related_name='parametersets',on_delete=models.CASCADE)
+# 	ordered = models.IntegerField(default=1)
+# 	required = models.BooleanField(default=False)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s of %s' % (self.item,self.parameter))
-	class Meta:
-		ordering = ['ordered',]
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.item,self.parameter))
+# 	class Meta:
+# 		ordering = ['ordered',]
 
 
 # End Parameter Configuration
 
 # Routing Configuration
-class Routing(models.Model):
-	name = models.CharField(max_length=50,primary_key=True)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class Routing(models.Model):
+# 	name = models.CharField(max_length=50,primary_key=True)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 	
-	def __str__(self):
-		return self.name
+# 	def __str__(self):
+# 		return self.name
 
-def create_routing_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Routing.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_routing_slug(instance, new_slug=new_slug)
-    return slug
+# def create_routing_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Routing.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_routing_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_routing_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_routing_slug(instance)
+# def pre_save_routing_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_routing_slug(instance)
 
-pre_save.connect(pre_save_routing_receiver, sender=Routing)
+# pre_save.connect(pre_save_routing_receiver, sender=Routing)
 
-class RoutingAccept(models.Model):
-	name = models.CharField(max_length=100)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	snippet = models.ForeignKey(
-					        Snippet,
-					        on_delete=models.CASCADE,
-					        related_name='accepts',blank=True, null=True
-					    )
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class RoutingAccept(models.Model):
+# 	name = models.CharField(max_length=100)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	snippet = models.ForeignKey(
+# 					        Snippet,
+# 					        on_delete=models.CASCADE,
+# 					        related_name='accepts',blank=True, null=True
+# 					    )
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s' % (self.name))
+# 	def __str__(self):
+# 		return ('%s' % (self.name))
 
-def create_routingaccept_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = RoutingAccept.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_routingaccept_slug(instance, new_slug=new_slug)
-    return slug
+# def create_routingaccept_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = RoutingAccept.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_routingaccept_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_routingaccept_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_routingaccept_slug(instance)
+# def pre_save_routingaccept_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_routingaccept_slug(instance)
 
-pre_save.connect(pre_save_routingaccept_receiver, sender=RoutingAccept)
-
-
-class RoutingExcept(models.Model):
-	name = models.CharField(max_length=100)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	snippet = models.ForeignKey(
-					        Snippet,
-					        on_delete=models.CASCADE,
-					        related_name='excepts',blank=True, null=True
-					    )
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
-
-	def __str__(self):
-		return ('%s' % (self.name))
-
-def create_routingexcept_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = RoutingExcept.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_routingexcept_slug(instance, new_slug=new_slug)
-    return slug
-
-def pre_save_routingexcept_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_routingexcept_slug(instance)
-
-pre_save.connect(pre_save_routingexcept_receiver, sender=RoutingExcept)
+# pre_save.connect(pre_save_routingaccept_receiver, sender=RoutingAccept)
 
 
-class RoutingNext(models.Model):
-	name = models.CharField(max_length=100)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	snippet = models.ForeignKey(
-					        Snippet,
-					        on_delete=models.CASCADE,
-					        related_name='routing_next',blank=True, null=True
-					    )
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class RoutingExcept(models.Model):
+# 	name = models.CharField(max_length=100)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	snippet = models.ForeignKey(
+# 					        Snippet,
+# 					        on_delete=models.CASCADE,
+# 					        related_name='excepts',blank=True, null=True
+# 					    )
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s' % (self.name))
+# 	def __str__(self):
+# 		return ('%s' % (self.name))
 
-def create_routingnext_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = RoutingNext.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_routingnext_slug(instance, new_slug=new_slug)
-    return slug
+# def create_routingexcept_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = RoutingExcept.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_routingexcept_slug(instance, new_slug=new_slug)
+#     return slug
+
+# def pre_save_routingexcept_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_routingexcept_slug(instance)
+
+# pre_save.connect(pre_save_routingexcept_receiver, sender=RoutingExcept)
 
 
-def pre_save_routingnext_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_routingnext_slug(instance)
+# class RoutingNext(models.Model):
+# 	name = models.CharField(max_length=100)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	snippet = models.ForeignKey(
+# 					        Snippet,
+# 					        on_delete=models.CASCADE,
+# 					        related_name='routing_next',blank=True, null=True
+# 					    )
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-pre_save.connect(pre_save_routingnext_receiver, sender=RoutingNext)
+# 	def __str__(self):
+# 		return ('%s' % (self.name))
 
-class RoutingDetail(models.Model):
-	FIRST='F'
-	LAST='L'
-	NORMAL = 'N'
-	OPERATION_POS_CHOICES = (
-	        (FIRST, 'First Operation'),
-	        (LAST, 'Last Operation'),
-	        (NORMAL, 'Normal'),
-	    )
-	operation = models.ForeignKey(Operation, related_name='routings',blank=True, null=True)
-	routing = models.ForeignKey('Routing', related_name='operations')
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	position = models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	next_pass = models.ForeignKey(Operation, related_name='nextpass')
-	next_fail = models.ForeignKey(Operation, related_name='nextfail')
-	parameter = models.ManyToManyField(Parameter, through='RoutingDetailParameterSet')
-	accept_code = models.ManyToManyField(RoutingAccept, through='RoutingDetailAcceptSet')
-	except_code = models.ManyToManyField(RoutingExcept, through='RoutingDetailExceptSet')
-	next_code = models.ManyToManyField(RoutingNext, through='RoutingDetailNextSet')
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# def create_routingnext_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = RoutingNext.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_routingnext_slug(instance, new_slug=new_slug)
+#     return slug
+
+
+# def pre_save_routingnext_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_routingnext_slug(instance)
+
+# pre_save.connect(pre_save_routingnext_receiver, sender=RoutingNext)
+
+# class RoutingDetail(models.Model):
+# 	FIRST='F'
+# 	LAST='L'
+# 	NORMAL = 'N'
+# 	OPERATION_POS_CHOICES = (
+# 	        (FIRST, 'First Operation'),
+# 	        (LAST, 'Last Operation'),
+# 	        (NORMAL, 'Normal'),
+# 	    )
+# 	operation = models.ForeignKey(Operation, related_name='routings',blank=True, null=True)
+# 	routing = models.ForeignKey(Routing, related_name='operations')
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	position = models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	next_pass = models.ForeignKey(Operation, related_name='nextpass')
+# 	next_fail = models.ForeignKey(Operation, related_name='nextfail')
+# 	parameter = models.ManyToManyField(Parameter, through='RoutingDetailParameterSet')
+# 	accept_code = models.ManyToManyField(RoutingAccept, through='RoutingDetailAcceptSet')
+# 	except_code = models.ManyToManyField(RoutingExcept, through='RoutingDetailExceptSet')
+# 	next_code = models.ManyToManyField(RoutingNext, through='RoutingDetailNextSet')
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 	
-	def __str__(self):
-		return ('%s on %s' % (self.operation,self.routing))
+# 	def __str__(self):
+# 		return ('%s on %s' % (self.operation,self.routing))
 
-def create_routingdetail_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s-%s' % (instance.operation,instance.routing)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = RoutingDetail.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_routingdetail_slug(instance, new_slug=new_slug)
-    return slug
+# def create_routingdetail_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s-%s' % (instance.operation,instance.routing)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = RoutingDetail.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_routingdetail_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_routingdetail_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_routingdetail_slug(instance)
+# def pre_save_routingdetail_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_routingdetail_slug(instance)
 
-pre_save.connect(pre_save_routingdetail_receiver, sender=RoutingDetail)
+# pre_save.connect(pre_save_routingdetail_receiver, sender=RoutingDetail)
 
 
 
-class WorkOrder(models.Model):
-	name = models.CharField(max_length=50,primary_key=True)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	description = models.TextField(max_length=255,blank=True, null=True)
-	slug = models.SlugField(unique=True,blank=True, null=True)
-	product = models.ForeignKey('Product', related_name='workorders')
-	routing = models.ForeignKey('Routing', related_name='workorders',blank=True, null=True)
-	qty = models.IntegerField(default=0)
-	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
-	category1 = models.CharField(max_length=50,blank=True, null=True)
-	category2 = models.CharField(max_length=50,blank=True, null=True)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	finished_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class WorkOrder(models.Model):
+# 	name = models.CharField(max_length=50,primary_key=True)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	description = models.TextField(max_length=255,blank=True, null=True)
+# 	slug = models.SlugField(unique=True,blank=True, null=True)
+# 	product = models.ForeignKey(Product, related_name='workorders')
+# 	routing = models.ForeignKey(Routing, related_name='workorders',blank=True, null=True)
+# 	qty = models.IntegerField(default=0)
+# 	regexp =  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
+# 	category1 = models.CharField(max_length=50,blank=True, null=True)
+# 	category2 = models.CharField(max_length=50,blank=True, null=True)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	finished_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 	
-	def __str__(self):
-		return self.name
+# 	def __str__(self):
+# 		return self.name
 
-def create_workorder_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s' % (instance.name)
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = WorkOrder.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_workorder_slug(instance, new_slug=new_slug)
-    return slug
+# def create_workorder_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s' % (instance.name)
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = WorkOrder.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_workorder_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_workorder_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_workorder_slug(instance)
+# def pre_save_workorder_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_workorder_slug(instance)
 
-pre_save.connect(pre_save_workorder_receiver, sender=WorkOrder)
+# pre_save.connect(pre_save_workorder_receiver, sender=WorkOrder)
 
 class SerialNumber(models.Model):
 	number = models.CharField(max_length=100)
-	workorder = models.ForeignKey('WorkOrder', related_name='units')
+	workorder = models.ForeignKey(WorkOrder, related_name='units')
 	slug = models.SlugField(unique=True,blank=True, null=True)
 	description = models.TextField(max_length=255,blank=True, null=True)
 	category1 = models.CharField(max_length=50,blank=True, null=True)
 	category2 = models.CharField(max_length=50,blank=True, null=True)
 	registered_date = models.DateTimeField(auto_now_add=True)
-	routing = models.ForeignKey('Routing', related_name='serialnumbers',blank=True, null=True)
+	routing = models.ForeignKey(Routing, related_name='serialnumbers',blank=True, null=True)
 	current_operation = models.ForeignKey(Operation, related_name='onprocess',blank=True, null=True)
 	last_operation = models.ForeignKey(Operation, related_name='justpass',blank=True, null=True)
 	last_modified_date = models.DateTimeField(blank=True, null=True)
@@ -690,56 +703,56 @@ pre_save.connect(pre_save_performing_receiver, sender=Performing)
 
 
 
-class RoutingDetailParameterSet(models.Model):
-	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
-	parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE)
-	ordered = models.IntegerField(default=1)
-	required = models.BooleanField(default=False)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class RoutingDetailParameterSet(models.Model):
+# 	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
+# 	parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE)
+# 	ordered = models.IntegerField(default=1)
+# 	required = models.BooleanField(default=False)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s of %s' % (self.parameter,self.routingdetail))
-
-
-class RoutingDetailAcceptSet(models.Model):
-	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
-	routingaccept = models.ForeignKey(RoutingAccept, on_delete=models.CASCADE)
-	ordered = models.IntegerField(default=1)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
-
-	def __str__(self):
-		return ('%s of %s' % (self.routingaccept,self.routingdetail))
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.parameter,self.routingdetail))
 
 
-class RoutingDetailExceptSet(models.Model):
-	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
-	routingexcept = models.ForeignKey(RoutingExcept, on_delete=models.CASCADE)
-	ordered = models.IntegerField(default=1)
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class RoutingDetailAcceptSet(models.Model):
+# 	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
+# 	routingaccept = models.ForeignKey(RoutingAccept, on_delete=models.CASCADE)
+# 	ordered = models.IntegerField(default=1)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s of %s' % (self.routingexcept,self.routingdetail))
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.routingaccept,self.routingdetail))
 
 
-class RoutingDetailNextSet(models.Model):
-	routingdetail = models.ForeignKey(RoutingDetail,related_name='routingdetailsets', on_delete=models.CASCADE)
-	routingnext = models.ForeignKey(RoutingNext, related_name='routingdetailsets',on_delete=models.CASCADE)
-	title = models.CharField(max_length=100,blank=True, null=True)
-	ordered = models.IntegerField(default=1)
-	operation = models.CharField(max_length=100,blank=True, null=True)# models.ForeignKey(Operation, related_name='routingdetailsets')
-	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	created_date = models.DateTimeField(auto_now_add=True)
-	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
-	user = models.ForeignKey('auth.User',blank=True,null=True)
+# class RoutingDetailExceptSet(models.Model):
+# 	routingdetail = models.ForeignKey(RoutingDetail, on_delete=models.CASCADE)
+# 	routingexcept = models.ForeignKey(RoutingExcept, on_delete=models.CASCADE)
+# 	ordered = models.IntegerField(default=1)
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
 
-	def __str__(self):
-		return ('%s of %s' % (self.routingnext,self.routingdetail))
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.routingexcept,self.routingdetail))
+
+
+# class RoutingDetailNextSet(models.Model):
+# 	routingdetail = models.ForeignKey(RoutingDetail,related_name='routingdetailsets', on_delete=models.CASCADE)
+# 	routingnext = models.ForeignKey(RoutingNext, related_name='routingdetailsets',on_delete=models.CASCADE)
+# 	title = models.CharField(max_length=100,blank=True, null=True)
+# 	ordered = models.IntegerField(default=1)
+# 	operation = models.CharField(max_length=100,blank=True, null=True)# models.ForeignKey(Operation, related_name='routingdetailsets')
+# 	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+# 	created_date = models.DateTimeField(auto_now_add=True)
+# 	modified_date = models.DateTimeField(blank=True, null=True,auto_now=True)
+# 	user = models.ForeignKey('auth.User',blank=True,null=True)
+
+# 	def __str__(self):
+# 		return ('%s of %s' % (self.routingnext,self.routingdetail))

@@ -37,15 +37,15 @@ class RoutingDetailListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = RoutingDetailListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['name']
+	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
-		queryset_list =None #Booking.objects.all()
-		route = self.request.GET.get("route")
-		operation = self.request.GET.get("operation")
-		if route != None and operation != None  :
-			queryset_list = RoutingDetail.objects.filter(
-					Q(routing__name = route)&
-					Q(operation__name = operation))
+		queryset_list = RoutingDetail.objects.all()
+		# route = self.request.GET.get("route")
+		# operation = self.request.GET.get("operation")
+		# if route != None and operation != None  :
+		# 	queryset_list = RoutingDetail.objects.filter(
+		# 			Q(routing__name = route)&
+		# 			Q(operation__name = operation))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 

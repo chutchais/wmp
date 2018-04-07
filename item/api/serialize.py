@@ -17,7 +17,7 @@ from rest_framework.serializers import (
 
 
 from shopfloor.models import Item
-from itemlist.api.serialize import ItemListListSerializer
+from item_list.api.serialize import ItemListListSerializer
 # from vessel.api.serialize import VesselSerializer
 
 item_detail_url=HyperlinkedIdentityField(

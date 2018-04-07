@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 ACTIVE='A'
 DEACTIVE='D'
