@@ -44,24 +44,24 @@ urlpatterns = [
     url(r'api/bom-detail/', include("bom_detail.api.urls", namespace='bom_detail-api')),
     url(r'api/item/', include("item.api.urls", namespace='item-api')),
     url(r'api/item-list/', include("item_list.api.urls", namespace='item_list-api')),
-
     url(r'api/routing/', include("routing.api.urls", namespace='routing-api')),
     url(r'api/routing-accept/', include("routing_accept.api.urls", namespace='routing_accept-api')),
     url(r'api/routing-next/', include("routing_next.api.urls", namespace='routing_next-api')),
     url(r'api/routing-reject/', include("routing_reject.api.urls", namespace='routing_reject-api')),
-
     url(r'api/performing/', include("performing.api.urls", namespace='performing-api')),
     url(r'api/serialnumber/', include("serialnumber.api.urls", namespace='serialnumber-api')),
     url(r'api/workorder/', include("workorder.api.urls", namespace='workorder-api')),
     url(r'api/product/', include("product.api.urls", namespace='product-api')),
-    url(r'api/operation/', include("operation.api.urls", namespace='operation-api')),
-    
+    url(r'api/operation/', include("operation.api.urls", namespace='operation-api')), 
     url(r'api/routing-detail/', include("routing_detail.api.urls", namespace='routing_detail-api')),
-    
-    
     url(r'api/parameter/', include("parameter.api.urls", namespace='parameter-api')),
-    
     url(r'api/snippet/', include("snippet.api.urls", namespace='snippet-api')),
+    url(r'api/users/', include("user.api.urls", namespace='user-api')),
+
+    #Restful Authentication
+    url(r'^api-auth/', include('rest_framework.urls')),
+    # Token
+    url(r'^api/login/', include('user.urls',namespace='login')),
 ]
 
 # if settings.DEBUG:

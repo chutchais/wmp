@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'bom',
     'bom_detail',
     'item',
@@ -54,7 +55,8 @@ INSTALLED_APPS = [
     'routing_reject',
     'serialnumber',
     'snippet',
-    'workorder'
+    'workorder',
+    'user'
     # API
     # 'performing',
     # 'serialnumber',
@@ -144,3 +146,12 @@ STATIC_URL = '/static/'
 
 admin.site.site_header = '8 O\'Clock Manufacturing Platform'
 admin.site.site_title = '8 O\'Clock Manufacturing Platform'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}

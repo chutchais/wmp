@@ -5,14 +5,20 @@ from rest_framework.serializers import (
 	StringRelatedField
 	)
 
+from rest_framework import serializers
+
 
 from snippet.models import Snippet
-# from itemlist.api.serialize import ItemListListSerializer
-# from vessel.api.serialize import VesselSerializer
 
 snippet_detail_url=HyperlinkedIdentityField(
 		view_name='snippet-api:detail',
 		lookup_field='slug'
+		)
+
+highlight_url=HyperlinkedIdentityField(
+		view_name='snippet:highlight',
+		lookup_field='slug',
+		format='html'
 		)
 
 
@@ -20,11 +26,10 @@ snippet_detail_url=HyperlinkedIdentityField(
 
 
 class SnippetListSerializer(ModelSerializer):
-	url = snippet_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# lists = ItemListListSerializer(many=True, read_only=True)
-	# lists = StringRelatedField(many=True)
-
+	url 		= snippet_detail_url
+	user 		= serializers.ReadOnlyField(source='user.username')
+	highlight 	= highlight_url
+	
 	class Meta:
 		model = Snippet
 		# fields ='__all__'
@@ -35,13 +40,12 @@ class SnippetListSerializer(ModelSerializer):
 			'category1',
 			'category2',
 			'user',
-			'url'
+			'url',
+			'code', 'linenos', 'language', 'style',
+			'highlight'
 		]
 
 class SnippetDetailSerializer(ModelSerializer):
-	# shipper = ShipperSerializer(allow_null=True)
-	# lists = ItemListListSerializer(many=True, read_only=True)
-	# lists = StringRelatedField(many=True)
 
 	class Meta:
 		model = Snippet
@@ -49,6 +53,7 @@ class SnippetDetailSerializer(ModelSerializer):
 		
 
 class SnippetCreateSerializer (ModelSerializer):
+
 	class Meta:
 		model = Snippet
 		fields =[
@@ -59,6 +64,7 @@ class SnippetCreateSerializer (ModelSerializer):
 		]
 
 class SnippetUpdateSerializer (ModelSerializer):
+
 	class Meta:
 		model = Snippet
 		fields =[
