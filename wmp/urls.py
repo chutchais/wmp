@@ -19,6 +19,11 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # Page
@@ -62,6 +67,9 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     # Token
     url(r'^api/login/', include('user.urls',namespace='login')),
+    url(r'^api/token/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
+    # url(r'^api/token/verify/$', TokenVerifyView.as_view(), name='token_verify'),
 ]
 
 # if settings.DEBUG:

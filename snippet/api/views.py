@@ -42,8 +42,8 @@ class SnippetList(generics.ListCreateAPIView):
 	serializer_class 	= SnippetListSerializer
 	filter_backends 	= [SearchFilter,OrderingFilter]
 	search_fields 		= ['name']
-	permission_classes 	= (IsAuthenticatedOrReadOnly,
-						IsOwnerOrReadOnly)
+	# permission_classes 	= (IsAuthenticatedOrReadOnly,
+	# 					IsOwnerOrReadOnly)
 
 	def perform_create(self, serializer):
 		serializer.save(user=self.request.user),
@@ -61,8 +61,8 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset 			= Snippet.objects.all()
     lookup_field 		= 'slug'
     serializer_class 	= SnippetDetailSerializer
-    permission_classes 	= (IsAuthenticatedOrReadOnly,
-    					IsOwnerOrReadOnly,)
+    # permission_classes 	= (IsAuthenticatedOrReadOnly,
+    # 					IsOwnerOrReadOnly,)
 
 
 # class SnippetDetailAPIView(RetrieveAPIView):
