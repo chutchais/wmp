@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 from routing.models import Routing
 from operation.models import Operation
 from parameter.models import Parameter
@@ -26,15 +27,22 @@ class RoutingDetail(models.Model):
 	        (LAST, 'Last Operation'),
 	        (NORMAL, 'Normal'),
 	    )
-	operation 			= models.ForeignKey(Operation, related_name='routings',blank=True, null=True)
-	routing 			= models.ForeignKey(Routing, related_name='operations')
+	operation 			= models.ForeignKey(Operation,
+								on_delete=models.CASCADE,
+								blank=True, null=True)
+	routing 			= models.ForeignKey(Routing,
+								on_delete=models.CASCADE,)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	position 			= models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
 	category2 			= models.CharField(max_length=50,blank=True, null=True)
-	next_pass 			= models.ForeignKey(Operation, related_name='nextpass')
-	next_fail 			= models.ForeignKey(Operation, related_name='nextfail')
+	next_pass 			= models.ForeignKey(Operation,
+								related_name='nextpass',
+								on_delete=models.SET_NULL,blank=True, null=True)
+	next_fail 			= models.ForeignKey(Operation,
+								related_name='nextfail',
+								on_delete=models.SET_NULL,blank=True, null=True)
 	parameter 			= models.ManyToManyField(Parameter, through='RoutingDetailParameterSet')
 	accept_code 		= models.ManyToManyField(RoutingAccept, through='RoutingDetailAcceptSet')
 	reject_code 		= models.ManyToManyField(RoutingReject, through='RoutingDetailRejectSet')
@@ -42,7 +50,9 @@ class RoutingDetail(models.Model):
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+								on_delete=models.SET_NULL,
+								blank=True,null=True)
 	
 	def __str__(self):
 		return ('%s on %s' % (self.operation,self.routing))
@@ -80,7 +90,9 @@ class RoutingDetailParameterSet(models.Model):
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
 	modified_date 			= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 					= models.ForeignKey('auth.User',blank=True,null=True)
+	user 					= models.ForeignKey(settings.AUTH_USER_MODEL,
+								on_delete=models.SET_NULL,
+								blank=True,null=True)
 
 	def __str__(self):
 		return ('%s of %s' % (self.parameter,self.routingdetail))
@@ -93,7 +105,9 @@ class RoutingDetailAcceptSet(models.Model):
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
 	modified_date 			= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 					= models.ForeignKey('auth.User',blank=True,null=True)
+	user 					= models.ForeignKey(settings.AUTH_USER_MODEL,
+								on_delete=models.SET_NULL,
+								blank=True,null=True)
 
 	def __str__(self):
 		return ('%s of %s' % (self.routingaccept,self.routingdetail))
@@ -106,7 +120,9 @@ class RoutingDetailRejectSet(models.Model):
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
 	modified_date 			= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 					= models.ForeignKey('auth.User',blank=True,null=True)
+	user 					= models.ForeignKey(settings.AUTH_USER_MODEL,
+									on_delete=models.SET_NULL,
+									blank=True,null=True)
 
 	def __str__(self):
 		return ('%s of %s' % (self.routingexcept,self.routingdetail))
@@ -121,7 +137,9 @@ class RoutingDetailNextSet(models.Model):
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
 	modified_date 			= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 					= models.ForeignKey('auth.User',blank=True,null=True)
+	user 					= models.ForeignKey(settings.AUTH_USER_MODEL,
+									on_delete=models.SET_NULL,
+									blank=True,null=True)
 
 	def __str__(self):
 		return ('%s of %s' % (self.routingnext,self.routingdetail))

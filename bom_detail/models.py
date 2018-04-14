@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 from bom.models import Bom
 
@@ -16,7 +17,7 @@ STATUS_CHOICES = (
 class Bom_Detail(models.Model):
 	rd 				= models.CharField(verbose_name ='Ref Destinator',max_length=50)
 	pn 				= models.CharField(verbose_name ='Part Number',max_length=50)
-	bom 			= models.ForeignKey(Bom)
+	bom 			= models.ForeignKey(Bom,on_delete=models.CASCADE,)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	description 	= models.TextField(max_length=255,blank=True, null=True)
 	category1 		= models.CharField(max_length=50,blank=True, null=True)
@@ -26,7 +27,9 @@ class Bom_Detail(models.Model):
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 			= models.ForeignKey('auth.User',blank=True,null=True)
+	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
+						on_delete=models.SET_NULL,
+						blank=True,null=True)
 	
 	class Meta:
 		unique_together = ('rd','pn','bom','alt_pn')

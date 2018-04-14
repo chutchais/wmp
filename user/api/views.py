@@ -1,8 +1,8 @@
 from user.api.serializers import UserSerializer
 from rest_framework import generics
 
-from django.contrib.auth.models import User
-
+# from django.contrib.auth.models import User
+from user.models import User
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()

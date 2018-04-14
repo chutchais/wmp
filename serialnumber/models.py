@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 
 
@@ -19,23 +20,37 @@ STATUS_CHOICES = (
 
 class SerialNumber(models.Model):
 	number 				= models.CharField(max_length=100)
-	workorder 			= models.ForeignKey(WorkOrder, related_name='units')
+	workorder 			= models.ForeignKey(WorkOrder,
+							on_delete=models.CASCADE)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
 	category2 			= models.CharField(max_length=50,blank=True, null=True)
 	registered_date 	= models.DateTimeField(auto_now_add=True)
-	routing 			= models.ForeignKey(Routing, related_name='serialnumbers',blank=True, null=True)
-	current_operation 	= models.ForeignKey(Operation, related_name='onprocess',blank=True, null=True)
-	last_operation 		= models.ForeignKey(Operation, related_name='justpass',blank=True, null=True)
+	routing 			= models.ForeignKey(Routing,
+							on_delete=models.SET_NULL,
+							blank=True, null=True)
+	current_operation 	= models.ForeignKey(Operation,
+							related_name='currentoperation',
+							on_delete=models.SET_NULL,
+							blank=True, null=True)
+	last_operation 		= models.ForeignKey(Operation,
+							related_name='lastoperation',
+							on_delete=models.SET_NULL,
+							blank=True, null=True)
 	last_modified_date 	= models.DateTimeField(blank=True, null=True)
 	last_result 		= models.BooleanField(verbose_name = 'Last Result',default=False)
 	finished_date 		= models.DateTimeField(blank=True, null=True)
 	wip 				= models.BooleanField(verbose_name = 'Work In Process',default=True)
 	perform_start_date 	= models.DateTimeField(blank=True, null=True)
-	perform_operation 	= models.ForeignKey(Operation, related_name='onperform',blank=True, null=True)
+	perform_operation 	= models.ForeignKey(Operation,
+							related_name='performoperation',
+							on_delete=models.SET_NULL,
+							blank=True, null=True)
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,
+							blank=True,null=True)
 
 	class Meta:
 		unique_together = ('number','workorder')

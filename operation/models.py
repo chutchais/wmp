@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 ACTIVE='A'
 DEACTIVE='D'
@@ -23,7 +24,9 @@ class Operation(models.Model):
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,
+							blank=True,null=True)
 	
 	def __str__(self):
 		return ('%s : %s' % (self.name,self.title))

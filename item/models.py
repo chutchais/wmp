@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 ACTIVE='A'
 DEACTIVE='D'
@@ -30,7 +31,8 @@ class Item(models.Model):
 	name 				= models.CharField(max_length=50)
 	title 				= models.CharField(max_length=100,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
-	product 			= models.ForeignKey(Product, related_name='parameters',blank=True, null=True)
+	product 			= models.ForeignKey(Product,
+							on_delete=models.SET_NULL,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	help_text 			= models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
 	input_type 			= models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
@@ -41,8 +43,11 @@ class Item(models.Model):
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
-	snippet 			= models.ForeignKey(Snippet, related_name='items',verbose_name='Snippet Code',blank=True, null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,blank=True,null=True)
+	snippet 			= models.ForeignKey(Snippet, 
+							on_delete=models.SET_NULL,verbose_name='Snippet Code',
+							blank=True, null=True)
 	expected_return 	= models.CharField(verbose_name='Expected Return',default='TRUE',max_length=100,blank=True, null=True)
 
 	# @property

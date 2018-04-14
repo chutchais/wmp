@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from item.models import Item
+from django.conf import settings
 
 ACTIVE='A'
 DEACTIVE='D'
@@ -18,12 +19,15 @@ class ItemList(models.Model):
 	title 			= models.CharField(max_length=100,blank=True, null=True)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	default 		= models.BooleanField(default=False)
-	item 			= models.ForeignKey(Item)
+	item 			= models.ForeignKey(Item,
+						on_delete=models.CASCADE,)
 	ordered 		= models.IntegerField(default=1)
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 			= models.ForeignKey('auth.User',blank=True,null=True)
+	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
+						on_delete=models.SET_NULL,
+						blank=True,null=True)
 
 	def __str__(self):
 		return ('%s of %s' % (self.name,self.item))

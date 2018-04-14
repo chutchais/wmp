@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 
 from django.urls import reverse
+from django.conf import settings
 
 from product.models import Product
 from routing.models import Routing
@@ -20,8 +21,11 @@ class WorkOrder(models.Model):
 	title 				= models.CharField(max_length=100,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
-	product 			= models.ForeignKey(Product)
-	routing 			= models.ForeignKey(Routing,blank=True, null=True)
+	product 			= models.ForeignKey(Product,
+							on_delete=models.CASCADE,)
+	routing 			= models.ForeignKey(Routing,
+							on_delete=models.SET_NULL,
+							blank=True, null=True)
 	qty 				= models.IntegerField(default=0)
 	regexp 				= models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
@@ -30,7 +34,9 @@ class WorkOrder(models.Model):
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
 	finished_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,
+							blank=True,null=True)
 	
 	def __str__(self):
 		return self.name

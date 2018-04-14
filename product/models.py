@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 from routing.models import Routing
 
@@ -19,8 +20,9 @@ class Product(models.Model):
 	pn  				= models.CharField(max_length=50,blank=True, null=True)
 	rev  				= models.CharField(max_length=50,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
-	routing 			= models.ForeignKey(Routing, related_name='products',blank=True, null=True)
-	regexp 				=  models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
+	routing 			= models.ForeignKey(Routing,
+							on_delete=models.SET_NULL,blank=True, null=True)
+	regexp 				= models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
 	category2 			= models.CharField(max_length=50,blank=True, null=True)
@@ -29,7 +31,8 @@ class Product(models.Model):
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	user 				= models.ForeignKey('auth.User',blank=True,null=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,blank=True,null=True)
 	
 	def __str__(self):
 		return self.name
