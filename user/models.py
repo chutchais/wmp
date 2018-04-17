@@ -13,7 +13,7 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
-class User(AbstractUser):
+class WMPUser(AbstractUser):
 	department 			= models.CharField(max_length=20)
 
 # class Profile(models.Model):

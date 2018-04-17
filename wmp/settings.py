@@ -147,7 +147,7 @@ STATIC_URL = '/static/'
 admin.site.site_header = '8 O\'Clock Manufacturing Platform'
 admin.site.site_title = '8 O\'Clock Manufacturing Platform'
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'user.WMPUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

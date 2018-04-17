@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from user.models import User
+from user.models import WMPUser
 
 # from shop.models import Employee
 
@@ -11,11 +12,21 @@ from user.models import User
 #     can_delete = False
 #     verbose_name_plural = 'employee'
 
+from .forms import UserAdminChangeForm
+# UserAdminCreationForm, 
 # # Define a new User admin
 class UserAdmin(BaseUserAdmin):
-	pass
+	form = UserAdminChangeForm
+	list_display = ('username', 'first_name', 'last_name', 'department', 'is_staff')
+	fieldsets = (
+        (None, {'fields': ('username', 'first_name', 'last_name', 'department', 'is_staff')}),
+      
+    )
+	class Meta:
+		model = WMPUser
     # inlines = (EmployeeInline, )
 
 # Re-register UserAdmin
 # admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+# admin.site.unregister(User)
+admin.site.register(WMPUser, UserAdmin)
