@@ -1,7 +1,7 @@
 from django.db import models
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
-# from operation.models import Operation
+from operation.models import Operation
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 
@@ -15,7 +15,12 @@ STATUS_CHOICES = (
 
 class WMPUser(AbstractUser):
 	department 			= models.CharField(max_length=20)
+# 	operations 			= models.ManyToManyField(Operation,through='UserAccess')
 
+
+# class UserAccess(models.Model):
+# 	user 			= models.ForeignKey(WMPUser, on_delete=models.CASCADE)
+# 	operation 		= models.ForeignKey(Operation, on_delete=models.CASCADE)
 # class Profile(models.Model):
 # 	user 				= models.OneToOneField(User, 
 # 								on_delete=models.CASCADE,
@@ -50,6 +55,3 @@ class WMPUser(AbstractUser):
 # 	user 				= models.ForeignKey('auth.User',blank=True,null=True)
 
 # ,through='UserAccess'
-# class UserAccess(models.Model):
-# 	user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-# 	access = models.ForeignKey(Access, on_delete=models.CASCADE)

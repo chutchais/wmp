@@ -26,7 +26,7 @@ class Operation(models.Model):
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
 	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
 							on_delete=models.SET_NULL,
-							blank=True,null=True)
+							blank=True,null=True, related_name='owner')
 	
 	def __str__(self):
 		return ('%s : %s' % (self.name,self.title))

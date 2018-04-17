@@ -61,10 +61,12 @@ class UserAdminChangeForm(forms.ModelForm):
     password hash display field.
     """
     password = ReadOnlyPasswordHashField()
-
+    # filter_horizontal=['operations']
+    # filter_horizontal = ('operation',)
     class Meta:
         model = WMPUser
-        fields = ('email', 'password','username', 'first_name', 'last_name', 'department', 'is_staff')
+        fields = ('email', 'password','username', 'first_name', 'last_name', 
+        			'department', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.

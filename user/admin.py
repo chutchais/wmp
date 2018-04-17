@@ -19,9 +19,10 @@ class UserAdmin(BaseUserAdmin):
 	form = UserAdminChangeForm
 	list_display = ('username', 'first_name', 'last_name', 'department', 'is_staff')
 	fieldsets = (
-        (None, {'fields': ('username', 'first_name', 'last_name', 'department', 'is_staff')}),
+        (None, {'fields': ('username', 'first_name', 'last_name', 'department', 'is_staff',)}),
       
     )
+	# filter_horizontal=['operations']
 	class Meta:
 		model = WMPUser
     # inlines = (EmployeeInline, )
