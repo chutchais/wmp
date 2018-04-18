@@ -15,12 +15,18 @@ STATUS_CHOICES = (
 
 class WMPUser(AbstractUser):
 	department 			= models.CharField(max_length=20)
-# 	operations 			= models.ManyToManyField(Operation,through='UserAccess')
+	operations 			= models.ManyToManyField(Operation,through='UserAccess')
+	class Meta:
+		permissions = [('can_login','Login to system')]
+
+class UserAccess(models.Model):
+	user 			= models.ForeignKey(WMPUser, on_delete=models.CASCADE)
+	operation 		= models.ForeignKey(Operation, on_delete=models.CASCADE)
 
 
-# class UserAccess(models.Model):
-# 	user 			= models.ForeignKey(WMPUser, on_delete=models.CASCADE)
-# 	operation 		= models.ForeignKey(Operation, on_delete=models.CASCADE)
+	def __str__(self):
+		return ('%s' % (self.operation))
+
 # class Profile(models.Model):
 # 	user 				= models.OneToOneField(User, 
 # 								on_delete=models.CASCADE,

@@ -29,7 +29,7 @@ class Operation(models.Model):
 							blank=True,null=True, related_name='owner')
 	
 	def __str__(self):
-		return ('%s : %s' % (self.name,self.title))
+		return ('%s' % (self.name))
 
 	def get_absolute_url(self):
 		return reverse('operation:detail', kwargs={'slug': self.slug})

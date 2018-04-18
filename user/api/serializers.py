@@ -11,11 +11,17 @@ from rest_framework import serializers
 from user.models import WMPUser
 from snippet.models import Snippet
 
+from operation.api.serialize import  OperationListSerializer
 
 
-class UserSerializer(serializers.ModelSerializer):
-    # snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
-   
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    operations = OperationListSerializer(many=True, read_only=True)
     class Meta:
         model = WMPUser
-        fields = ('id', 'username',)
+        fields = ('id', 'username','operations','groups')
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WMPUser
+        fields = ('id', 'username')
