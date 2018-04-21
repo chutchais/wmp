@@ -125,7 +125,7 @@ class RoutingDetailRejectSet(models.Model):
 									blank=True,null=True)
 
 	def __str__(self):
-		return ('%s of %s' % (self.routingexcept,self.routingdetail))
+		return ('%s of %s' % (self.routingreject,self.routingdetail))
 
 
 class RoutingDetailNextSet(models.Model):

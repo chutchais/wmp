@@ -6,9 +6,9 @@ from rest_framework.serializers import (
 
 
 from serialnumber.models import SerialNumber
-# from shipper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+
 from workorder.api.serialize import WorkOrderListSerializer
+from routing.api.serialize import RoutingListSerializer
 
 serialnumber_detail_url=HyperlinkedIdentityField(
 		view_name='serialnumber-api:detail',
@@ -16,33 +16,40 @@ serialnumber_detail_url=HyperlinkedIdentityField(
 		)
 
 
-
-
-
 class SerialNumberListSerializer(ModelSerializer):
-	url = serialnumber_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# vessel = VesselSerializer()
-	# workorder= WorkOrderListSerializer()
+	url 		= serialnumber_detail_url
+	
+	# routing = HyperlinkedIdentityField(view_name='routing-api:detail',lookup_field='slug')
 	class Meta:
 		model = SerialNumber
-		# fields ='__all__'
 		fields =[
 			'number',
 			'slug',
 			'workorder',
 			'url',
 			'wip',
-			'routing',
 			'current_operation',
 			'last_operation'
 		]
-		depth =3
+		# depth =1
 
 class SerialNumberDetailSerializer(ModelSerializer):
+	# Full Information
+	# workorder  	= WorkOrderListSerializer(read_only=True)
+	# routing 	= RoutingListSerializer(read_only=True)
+
+	routing 	= SerializerMethodField() #Slug field
+	workorder 	= SerializerMethodField()  #Slug field
 	class Meta:
 		model = SerialNumber
 		fields ='__all__'
+
+	def get_routing(self,obj):
+		return None if obj.routing == None else obj.routing.slug
+
+	def get_workorder(self,obj):
+		return obj.workorder.slug
+
 
 class SerialNumberCreateSerializer (ModelSerializer):
 	class Meta:

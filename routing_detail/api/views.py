@@ -40,12 +40,12 @@ class RoutingDetailListAPIView(ListAPIView):
 	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
 		queryset_list = RoutingDetail.objects.all()
-		# route = self.request.GET.get("route")
-		# operation = self.request.GET.get("operation")
-		# if route != None and operation != None  :
-		# 	queryset_list = RoutingDetail.objects.filter(
-		# 			Q(routing__name = route)&
-		# 			Q(operation__name = operation))
+		route = self.request.GET.get("route")
+		operation = self.request.GET.get("operation")
+		if route != None and operation != None  :
+			queryset_list = RoutingDetail.objects.filter(
+					Q(routing__name = route)&
+					Q(operation__name = operation))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 
@@ -53,6 +53,7 @@ class RoutingDetailDetailAPIView(RetrieveAPIView):
 	queryset= RoutingDetail.objects.all()
 	serializer_class = RoutingDetailDetailSerializer
 	lookup_field = 'slug'
+
 	# print ("vessel details")
 
 class RoutingDetailDeleteAPIView(DestroyAPIView):

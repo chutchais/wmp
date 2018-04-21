@@ -6,8 +6,7 @@ from rest_framework.serializers import (
 
 
 from routing_accept.models import RoutingAccept
-# from shiproutingper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+from snippet.api.serialize import SnippetListSerializer
 
 routing_accept_url=HyperlinkedIdentityField(
 		view_name='routing_accept-api:detail',
@@ -36,6 +35,7 @@ class RoutingAcceptListSerializer(ModelSerializer):
 		]
 
 class RoutingAcceptDetailSerializer(ModelSerializer):
+	snippet 	= SnippetListSerializer(read_only=True)
 	class Meta:
 		model = RoutingAccept
 		fields ='__all__'

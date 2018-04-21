@@ -2,13 +2,26 @@ from django.contrib import admin
 from django.forms import TextInput, Textarea
 from django.db import models
 
-from routing_detail.models import RoutingDetail,RoutingDetailParameterSet
+from routing_detail.models import (RoutingDetail,RoutingDetailParameterSet,
+                                    RoutingDetailAcceptSet,RoutingDetailRejectSet)
+from routing_accept.models import RoutingAccept
+from routing_reject.models import RoutingReject
 
 class RoutingDetailParameterInline(admin.TabularInline):
     model = RoutingDetailParameterSet
     extra = 1 # how many rows to show
     verbose_name = 'Parameter Configuration'
     verbose_name_plural = 'Parameter Configuration'
+
+class AcceptInline(admin.TabularInline):
+    model = RoutingDetailAcceptSet
+    can_delete = True
+    verbose_name_plural = 'Routing - Accept'
+
+class RejectInline(admin.TabularInline):
+    model = RoutingDetailRejectSet
+    can_delete = True
+    verbose_name_plural = 'Routing - Reject'
     
 class RoutingDetailAdmin(admin.ModelAdmin):
     search_fields = ['operation','routing__name','description','category1','category2']
@@ -16,12 +29,13 @@ class RoutingDetailAdmin(admin.ModelAdmin):
     list_display = ('operation','routing','position','next_pass','next_fail','description','category1','category2','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
-    # inlines=[RoutingAcceptSetInline,RoutingExceptSetInline,RoutingNextSetInline,RoutingDetailParameterInline]
+    
 
     fieldsets = [
         ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
         ('Next Operation Information (Default)',{'fields': ['next_pass','next_fail']}),
     ]
+    inlines = [AcceptInline,RejectInline]
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user

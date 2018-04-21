@@ -39,13 +39,16 @@ class SerialNumberListAPIView(ListAPIView):
 	filter_backends = [SearchFilter,OrderingFilter]
 	search_fields = ['q']
 	def get_queryset(self,*args,**kwargs):
+		# wip = self.request.GET.get("wip")
+		# if wip=='yes':
+		# 	queryset_list =SerialNumber.objects.filter(wip=True)
+		# else:
+		# 	queryset_list =SerialNumber.objects.all()
 		queryset_list =SerialNumber.objects.all()
-		number = self.request.GET.get("number")
-		wip = self.request.GET.get("wip")
-		if number != None :
-			queryset_list = SerialNumber.objects.filter(
-					Q(number = number) &
-					Q(wip = True if wip=='true' else False))
+		q = self.request.GET.get("q")
+		if q != None :
+				queryset_list = SerialNumber.objects.filter(
+					Q(number = q))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 

@@ -15,5 +15,4 @@ urlpatterns = [
 	url(r'^(?P<slug>[\w-]+)/$',RoutingDetailDetailAPIView.as_view(), name='detail'),
 	url(r'^(?P<slug>[\wRouting-]+)/delete/$', RoutingDetailDeleteAPIView.as_view(),name='delete'),
 	url(r'^(?P<slug>[\w-]+)/update/$', RoutingDetailUpdateAPIView.as_view(),name='update'),
- 
 ]

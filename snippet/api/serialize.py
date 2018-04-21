@@ -39,10 +39,12 @@ class SnippetListSerializer(ModelSerializer):
 			'description',
 			'category1',
 			'category2',
+			'slug',
 			'user',
 			'url',
 			'code', 'linenos', 'language', 'style',
-			'highlight'
+			'highlight',
+			'status'
 		]
 
 class SnippetDetailSerializer(ModelSerializer):

@@ -6,20 +6,16 @@ from rest_framework.serializers import (
 
 
 from workorder.models import WorkOrder
+from routing.api.serialize import RoutingListSerializer
 
 workorder_detail_url=HyperlinkedIdentityField(
 		view_name='workorder-api:detail',
 		lookup_field='slug'
 		)
 
-
-
-
-
 class WorkOrderListSerializer(ModelSerializer):
 	url = workorder_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# vessel = VesselSerializer()
+	# routing 	= RoutingListSerializer(read_only=True)
 	class Meta:
 		model = WorkOrder
 		# fields ='__all__'
@@ -27,19 +23,19 @@ class WorkOrderListSerializer(ModelSerializer):
 			'name',
 			'title',
 			'url',
-			'description',
 			'product',
 			'routing',
-			'category1',
-			'category2',
-			'user',
 			'slug'
 		]
 
 class WorkOrderDetailSerializer(ModelSerializer):
+	routing 	= RoutingListSerializer(read_only=True)
+	product 	= SerializerMethodField()  #Slug field
 	class Meta:
 		model = WorkOrder
 		fields ='__all__'
+	def get_product(self,obj):
+		return obj.product.slug
 
 class WorkOrderCreateSerializer (ModelSerializer):
 	class Meta:

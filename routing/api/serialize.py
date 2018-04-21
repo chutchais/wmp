@@ -22,8 +22,6 @@ routing_detail_url=HyperlinkedIdentityField(
 
 class RoutingListSerializer(ModelSerializer):
 	url = routing_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# vessel = VesselSerializer()
 	class Meta:
 		model = Routing
 		# exclude = ('users',)
@@ -33,10 +31,7 @@ class RoutingListSerializer(ModelSerializer):
 			'name',
 			'title',
 			'url',
-			'description',
-			'category1',
-			'category2',
-			'user'
+			'slug'
 		]
 
 class RoutingDetailSerializer(ModelSerializer):

@@ -4,7 +4,7 @@ from rest_framework.serializers import (
 	SerializerMethodField
 	)
 
-
+from routing.api.serialize import RoutingListSerializer
 from product.models import Product
 # from shipper.api.serialize import ShipperSerializer
 # from vessel.api.serialize import VesselSerializer
@@ -36,6 +36,7 @@ class ProductListSerializer(ModelSerializer):
 		]
 
 class ProductDetailSerializer(ModelSerializer):
+	routing 	= RoutingListSerializer(read_only=True)
 	class Meta:
 		model = Product
 		fields ='__all__'

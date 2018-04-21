@@ -6,8 +6,7 @@ from rest_framework.serializers import (
 
 
 from routing_reject.models import RoutingReject
-# from shiproutingper.api.serialize import ShipperSerializer
-# from vessel.api.serialize import VesselSerializer
+from snippet.api.serialize import SnippetListSerializer
 
 routing_reject_url=HyperlinkedIdentityField(
 		view_name='routing_reject-api:detail',
@@ -36,6 +35,7 @@ class RoutingRejectListSerializer(ModelSerializer):
 		]
 
 class RoutingRejectDetailSerializer(ModelSerializer):
+	snippet 	= SnippetListSerializer(read_only=True)
 	class Meta:
 		model = RoutingReject
 		fields ='__all__'

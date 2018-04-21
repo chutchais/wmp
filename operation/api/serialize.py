@@ -13,25 +13,15 @@ operation_detail_url=HyperlinkedIdentityField(
 		lookup_field='slug'
 		)
 
-
-
-
-
 class OperationListSerializer(ModelSerializer):
 	url = operation_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# vessel = VesselSerializer()
 	class Meta:
 		model = Operation
-		# fields ='__all__'
 		fields =[
 			'name',
 			'title',
 			'url',
-			'description',
-			'category1',
-			'category2',
-			'user'
+			'slug'
 		]
 
 class OperationDetailSerializer(ModelSerializer):

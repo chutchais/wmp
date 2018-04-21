@@ -62,25 +62,25 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 	# next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 
 	# parameter = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	# accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	# except_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	# next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
-	next_code =  RoutingDetailNextSetSerializer(source='routingdetailsets', many=True)
+	accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	reject_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	# next_code =  RoutingDetailNextSetSerializer(source='routingdetailsets', many=True)
 	class Meta:
 		model = RoutingDetail
 		fields ='__all__'
-		fields =[
-			'routing',
-			'operation',
-			'parameter',
-			'accept_code',
-			'reject_code',
-			'next_code',
-			'next_pass',
-			'next_fail'
+		# fields =[
+		# 	'routing',
+		# 	'operation',
+		# 	'parameter',
+		# 	'accept_code',
+		# 	'reject_code',
+		# 	'next_code',
+		# 	'next_pass',
+		# 	'next_fail'
 
-		]
-		depth=2
+		# ]
+		# depth=1
 
 class RoutingDetailCreateSerializer (ModelSerializer):
 	class Meta:
