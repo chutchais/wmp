@@ -64,6 +64,7 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 	# parameter = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	accept_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	reject_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
+	parameter   = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	# next_code =  RoutingDetailNextSetSerializer(source='routingdetailsets', many=True)
 	class Meta:

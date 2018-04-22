@@ -32,7 +32,7 @@ item_detail_url=HyperlinkedIdentityField(
 class ItemListSerializer(ModelSerializer):
 	url = item_detail_url
 	# shipper = ShipperSerializer(allow_null=True)
-	lists = ItemListListSerializer(many=True, read_only=True)
+	# lists = ItemListListSerializer(many=True, read_only=True)
 	# lists = StringRelatedField(many=True)
 
 
@@ -42,10 +42,10 @@ class ItemListSerializer(ModelSerializer):
 		fields =[
 			'name',
 			'title',
+			'slug',
 			'product',
 			'description',
 			'input_type',
-			'lists',
 			'default_value',
 			'regexp',
 			'url',
@@ -53,11 +53,9 @@ class ItemListSerializer(ModelSerializer):
 		]
 
 class ItemDetailSerializer(ModelSerializer):
-	# shipper = ShipperSerializer(allow_null=True)
 	lists = ItemListListSerializer(many=True, read_only=True)
-	# lists = StringRelatedField(many=True)
-	snippet =SlugRelatedField (many=False,read_only=True,slug_field='slug')
-
+	snippet 	 = SlugRelatedField (many=False,read_only=True,slug_field='slug')
+	url = item_detail_url
 	class Meta:
 		model = Item
 		# fields ='__all__'
@@ -72,7 +70,8 @@ class ItemDetailSerializer(ModelSerializer):
 			'regexp',
 			'user',
 			'snippet',
-			'expected_return'
+			'expected_return',
+			'url'
 		]
 
 class ItemCreateSerializer (ModelSerializer):

@@ -20,7 +20,7 @@ class ItemList(models.Model):
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	default 		= models.BooleanField(default=False)
 	item 			= models.ForeignKey(Item,
-						on_delete=models.CASCADE,)
+						on_delete=models.CASCADE,related_name='lists')
 	ordered 		= models.IntegerField(default=1)
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 	= models.DateTimeField(auto_now_add=True)

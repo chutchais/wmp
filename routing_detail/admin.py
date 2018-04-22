@@ -9,17 +9,19 @@ from routing_reject.models import RoutingReject
 
 class RoutingDetailParameterInline(admin.TabularInline):
     model = RoutingDetailParameterSet
-    extra = 1 # how many rows to show
+    extra = 0 # how many rows to show
     verbose_name = 'Parameter Configuration'
     verbose_name_plural = 'Parameter Configuration'
 
 class AcceptInline(admin.TabularInline):
     model = RoutingDetailAcceptSet
+    extra = 0
     can_delete = True
     verbose_name_plural = 'Routing - Accept'
 
 class RejectInline(admin.TabularInline):
     model = RoutingDetailRejectSet
+    extra = 0
     can_delete = True
     verbose_name_plural = 'Routing - Reject'
     
@@ -35,7 +37,7 @@ class RoutingDetailAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
         ('Next Operation Information (Default)',{'fields': ['next_pass','next_fail']}),
     ]
-    inlines = [AcceptInline,RejectInline]
+    inlines = [AcceptInline,RejectInline,RoutingDetailParameterInline]
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user

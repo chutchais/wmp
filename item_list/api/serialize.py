@@ -20,8 +20,6 @@ itemlist_detail_url=HyperlinkedIdentityField(
 
 class ItemListListSerializer(ModelSerializer):
 	url = itemlist_detail_url
-	# shipper = ShipperSerializer(allow_null=True)
-	# vessel = VesselSerializer()
 	class Meta:
 		model = ItemList
 		# fields ='__all__'

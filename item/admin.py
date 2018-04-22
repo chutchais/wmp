@@ -3,6 +3,15 @@ from django.forms import TextInput, Textarea
 from django.db import models
 
 from .models import Item
+from item_list.models import ItemList
+# class ItemListline(admin.):
+class ItemListline(admin.TabularInline):
+    model = ItemList
+    extra = 0
+    can_delete = True
+    verbose_name_plural = 'Item list configuration'
+
+
 
 class ItemAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','product__name','category1','category2']
@@ -10,7 +19,7 @@ class ItemAdmin(admin.ModelAdmin):
     list_display = ('name','title','input_type','has_validation_code','description','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug','has_validation_code')
-    # inlines=[ItemListline]
+    inlines=[ItemListline]
 
 
     fieldsets = [
