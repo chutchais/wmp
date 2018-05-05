@@ -40,15 +40,16 @@ class PerformingDetailSerializer(ModelSerializer):
 	# url = booking_detail_url
 	class Meta:
 		model = Performing
-		fields =[
-			'sn',
-			'operation',
-			'start_time',
-			'stop_time',
-			'result',
-			'remark',
-			'user'
-		]
+		fields = '__all__'
+		# fields =[
+		# 	'sn',
+		# 	'operation',
+		# 	'start_time',
+		# 	'stop_time',
+		# 	'result',
+		# 	'remark',
+		# 	'user'
+		# ]
 
 class PerformingCreateSerializer (ModelSerializer):
 	class Meta:

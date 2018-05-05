@@ -17,10 +17,13 @@ class ItemList(models.Model):
 	name 			= models.CharField(max_length=50)
 	value 			= models.CharField(max_length=50)
 	title 			= models.CharField(max_length=100,blank=True, null=True)
+	description 	= models.TextField(max_length=255,blank=True, null=True)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	default 		= models.BooleanField(default=False)
 	item 			= models.ForeignKey(Item,
 						on_delete=models.CASCADE,related_name='lists')
+	category1 		= models.CharField(max_length=50,blank=True, null=True)
+	category2 		= models.CharField(max_length=50,blank=True, null=True)
 	ordered 		= models.IntegerField(default=1)
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 	= models.DateTimeField(auto_now_add=True)

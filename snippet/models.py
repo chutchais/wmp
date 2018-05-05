@@ -31,7 +31,7 @@ class Snippet(models.Model):
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	code 				= models.TextField()
-	linenos 			= models.BooleanField(default=False)
+	linenos 			= models.BooleanField(default=True)
 	language 			= models.CharField(choices=LANGUAGE_CHOICES, default='vb.net', max_length=100)
 	style 				= models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
 	highlighted 		= models.TextField(blank=True, null=True)

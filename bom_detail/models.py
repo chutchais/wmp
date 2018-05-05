@@ -18,6 +18,7 @@ class Bom_Detail(models.Model):
 	rd 				= models.CharField(verbose_name ='Ref Destinator',max_length=50)
 	pn 				= models.CharField(verbose_name ='Part Number',max_length=50)
 	bom 			= models.ForeignKey(Bom,on_delete=models.CASCADE,)
+	title 			= models.CharField(max_length=100,blank=True, null=True)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	description 	= models.TextField(max_length=255,blank=True, null=True)
 	category1 		= models.CharField(max_length=50,blank=True, null=True)

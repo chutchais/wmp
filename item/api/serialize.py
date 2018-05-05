@@ -58,21 +58,21 @@ class ItemDetailSerializer(ModelSerializer):
 	url = item_detail_url
 	class Meta:
 		model = Item
-		# fields ='__all__'
-		fields =[
-			'name',
-			'title',
-			'product',
-			'description',
-			'input_type',
-			'lists',
-			'default_value',
-			'regexp',
-			'user',
-			'snippet',
-			'expected_return',
-			'url'
-		]
+		fields ='__all__'
+		# fields =[
+		# 	'name',
+		# 	'title',
+		# 	'product',
+		# 	'description',
+		# 	'input_type',
+		# 	'lists',
+		# 	'default_value',
+		# 	'regexp',
+		# 	'user',
+		# 	'snippet',
+		# 	'expected_return',
+		# 	'url'
+		# ]
 
 class ItemCreateSerializer (ModelSerializer):
 	class Meta:

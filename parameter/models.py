@@ -20,6 +20,8 @@ class Parameter(models.Model):
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	description 	= models.TextField(max_length=255,blank=True, null=True)
 	items 			= models.ManyToManyField(Item, through='ParameterSet')
+	category1 		= models.CharField(max_length=50,blank=True, null=True)
+	category2 		= models.CharField(max_length=50,blank=True, null=True)
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)

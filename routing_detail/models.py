@@ -32,6 +32,7 @@ class RoutingDetail(models.Model):
 								blank=True, null=True)
 	routing 			= models.ForeignKey(Routing,
 								on_delete=models.CASCADE,)
+	title 				= models.CharField(max_length=100,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	position 			= models.CharField(max_length=1,choices=OPERATION_POS_CHOICES,default=NORMAL)
 	description 		= models.TextField(max_length=255,blank=True, null=True)

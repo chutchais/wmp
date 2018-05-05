@@ -39,15 +39,8 @@ class BomDetailSerializer(ModelSerializer):
 	parts = BomDetailListSerializer(many=True, read_only=True)
 	class Meta:
 		model = Bom
-		fields =[
-			'name',
-			'title',
-			'description',
-			'category1',
-			'category2',
-			'user',
-			'parts'
-		]
+		fields ='__all__'
+
 
 class BomCreateSerializer (ModelSerializer):
 	class Meta:

@@ -12,9 +12,21 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
+OPERATION_TYPE_CHOICE =(
+		('ASSEMBLY'			, 'Assembly'),
+		('REGISTERATION' 	, 'Registration'),
+		('INSPECTION' 		, 'Inspection'),
+		('TROUBLESHOOTING' 	, 'Troubleshooting'),
+		('REPAIR'			, 'Repairation'),
+		('SHIPMENT' 		, 'Shipment'),
+		('PACKING'			, 'Packing'),
+		('END'				, 'Ending Process')
+	)
+
 class Operation(models.Model):
 	name 				= models.CharField(max_length=50,primary_key=True)
-	customer_name  		= models.CharField(max_length=50,blank=True, null=True)
+	operation_type		= models.CharField(max_length=20,choices=OPERATION_TYPE_CHOICE,
+							default='INSPECTION')
 	title 				= models.CharField(max_length=100,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)

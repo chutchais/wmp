@@ -48,21 +48,21 @@ class RoutingDetailSerializer(ModelSerializer):
  #        read_only=True,
  #        slug_field='slug'
  #     )
-	operations = RoutingDetailListSerializer(many=True, read_only=True)
+	# operations = RoutingDetailListSerializer(many=True, read_only=True)
 	class Meta:
 		model = Routing
-		# fields ='__all__'
-		fields =[
-			'name',
-			'title',
-			# 'url',
-			# 'details',
-			'description',
-			'category1',
-			'category2',
-			'user',
-			'operations'
-		]
+		fields ='__all__'
+		# fields =[
+		# 	'name',
+		# 	'title',
+		# 	# 'url',
+		# 	# 'details',
+		# 	'description',
+		# 	'category1',
+		# 	'category2',
+		# 	'user',
+		# 	'operations'
+		# ]
 
 class RoutingCreateSerializer (ModelSerializer):
 	class Meta:
