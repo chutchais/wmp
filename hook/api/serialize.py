@@ -21,8 +21,8 @@ hook_detail_url=HyperlinkedIdentityField(
 
 class HookListSerializer(ModelSerializer):
 	url = hook_detail_url
-	routing_detail =  SlugRelatedField(read_only=True,slug_field='slug')
-	snippet 	   =  SlugRelatedField(read_only=True,slug_field='slug')
+	# routing_detail =  SlugRelatedField(read_only=True,slug_field='slug')
+	# snippet 	   =  SlugRelatedField(read_only=True,slug_field='slug')
 	# shipper = ShipperSerializer(allow_null=True)
 	# vessel = VesselSerializer()
 	class Meta:
@@ -34,8 +34,6 @@ class HookListSerializer(ModelSerializer):
 			'title',
 			'url',
 			'slug',
-			'routing_detail',
-			'snippet',
 			'description',
 			'category1',
 			'category2',
@@ -45,6 +43,8 @@ class HookListSerializer(ModelSerializer):
 
 class HookDetailSerializer(ModelSerializer):
 	# routing 	= RoutingListSerializer(read_only=True)
+	routing_detail =  SlugRelatedField(read_only=True,slug_field='slug')
+	snippet 	   =  SlugRelatedField(read_only=True,slug_field='slug')
 	class Meta:
 		model = Hook
 		fields ='__all__'
