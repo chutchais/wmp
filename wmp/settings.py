@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'bom',
     'bom_detail',
+    'freeze',
+    'hook',
     'item',
     'item_list',
     'operation',

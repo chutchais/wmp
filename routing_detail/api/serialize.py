@@ -14,6 +14,9 @@ from routing_detail.models import (	RoutingDetail,
 
 from parameter.api.serialize import ParameterListSerializer
 
+from hook.api.serialize import HookListSerializer
+
+
 routingdetail_detail_url=HyperlinkedIdentityField(
 		view_name='routing_detail-api:detail',
 		lookup_field='slug'
@@ -67,9 +70,13 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 	parameter   = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	next_code = SlugRelatedField (many=True,read_only=True,slug_field='slug')
 	# next_code =  RoutingDetailNextSetSerializer(source='routingdetailsets', many=True)
+	hook_set =  SlugRelatedField(many=True, read_only=True,slug_field='slug')
+
+
 	class Meta:
 		model = RoutingDetail
 		fields ='__all__'
+
 		# fields =[
 		# 	'routing',
 		# 	'operation',
@@ -77,9 +84,7 @@ class RoutingDetailDetailSerializer(ModelSerializer):
 		# 	'accept_code',
 		# 	'reject_code',
 		# 	'next_code',
-		# 	'next_pass',
-		# 	'next_fail'
-
+		# 	'hook_set'
 		# ]
 		# depth=1
 

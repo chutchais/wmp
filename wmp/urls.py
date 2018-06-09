@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'api/bom-detail/', include(("bom_detail.api.urls",'bom_detail'), namespace='bom_detail-api')),
     url(r'api/item/', include(("item.api.urls",'item'), namespace='item-api')),
     url(r'api/item-list/', include(("item_list.api.urls",'item_list'), namespace='item_list-api')),
+    url(r'api/hook/', include(("hook.api.urls",'hook'), namespace='hook-api')),
     url(r'api/routing/', include(("routing.api.urls",'routing'), namespace='routing-api')),
     url(r'api/routing-accept/', include(("routing_accept.api.urls",'routing_accept'), namespace='routing_accept-api')),
     url(r'api/routing-next/', include(("routing_next.api.urls",'routing_next'), namespace='routing_next-api')),

@@ -6,6 +6,14 @@ from routing_detail.models import (RoutingDetail,RoutingDetailParameterSet,
                                     RoutingDetailAcceptSet,RoutingDetailRejectSet)
 from routing_accept.models import RoutingAccept
 from routing_reject.models import RoutingReject
+from hook.models import Hook
+
+
+class HookInline(admin.TabularInline):
+    model = Hook
+    extra = 0 # how many rows to show
+    verbose_name = 'Hook - Local event Configuration'
+    verbose_name_plural = 'Hook - Local event Configuration'
 
 class RoutingDetailParameterInline(admin.TabularInline):
     model = RoutingDetailParameterSet
@@ -37,7 +45,7 @@ class RoutingDetailAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
         ('Next Operation Information (Default)',{'fields': ['next_pass','next_fail']}),
     ]
-    inlines = [AcceptInline,RejectInline,RoutingDetailParameterInline]
+    inlines = [AcceptInline,RejectInline,RoutingDetailParameterInline,HookInline]
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
