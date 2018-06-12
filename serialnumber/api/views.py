@@ -70,11 +70,18 @@ class SerialNumberCreateAPIView(CreateAPIView):
 	serializer_class= SerialNumberCreateSerializer
 	# permission_classes = [IsAuthenticated]
 
-# 	def perform_create(self,serializer):
-# 		print ('Voy is %s' % self.kwargs.get('voy'))
-# 		serializer.save()
+	def perform_create(self,serializer):
+		from django.utils import timezone
+		now = timezone.now()
+		serializer.save(user=self.request.user,
+			last_modified_date=now)
+
 class SerialNumberUpdateAPIView(RetrieveUpdateDestroyAPIView):
 	queryset=SerialNumber.objects.all()
 	serializer_class=SerialNumberUpdateSerializer
 	lookup_field='slug'
+	def perform_update(self,serializer):
+		from django.utils import timezone
+		now = timezone.now()
+		serializer.save(last_modified_date=now)
 

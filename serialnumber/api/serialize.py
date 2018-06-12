@@ -76,7 +76,13 @@ class SerialNumberUpdateSerializer (ModelSerializer):
 			'category2',
 			'routing',
 			'current_operation',
-			'user'
+			'last_operation',
+			'last_result',
+			'finished_date',
+			'wip',
+			'perform_start_date',
+			'perform_operation'
+
 		]
 
 
