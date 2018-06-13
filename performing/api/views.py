@@ -68,8 +68,8 @@ class PerformingCreateAPIView(CreateAPIView):
 	def perform_create(self,serializer):
 			from django.utils import timezone
 			now = timezone.now()
-			serializer.save(user=self.request.user,
-				last_modified_date=now)
+			serializer.save(user=self.request.user)
+			
 class PerformingUpdateAPIView(RetrieveUpdateDestroyAPIView):
 	queryset=Performing.objects.all()
 	serializer_class=PerformingUpdateSerializer
