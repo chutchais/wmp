@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'item_list',
     'operation',
     'parameter',
+    'parametric',
     'performing',
     'product',
     'routing',

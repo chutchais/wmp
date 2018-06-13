@@ -26,6 +26,7 @@ class PerformingListSerializer(ModelSerializer):
 		model = Performing
 		# fields ='__all__'
 		fields =[
+			'id',
 			'sn',
 			'operation',
 			'url',
@@ -62,7 +63,8 @@ class PerformingCreateSerializer (ModelSerializer):
 			'stop_time',
 			'result',
 			'resource_name',
-			'remark'
+			'remark',
+			'id'
 		]
 
 class PerformingUpdateSerializer (ModelSerializer):

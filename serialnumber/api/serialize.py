@@ -62,7 +62,9 @@ class SerialNumberCreateSerializer (ModelSerializer):
 			'category2',
 			'routing',
 			'current_operation',
-			'user'
+			'user',
+			'id',
+			'slug'
 		]
 
 class SerialNumberUpdateSerializer (ModelSerializer):
