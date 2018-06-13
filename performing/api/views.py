@@ -50,13 +50,13 @@ class PerformingListAPIView(ListAPIView):
 class PerformingDetailAPIView(RetrieveAPIView):
 	queryset= Performing.objects.all()
 	serializer_class = PerformingDetailSerializer
-	lookup_field = 'slug'
+	lookup_field = 'pk'
 	# print ("vessel details")
 
 class PerformingDeleteAPIView(DestroyAPIView):
 	queryset= Performing.objects.all()
 	serializer_class= PerformingDetailSerializer
-	lookup_field='slug'
+	lookup_field='pk'
 	# permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
 
 
@@ -65,11 +65,13 @@ class PerformingCreateAPIView(CreateAPIView):
 	serializer_class= PerformingCreateSerializer
 	# permission_classes = [IsAuthenticated]
 
-# 	def perform_create(self,serializer):
-# 		print ('Voy is %s' % self.kwargs.get('voy'))
-# 		serializer.save()
+	def perform_create(self,serializer):
+			from django.utils import timezone
+			now = timezone.now()
+			serializer.save(user=self.request.user,
+				last_modified_date=now)
 class PerformingUpdateAPIView(RetrieveUpdateDestroyAPIView):
 	queryset=Performing.objects.all()
 	serializer_class=PerformingUpdateSerializer
-	lookup_field='slug'
+	lookup_field='pk'
 

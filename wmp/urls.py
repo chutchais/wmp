@@ -42,11 +42,13 @@ urlpatterns = [
     url(r'^routing-reject/',include(('routing_reject.urls','routing_reject'),namespace='routing-reject')),
     url(r'^serialnumber/',include(('serialnumber.urls','serialnumber'),namespace='serialnumber')),
     url(r'^snippet/',include(('snippet.urls','snippet'),namespace='snippet')),
+    url(r'^symptom-code/',include(('symptom_code.urls','symptom_code'),namespace='symptom-code')),
     url(r'^workorder/',include(('workorder.urls','workorder'),namespace='workorder')),
     
     # API
     url(r'api/bom/', include(('bom.api.urls','bom'), namespace='bom-api')),
     url(r'api/bom-detail/', include(("bom_detail.api.urls",'bom_detail'), namespace='bom_detail-api')),
+    url(r'api/defectcode/', include(("defect_code.api.urls",'defectcode'), namespace='defectcode-api')),
     url(r'api/item/', include(("item.api.urls",'item'), namespace='item-api')),
     url(r'api/item-list/', include(("item_list.api.urls",'item_list'), namespace='item_list-api')),
     url(r'api/hook/', include(("hook.api.urls",'hook'), namespace='hook-api')),
@@ -62,6 +64,7 @@ urlpatterns = [
     url(r'api/routing-detail/', include(("routing_detail.api.urls",'routing_detail'), namespace='routing_detail-api')),
     url(r'api/parameter/', include(("parameter.api.urls",'parameter'), namespace='parameter-api')),
     url(r'api/snippet/', include(("snippet.api.urls",'snippet'), namespace='snippet-api')),
+    url(r'api/symptomcode/', include(("symptom_code.api.urls",'snippet'), namespace='symptomcode-api')),
     url(r'api/users/', include(("user.api.urls",'user'), namespace='user-api')),
 
     #Restful Authentication

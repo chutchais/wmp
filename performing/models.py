@@ -13,11 +13,13 @@ class Performing(models.Model):
 						on_delete=models.CASCADE,)
 	operation 		= models.ForeignKey(Operation,
 						on_delete=models.SET_NULL,blank=True,null=True)
-	slug 			= models.SlugField(unique=True,blank=True, null=True)
+	# slug 			= models.SlugField(unique=True,blank=True, null=True)
+	resource_name	= models.CharField(max_length=100,blank=True, null=True) #PC name or Any name
 	start_time 		= models.DateTimeField(blank=True, null=True)
 	stop_time 		= models.DateTimeField(blank=True, null=True)
 	result 			= models.BooleanField(default=False)
 	remark 			= models.TextField(max_length=255,blank=True, null=True)
+	created_date 	= models.DateTimeField(auto_now_add=True)
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
 						on_delete=models.SET_NULL,
 						blank=True,null=True)
@@ -26,23 +28,23 @@ class Performing(models.Model):
 		return ('%s on %s' % (self.sn,self.operation))
 
 	def get_absolute_url(self):
-		return reverse('performing:detail', kwargs={'slug': self.slug})
+		return reverse('performing:detail', kwargs={'pk': self.pk})
 
-def create_performing_slug(instance, new_slug=None):
-    # import datetime
-    default_slug = '%s-%s' % (instance.sn.number,instance.operation.name )
-    slug = slugify(default_slug)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Performing.objects.filter(slug=slug)
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" %(slug,qs.first().id)
-        return create_performing_slug(instance, new_slug=new_slug)
-    return slug
+# def create_performing_slug(instance, new_slug=None):
+#     # import datetime
+#     default_slug = '%s-%s' % (instance.sn.number,instance.operation.name )
+#     slug = slugify(default_slug)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Performing.objects.filter(slug=slug)
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s" %(slug,qs.first().id)
+#         return create_performing_slug(instance, new_slug=new_slug)
+#     return slug
 
-def pre_save_performing_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = create_performing_slug(instance)
+# def pre_save_performing_receiver(sender, instance, *args, **kwargs):
+# 	if not instance.slug:
+# 		instance.slug = create_performing_slug(instance)
 
-pre_save.connect(pre_save_performing_receiver, sender=Performing)
+# pre_save.connect(pre_save_performing_receiver, sender=Performing)

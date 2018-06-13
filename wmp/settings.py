@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'bom',
     'bom_detail',
+    'defect_code',
     'freeze',
     'hook',
     'item',
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     'routing_reject',
     'serialnumber',
     'snippet',
+    'symptom_code',
     'workorder',
     'user'
     # API

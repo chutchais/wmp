@@ -11,7 +11,7 @@ from performing.models import Performing
 
 performing_detail_url=HyperlinkedIdentityField(
 		view_name='performing-api:detail',
-		lookup_field='slug'
+		lookup_field='pk'
 		)
 
 
@@ -32,6 +32,7 @@ class PerformingListSerializer(ModelSerializer):
 			'start_time',
 			'stop_time',
 			'result',
+			'resource_name',
 			'remark',
 			'user'
 		]
@@ -60,6 +61,7 @@ class PerformingCreateSerializer (ModelSerializer):
 			'start_time',
 			'stop_time',
 			'result',
+			'resource_name',
 			'remark'
 		]
 
@@ -72,6 +74,7 @@ class PerformingUpdateSerializer (ModelSerializer):
 			'start_time',
 			'stop_time',
 			'result',
+			'resource_name',
 			'remark',
 			'user'
 		]

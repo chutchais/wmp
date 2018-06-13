@@ -1,1 +1,1 @@
-python manage.py makemigrations user bom bom_detail item item_list snippet operation parameter routing routing_accept routing_detail routing_next routing_reject product workorder serialnumber performing 
+python manage.py makemigrations user bom bom_detail item item_list snippet operation parameter routing routing_accept routing_detail routing_next routing_reject product workorder serialnumber performing defect_code symptom_code hook
