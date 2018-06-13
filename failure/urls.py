@@ -4,12 +4,12 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from .views import (ParametricDetailView,
-					ParametricListView)
+from .views import (FailureDetailView,
+					FailureListView)
 
 
 urlpatterns = [
 	# Page
-	url(r'^$',ParametricListView.as_view(),name='list'),
-    url(r'^(?P<pk>[-\w]+)/$',ParametricDetailView.as_view(),name='detail'),
+	url(r'^$',FailureListView.as_view(),name='list'),
+    url(r'^(?P<pk>[-\w]+)/$',FailureDetailView.as_view(),name='detail'),
 ]

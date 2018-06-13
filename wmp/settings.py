@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'bom',
     'bom_detail',
     'defect_code',
+    'failure',
     'freeze',
     'hook',
     'item',
