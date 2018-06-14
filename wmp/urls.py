@@ -81,7 +81,9 @@ urlpatterns = [
     url(r'^api/token/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
     # url(r'^api/token/verify/$', TokenVerifyView.as_view(), name='token_verify'),
+    url(r'^report/wip/$',views.wip ,name='wip'),
     url(r'^',views.home ,name='home'),
+
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # if settings.DEBUG:

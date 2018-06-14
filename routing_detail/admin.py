@@ -3,11 +3,17 @@ from django.forms import TextInput, Textarea
 from django.db import models
 
 from routing_detail.models import (RoutingDetail,RoutingDetailParameterSet,
-                                    RoutingDetailAcceptSet,RoutingDetailRejectSet)
+                                    RoutingDetailAcceptSet,RoutingDetailRejectSet,RoutingDetailNextSet)
 from routing_accept.models import RoutingAccept
 from routing_reject.models import RoutingReject
 from hook.models import Hook
 
+
+class NextOperationInline(admin.TabularInline):
+    model = RoutingDetailNextSet
+    extra = 0 # how many rows to show
+    verbose_name = 'Next Operation Condition'
+    verbose_name_plural = 'Next Operation Condition'
 
 class HookInline(admin.TabularInline):
     model = Hook
@@ -45,7 +51,7 @@ class RoutingDetailAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['operation',('routing','position'),'description','slug','category1','category2','user']}),
         ('Next Operation Information (Default)',{'fields': ['next_pass','next_fail']}),
     ]
-    inlines = [AcceptInline,RejectInline,RoutingDetailParameterInline,HookInline]
+    inlines = [AcceptInline,RejectInline,RoutingDetailParameterInline,NextOperationInline,HookInline]
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
