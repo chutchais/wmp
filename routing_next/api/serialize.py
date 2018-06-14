@@ -1,7 +1,8 @@
 from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
-	SerializerMethodField
+	SerializerMethodField,
+	SlugRelatedField
 	)
 
 
@@ -21,6 +22,7 @@ class RoutingNextListSerializer(ModelSerializer):
 	url = routing_next_url
 	# shipper = ShipperSerializer(allow_null=True)
 	# vessel = VesselSerializer()
+	snippet = SlugRelatedField (many=False,read_only=True,slug_field='slug')
 	class Meta:
 		model = RoutingNext
 		# fields ='__all__'
@@ -31,10 +33,12 @@ class RoutingNextListSerializer(ModelSerializer):
 			'description',
 			'category1',
 			'category2',
+			'snippet',
 			'user'
 		]
 
 class RoutingNextDetailSerializer(ModelSerializer):
+	snippet = SlugRelatedField (many=False,read_only=True,slug_field='slug')
 	class Meta:
 		model = RoutingNext
 		fields ='__all__'
