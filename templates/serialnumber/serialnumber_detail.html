@@ -119,7 +119,8 @@
 		  <tbody>
 		  	{% for perform in object.performing_set.all %}
 		  		<tr>
-		  			<td>{{perform.operation}}</td>
+		  			<td><a href="{{ perform.get_absolute_url }}">{{perform.operation}}</a>
+		  				</td>
 		  			<td>{{perform.created_date}}</td>
 		  			<td>{{perform.resource_name}}</td>
 		  			<td>

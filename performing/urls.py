@@ -11,5 +11,5 @@ from .views import (PerformingDetailView,
 urlpatterns = [
 	# Page
 	url(r'^$',PerformingListView.as_view(),name='list'),
-    url(r'^(?P<slug>[-\w]+)/$',PerformingDetailView.as_view(),name='detail'),
+    url(r'^(?P<pk>[-\w]+)/$',PerformingDetailView.as_view(),name='detail'),
 ]
