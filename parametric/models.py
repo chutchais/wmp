@@ -12,8 +12,9 @@ from item.models import Item
 class Parametric(models.Model):
 	performing		= models.ForeignKey(Performing,
 						on_delete=models.CASCADE,)
-	item 			= models.ForeignKey(Item,
-						on_delete=models.CASCADE,)
+	# item 			= models.ForeignKey(Item,
+	# 					on_delete=models.CASCADE,)
+	name 			= models.CharField(max_length=255,blank=True, null=True)
 	value 			= models.TextField(max_length=255,blank=True, null=True)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -21,7 +22,7 @@ class Parametric(models.Model):
 						blank=True,null=True)
 
 	def __str__(self):
-		return ('%s' % (self.Item))
+		return ('%s' % (self.item))
 
 	def get_absolute_url(self):
 		return reverse('parametric:detail', kwargs={'pk': self.pk})

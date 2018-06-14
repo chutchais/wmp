@@ -1,2 +1,110 @@
-{{ object.sn }}<br>
-{{ object.operation}}
+
+{% extends "base.html" %}
+
+
+{% block title %}
+	Serialnumber Detail
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="row">
+		<h2 class="mt-5">Performing Detail : {{ object.sn }}</h2>
+	</div>
+    <div class="row">
+    	
+          <div class="col-md-12">
+            <h4>Basic Information</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Operation</td>
+			      <td>{{object.operation}}</td>
+			      <td>Start.</td>
+			      <td>{{object.start_time}}</td>
+			    </tr>
+
+			    <tr>
+			      <td>Resource</td>
+			      <td>{{object.resource_name}}</td>
+			      <td>Stop</td>
+			      <td>{{object.stop_time}}</td>
+			    </tr> 
+
+			    <tr>
+			      <td>Result</td>
+			    <td>
+		  				{% if perform.result %}
+		  					Pass
+		  				{% else %}
+		  					Fail
+		  				{% endif %}
+		  			</td>
+		  			 <td>User</td>
+			      <td>{{object.user}}</td>
+		  		</tr>
+
+			    <tr>
+			      <td>Remark</td>
+			      <td colspan="3">{{object.remark}}</td>
+
+			     
+			    </tr>      
+			    
+			  </tbody>
+			</table>
+          </div>
+        </div>
+
+        <div class="row">
+	        <div class="col-md-6">
+	            <h4>Parametric Information</h4>
+	            <table class="table table-hover">
+				  <thead >
+				    <tr>
+				      <th scope="col">Item Name</th>
+				      <th scope="col">Value</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	{% for item in object.parametric_set.all %}
+				  		<tr>
+				  			<td>{{item.name}}</td>
+				  			<td>{{item.value}}</td>
+				  			
+				  		</tr>
+				  	{% empty %}
+				  		No Parametric Information
+				  	{% endfor %}
+				  </tbody>
+				</table>
+	        </div>
+
+	        <div class="col-md-6">
+	            <h4>Failure Information</h4>
+	            <table class="table table-hover">
+				  <thead >
+				    <tr>
+				      <th scope="col">Symptom code</th>
+				      <th scope="col">Remark</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	{% for fail in object.failure_set.all %}
+				  		<tr>
+				  			<td>{{fail.symptomcode}}</td>
+				  			<td>{{fail.remark}}</td>
+				  			
+				  		</tr>
+				  	{% empty %}
+				  		No Parametric Information
+				  	{% endfor %}
+				  </tbody>
+				</table>
+	        </div>
+
+    	</div> 
+</main>
+
+{% endblock content %}

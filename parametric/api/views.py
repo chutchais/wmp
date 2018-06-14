@@ -37,13 +37,13 @@ class ParametricListAPIView(ListAPIView):
 	queryset = None #Booking.objects.all()
 	serializer_class = ParametricListSerializer
 	filter_backends = [SearchFilter,OrderingFilter]
-	search_fields = ['sn']
+	search_fields = ['name']
 	def get_queryset(self,*args,**kwargs):
 		queryset_list = Parametric.objects.all()
-		number = self.request.GET.get("number")
+		number = self.request.GET.get("name")
 		if number != None :
 			queryset_list = Parametric.objects.filter(
-					Q(sn__number__icontains = number))
+					Q(name__icontains = number))
 		return queryset_list
 	# pagination_class = PostPageNumberPagination
 
