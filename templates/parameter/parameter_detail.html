@@ -1,2 +1,87 @@
-{{ object.name }}<br>
-{{ object.title}}
+
+{% extends "base.html" %}
+{% load system_tag %}
+
+
+{% block title %}
+	Parameter Detail
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="row">
+		<h2 class="mt-5">Parameter Detail : {{ object.name }}</h2>
+	</div>
+    <div class="row">
+          <div class="col-md-4">
+            <h4>Basic Information</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Title</td>
+			      <td>{{object.title}}</td>
+			    </tr>
+
+			    <tr>
+			      <td>Description</td>
+			      <td>{{object.description}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category1</td>
+			      <td>{{object.category1}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category2</td>
+			      <td>{{object.category2}}</td>
+			    </tr>
+			    <tr>
+			      <td>Create date.</td>
+			      <td>{{object.create_date}}</td>
+			    </tr>
+			    
+			   
+			    
+			  </tbody>
+			</table>
+          </div>
+    </div> 
+
+    <div class="row">
+          <div class="col-md-6">
+            <h4>Item Information</h4>
+            <table class="table">
+            	<th>
+			      <td>Name</td>
+			      <td>Ordered</td>
+			      <td>Required</td>
+			    </th>
+			    <tbody>
+			    {% for item in object.parametersets.all %}
+			  		<tr>
+			  			<td>{{item.item.name}}</td>
+			  			<td>{{item.item.input_type}}</td>
+			  			<td>{{item.ordered}}</td>
+			  			<td>{{item.required}}</td>
+			  			<td>
+				  			{% for each in item.item.lists.all %}
+							    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a> | {{each.snippet}}</li>
+							{% endfor %}
+
+			  			</td>
+			  			<td>{{item.snippet}}</td>
+			  		</tr>
+			  	{% empty %}
+			  		No Performing Information
+			  	{% endfor %}
+			  </tbody>
+            </table>
+        </div>
+    </div>
+
+   
+
+
+</main>
+
+{% endblock content %}

@@ -32,6 +32,7 @@ urlpatterns = [
     
     url(r'^bom/',include(('bom.urls','bom'),namespace='bom')),
     url(r'^bom-detail/',include(('bom_detail.urls','bom_detail'),namespace='bom_detail')),
+    url(r'^hook/',include(('hook.urls','hook'),namespace='hook')),
     url(r'^item/',include(('item.urls','item'),namespace='item')),
     url(r'^item-list/',include(('item_list.urls','item_list'),namespace='item-list')),
     url(r'^failure/',include(('failure.urls','failure'),namespace='failure')),

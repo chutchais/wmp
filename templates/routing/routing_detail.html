@@ -1,2 +1,190 @@
-{{ object.name }}<br>
-{{ object.title}}
+
+{% extends "base.html" %}
+{% load system_tag %}
+
+
+{% block title %}
+	Product Detail
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="row">
+		<h2 class="mt-5">Routing Detail : {{ object.name }}</h2>
+	</div>
+    <div class="row">
+          <div class="col-md-4">
+            <h4>Basic Information</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Title</td>
+			      <td>{{object.title}}</td>
+			    </tr>
+
+			    <tr>
+			      <td>Description</td>
+			      <td>{{object.description}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category1</td>
+			      <td>{{object.category1}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category2</td>
+			      <td>{{object.category2}}</td>
+			    </tr>
+			    <tr>
+			      <td>Create date.</td>
+			      <td>{{object.create_date}}</td>
+			    </tr>
+			    
+			    
+			  </tbody>
+			</table>
+          </div>
+          
+          </div>
+
+    <div class="row">
+          <div class="col-md-12">
+            <h4>Routing Flow Information</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Opreration</th>
+		      <th scope="col">Next Pass</th>
+		      <th scope="col">Next Fail</th>
+		      <th scope="col">Next Condition</th>
+		      <th scope="col">Accept</th>
+		      <th scope="col">Reject</th>
+		      <th scope="col">Parameter</th>
+		      <th scope="col">Hooks</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	
+		  	{% for operation in object.routingdetail_set.all %}
+		  		<tr>
+		  			<td>{{operation.operation}}</td>
+		  			<td>{{operation.next_pass}}</td>
+		  			<td>{{operation.next_fail}}</td>
+		  			<td>
+		  				{% for each in operation.next_code.all %}
+						    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a></li>
+						{% endfor %}
+		  			</td>
+		  			<td>
+		  				{% for each in operation.accept_code.all %}
+						    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a></li>
+						{% endfor %}
+		  			</td>
+		  			<td>
+		  				{% for each in operation.reject_code.all %}
+						    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a></li>
+						{% endfor %}
+		  			</td>
+		  			<td>
+		  				{% for each in operation.parameter.all %}
+						    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a></li>
+						{% endfor %}
+		  			</td>
+
+		  			<td>
+		  				{% for each in operation.hook_set.all %}
+						    <li><a href="{{ each.get_absolute_url }}">{{ each.name }}</a></li>
+						{% endfor %}
+		  			</td>
+
+		  			
+
+		  		</tr>
+		  	{% empty %}
+		  		No Performing Information
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div> 
+    </div> 
+
+
+<div class="row">
+          <div class="col-md-4">
+            <h4>Used by Product</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Product</th>
+		        
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	
+		  	{% for product in object.product_set.all %}
+		  		<tr>
+		  			<td><a href="{{ product.get_absolute_url }}">{{product.name}}</a></td>
+		  			
+		  		</tr>
+		  	{% empty %}
+		  		No Product using
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div> 
+
+        <div class="col-md-4">
+            <h4>Used by Work Order</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Work order</th>
+		        
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	
+		  	{% for wo in object.workorder_set.all %}
+		  		<tr>
+		  			<td><a href="{{ wo.get_absolute_url }}">{{wo.name}}</a></td>
+		  			
+		  		</tr>
+		  	{% empty %}
+		  		No Work order using
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div> 
+
+        <div class="col-md-4">
+            <h4>Used by Serial number</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Serial Number</th>
+		        
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	
+		  	{% for sn in object.wserialnumber_set.all %}
+		  		<tr>
+		  			<td><a href="{{ sn.get_absolute_url }}">{{sn.number}}</a></td>
+		  			
+		  		</tr>
+		  	{% empty %}
+		  		No Serial number using
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div> 
+
+    </div> 
+
+
+   
+
+
+</main>
+
+{% endblock content %}

@@ -19,11 +19,11 @@
 			  <tbody>
 			    <tr>
 			      <td>WorkOrder</td>
-			      <td>{{object.workorder}}</td>
+			      <td><a href="{{ object.workorder.get_absolute_url }}">{{object.workorder}}</a></td>
 			    </tr> 
 			    <tr>
 			      <td>Product</td>
-			      <td>{{object.workorder.product}}</td>
+			      <td><a href="{{ object.workorder.product.get_absolute_url }}">{{object.workorder.product}}</a></td>
 			    </tr>
 
 			    <tr>
@@ -54,7 +54,7 @@
 			  <tbody>
 			    <tr>
 			      <td>Current Opr</td>
-			      <td>{{object.current_operation}}</td>
+			      <td><a href="{{ object.current_operation.get_absolute_url }}wip/">{{object.current_operation}}</a></td>
 			    </tr>
 			    <tr>
 			      <td>Last Opr</td>

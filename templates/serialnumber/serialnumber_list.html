@@ -25,7 +25,7 @@ Serial number List
    		{% for object in object_list %}
 			 <tr>
 		      <td><a href="{{ object.get_absolute_url }}">{{object.number}}</a></td>
-		      <td>{{object.workorder}}</td>
+		      <td><a href="{{ object.workorder.get_absolute_url }}">{{object.workorder}}</a></td>
 		      <td>{{object.registered_date}}</td>
 		      <td>
 		      	{% if object.wip == True %}
@@ -35,7 +35,7 @@ Serial number List
 					 	{% endif%}
 
 		      </td>
-		      <td>{{object.current_operation}}</td>
+		      <td><a href="{{ object.current_operation.get_absolute_url }}wip/">{{object.current_operation}}</a></td>
 		    </tr>
 			
 		{% endfor %}

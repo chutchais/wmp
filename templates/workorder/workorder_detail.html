@@ -1,2 +1,152 @@
-{{ object.name }}<br>
-{{ object.title}}
+
+{% extends "base.html" %}
+{% load system_tag %}
+
+
+{% block title %}
+	Serialnumber Detail
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="row">
+		<h2 class="mt-5">Workorder Detail : {{ object.name }}</h2>
+	</div>
+    <div class="row">
+          <div class="col-md-4">
+            <h4>Basic Information</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Product</td>
+			      <td><a href="{{ object.product.get_absolute_url }}">{{object.product}}</a></td>
+			    </tr> 
+			    <tr>
+			      <td>Title</td>
+			      <td>{{object.title}}</td>
+			    </tr>
+
+			    <tr>
+			      <td>Description</td>
+			      <td>{{object.description}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category1</td>
+			      <td>{{object.category1}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category2</td>
+			      <td>{{object.category2}}</td>
+			    </tr>
+			    <tr>
+			      <td>Create date.</td>
+			      <td>{{object.create_date}}</td>
+			    </tr>
+			    
+			    
+			  </tbody>
+			</table>
+          </div>
+          <div class="col-md-4">
+            <h4>Control</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Qty</td>
+			      <td>{{object.qty}}</td>
+			    </tr>
+			    <tr>
+			      <td>Registered</td>
+			      <td>{{object.serialnumber_set.count }}</td>
+			    </tr>
+			    <tr>
+			      <td>Unit prefix</td>
+			      <td>{{object.regexp}}</td>
+			    </tr>
+			   		    
+			  </tbody>
+			</table>
+          </div>
+          <div class="col-md-4">
+            <h4>Special Control</h4>
+            <table class="table">
+			  
+			  <tbody>
+			  	<tr>
+			      <td>Routing</td>
+			      <td>{{object.routing}}</td>
+			    </tr>
+			    <tr>
+			      <td>Freeze</td>
+			      <td>N/A</td>
+			    </tr>
+			    <tr>
+			      <td>Change Routing</td>
+			      <td>N/A</td>
+			    </tr>
+			    
+			    
+			  </tbody>
+			</table>
+          </div>
+        </div>
+
+    <div class="row">
+          <div class="col-md-6">
+            <h4>WIP Information</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Opreration</th>
+		      <th scope="col"></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<!-- using template tag -->
+		  	{% workorder_wip object as oper_list %}
+
+		  	{% for operation in oper_list %}
+		  		<tr>
+		  			<td>{{operation.current_operation}}</td>
+		  			<td>{{operation.number}}</td>
+		  			
+		  		</tr>
+		  	{% empty %}
+		  		No Performing Information
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div>
+
+
+        <div class="col-md-6">
+            <h4>Unit Serial number Information</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Opreration</th>
+		      <th scope="col"></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% for sn in object.serialnumber_set.all %}
+		  		<tr>
+		  			<td><a href="{{ sn.get_absolute_url }}">{{sn.number}}</a></td>
+		  			<td>{{sn.current_operation}}</td>
+		  			
+		  		</tr>
+		  	{% empty %}
+		  		No Unit serial number Information
+		  	{% endfor %}
+
+		  </tbody>
+		</table>
+		</div>
+
+        
+    </div> 
+</main>
+
+{% endblock content %}
