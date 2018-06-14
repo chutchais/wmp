@@ -1,2 +1,146 @@
-{{ object.number }}<br>
-{{ object.workorder}}
+
+{% extends "base.html" %}
+
+
+{% block title %}
+	Serialnumber Detail
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="row">
+		<h2 class="mt-5">Serial Number Detail : {{ object.number }}</h2>
+	</div>
+    <div class="row">
+          <div class="col-md-4">
+            <h4>Basic Information</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>WorkOrder</td>
+			      <td>{{object.workorder}}</td>
+			    </tr> 
+			    <tr>
+			      <td>Product</td>
+			      <td>{{object.workorder.product}}</td>
+			    </tr>
+
+			    <tr>
+			      <td>Description</td>
+			      <td>{{object.description}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category1</td>
+			      <td>{{object.category1}}</td>
+			    </tr>
+			    <tr>
+			      <td>Category2</td>
+			      <td>{{object.category2}}</td>
+			    </tr>
+			    <tr>
+			      <td>Register date.</td>
+			      <td>{{object.registered_date}}</td>
+			    </tr>
+			    
+			    
+			  </tbody>
+			</table>
+          </div>
+          <div class="col-md-4">
+            <h4>Current Status</h4>
+            <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <td>Current Opr</td>
+			      <td>{{object.current_operation}}</td>
+			    </tr>
+			    <tr>
+			      <td>Last Opr</td>
+			      <td>{{object.last_operation}}</td>
+			    </tr>
+			    <tr>
+			      <td>Last date.</td>
+			      <td>{{object.last_modified_date}}</td>
+			    </tr>
+			    <tr>
+			      <td>Last Result</td>
+			      <td>{{object.last_result}}</td>
+			    </tr>
+			   <tr>
+			      <td>On WIP</td>
+			      <td>{{object.wip}}</td>
+			    </tr>
+			    <tr>
+			      <td>Aging</td>
+			      <td>{{object.registered_date|timesince}}</td>
+			    </tr>
+			    
+			  </tbody>
+			</table>
+          </div>
+          <div class="col-md-4">
+            <h4>Special Control</h4>
+            <table class="table">
+			  
+			  <tbody>
+			  	<tr>
+			      <td>Routing</td>
+			      <td>{{object.rotuing}}</td>
+			    </tr>
+			    <tr>
+			      <td>Freeze</td>
+			      <td>N/A</td>
+			    </tr>
+			    <tr>
+			      <td>Change Routing</td>
+			      <td>N/A</td>
+			    </tr>
+			    
+			    
+			  </tbody>
+			</table>
+          </div>
+        </div>
+
+    <div class="row">
+          <div class="col-md-6">
+            <h4>Perfoming Information</h4>
+            <table class="table table-hover">
+		  <thead >
+		    <tr>
+		      <th scope="col">Opr.</th>
+		      <th scope="col">Date.</th>
+		      <th scope="col">Resource</th>
+		      <th scope="col">Result</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% for perform in object.performing_set.all %}
+		  		<tr>
+		  			<td>{{perform.operation}}</td>
+		  			<td>{{perform.created_date}}</td>
+		  			<td>{{perform.resource_name}}</td>
+		  			<td>
+		  				{% if perform.result %}
+		  					Pass
+		  				{% else %}
+		  					Fail
+		  				{% endif %}
+		  			</td>
+		  		</tr>
+		  	{% empty %}
+		  		No Performing Information
+		  	{% endfor %}
+		  </tbody>
+		</table>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Component Information</h4>
+        </div>
+    </div> 
+</main>
+
+{% endblock content %}

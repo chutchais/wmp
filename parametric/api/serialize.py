@@ -37,7 +37,7 @@ class ParametricCreateSerializer (ModelSerializer):
 		# fields = '__all__'
 		fields =[
 			'performing',
-			'parameter',
+			'item',
 			'value',
 			'id'
 		]

@@ -24,9 +24,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from . import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # Page
+    
     url(r'^bom/',include(('bom.urls','bom'),namespace='bom')),
     url(r'^bom-detail/',include(('bom_detail.urls','bom_detail'),namespace='bom_detail')),
     url(r'^item/',include(('item.urls','item'),namespace='item')),
@@ -78,7 +81,8 @@ urlpatterns = [
     url(r'^api/token/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
     # url(r'^api/token/verify/$', TokenVerifyView.as_view(), name='token_verify'),
-]
+    url(r'^',views.home ,name='home'),
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # if settings.DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
