@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 
-from freeze.models import Freeze
+
 
 
 ACTIVE='A'
@@ -33,9 +33,9 @@ class Bom(models.Model):
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
 							on_delete=models.SET_NULL,
 							blank=True,null=True)
-	freezes			= GenericRelation(Freeze,related_query_name='boms',
-						# content_type_field='content_type_fk',
-						object_id_field='name')
+	# freezes			= GenericRelation(Freeze,related_query_name='boms',
+	# 					# content_type_field='content_type_fk',
+	# 					object_id_field='name')
 
 
 	

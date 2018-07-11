@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'bom_detail',
     'defect_code',
     'failure',
-    'freeze',
+    # 'freeze',
     'hook',
     'item',
     'item_list',
@@ -63,12 +63,9 @@ INSTALLED_APPS = [
     'snippet',
     'symptom_code',
     'workorder',
-    'user'
+    'user_profile',
     # API
-    # 'performing',
-    # 'serialnumber',
-    # 'workorder',
-    # 'product'
+
 ]
 
 MIDDLEWARE = [
@@ -154,7 +151,8 @@ STATIC_URL = '/static/'
 admin.site.site_header = '8 O\'Clock Manufacturing Platform'
 admin.site.site_title = '8 O\'Clock Manufacturing Platform'
 
-AUTH_USER_MODEL = 'user.WMPUser'
+# AUTH_USER_MODEL = 'user.WMPUser'
+AUTH_USER_MODEL = 'auth.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
