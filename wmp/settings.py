@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'bom',
-    'bom_detail',
+    # 'bom_detail',
     'defect_code',
     'failure',
     # 'freeze',
