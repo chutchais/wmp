@@ -22,10 +22,12 @@ class WorkOrder(models.Model):
 	description 		= models.TextField(max_length=255,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	product 			= models.ForeignKey(Product,
-							on_delete=models.CASCADE,)
+							on_delete=models.CASCADE,
+							related_name='workorders')
 	routing 			= models.ForeignKey(Routing,
 							on_delete=models.SET_NULL,
-							blank=True, null=True)
+							blank=True, null=True,
+							related_name='workorders')
 	qty 				= models.IntegerField(default=0)
 	regexp 				= models.CharField(verbose_name='RegExp Validation',max_length=100,blank=True, null=True,default='*')
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
