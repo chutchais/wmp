@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.forms import TextInput, Textarea
 from django.db import models
 
-from parameter.models import Parameter,ParameterSet
+from parameter.models import Parameter,ParameterDetail
 
 class ParameterSetInline(admin.TabularInline):
-    model = ParameterSet
+    model = ParameterDetail
     extra = 1 # how many rows to show
     # fields =('item','item__title')
 

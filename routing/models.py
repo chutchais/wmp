@@ -12,7 +12,6 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
-
 class Routing(models.Model):
 	name 			= models.CharField(max_length=50,primary_key=True)
 	title 			= models.CharField(max_length=100,blank=True, null=True)

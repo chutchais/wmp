@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # 'freeze',
     'hook',
     'item',
-    'item_list',
+    # 'item_list',
     'operation',
     'parameter',
     'parametric',

@@ -3,9 +3,11 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from item.models import Item
+
 from django.conf import settings
 
+
+from item.models import Item
 
 ACTIVE='A'
 DEACTIVE='D'
@@ -19,7 +21,7 @@ class Parameter(models.Model):
 	title 			= models.CharField(max_length=100,blank=True, null=True)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
 	description 	= models.TextField(max_length=255,blank=True, null=True)
-	items 			= models.ManyToManyField(Item, through='ParameterSet')
+	items 			= models.ManyToManyField(Item, through='ParameterDetail')
 	category1 		= models.CharField(max_length=50,blank=True, null=True)
 	category2 		= models.CharField(max_length=50,blank=True, null=True)
 	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
@@ -57,9 +59,13 @@ def pre_save_parameter_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_parameter_receiver, sender=Parameter)
 
 
-class ParameterSet(models.Model):
-	parameter 			= models.ForeignKey('Parameter',related_name='parametersets', on_delete=models.CASCADE)
-	item 				= models.ForeignKey(Item, related_name='parametersets',on_delete=models.CASCADE)
+class ParameterDetail(models.Model):
+	parameter 			= models.ForeignKey('Parameter',
+							related_name='details', 
+							on_delete=models.CASCADE)
+	item 				= models.ForeignKey(Item, 
+							related_name='parameters',
+							on_delete=models.CASCADE)
 	ordered 			= models.IntegerField(default=1)
 	required 			= models.BooleanField(default=False)
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
