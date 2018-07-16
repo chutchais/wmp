@@ -15,7 +15,7 @@ class ParameterViewSet(viewsets.ModelViewSet):
 	search_fields = ('name', 'description')
 
 	@detail_route()
-	def details(self, request, pk=None):
+	def items(self, request, pk=None):
 		parameter = self.get_object()
 		serializer = ParameterDetailSerializer(parameter.details.all(), 
 		context={'request': request}, many=True)

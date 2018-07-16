@@ -2,7 +2,6 @@ rmdir bom\migrations /s/q
 rmdir defect_code\migrations /s/q
 rmdir failure\migrations /s/q
 rmdir freeze\migrations /s/q
-rmdir hook\migrations /s/q
 rmdir item\migrations /s/q
 rmdir operation\migrations /s/q
 rmdir parameter\migrations /s/q

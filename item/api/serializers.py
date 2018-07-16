@@ -6,14 +6,19 @@ from rest_framework.serializers import (
 	)
 
 from item.models import Item,ItemList
-
+from snippet.api.serializers import SnippetUrlSerializer
 
 
 class ItemSerializer(serializers.ModelSerializer):
+	# snippet = serializers.HyperlinkedIdentityField(view_name='snippet-detail',
+	# 										lookup_field ='pk',
+	# 										many=False, read_only=False)
+	snippet = SnippetUrlSerializer(many=False, read_only=True)
+
 	class Meta:
 		model = Item
-		fields = ['name','title','description',
-				'category1','category2','url']
+		fields = ['name','title','help_text','input_type','default_value','regexp','description',
+				'category1','category2','snippet','url']
 
 class ItemListSerializer(serializers.ModelSerializer):
 	class Meta:

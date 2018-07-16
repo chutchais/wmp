@@ -5,10 +5,17 @@ from rest_framework.response import Response
 
 
 from routing.models import (Routing,RoutingDetail,
-								RoutingDetailNext,RoutingDetailReject,RoutingDetailAccept)
+								RoutingDetailNext,RoutingDetailReject,RoutingDetailAccept,
+								RoutingDetailHook,RoutingDetailParameterSet)
 from routing.api.serializers import (RoutingSerializer,RoutingDetailSerializer,
 								RoutingNextSetSerializer,RoutingDetailNextSerializer,
-								RoutingDetailAcceptSerializer,RoutingDetailRejectSerializer)
+								RoutingDetailAcceptSerializer,RoutingDetailAcceptSetSerializer,
+								RoutingDetailRejectSerializer,RoutingDetailRejectSetSerializer,
+								RoutingDetailParameterSetSerializer,
+								RoutingDetailHookSerializer)
+
+from parameter.models import Parameter
+from parameter.api.serializers import ParameterSerializer
 
 
 class RoutingViewSet(viewsets.ModelViewSet):
@@ -38,6 +45,27 @@ class RoutingDetailViewSet(viewsets.ModelViewSet):
 					context={'request': request}, many=True)
 		return Response(serializer.data)
 
+	@detail_route()
+	def accepts(self, request, pk=None):
+		routingdetail = self.get_object()
+		serializer = RoutingDetailAcceptSetSerializer(routingdetail.accepts.all(), 
+					context={'request': request}, many=True)
+		return Response(serializer.data)
+	
+	@detail_route()
+	def rejects(self, request, pk=None):
+		routingdetail = self.get_object()
+		serializer = RoutingDetailRejectSetSerializer(routingdetail.rejects.all(), 
+					context={'request': request}, many=True)
+		return Response(serializer.data)
+	
+	# @detail_route()
+	# def parameters(self, request, pk=None):
+	# 	routingdetail = self.get_object()
+	# 	serializer = RoutingDetailParameterSetSerializer(routingdetail.parameters.all(), 
+	# 				context={'request': request}, many=True)
+	# 	return Response(serializer.data)
+
 
 class RoutingDetailNextViewSet(viewsets.ModelViewSet):
 	queryset = RoutingDetailNext.objects.all()
@@ -56,3 +84,16 @@ class RoutingDetailRejectViewSet(viewsets.ModelViewSet):
 	serializer_class = RoutingDetailRejectSerializer
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('name','title')
+
+class RoutingDetailHookViewSet(viewsets.ModelViewSet):
+	queryset = RoutingDetailHook.objects.all()
+	serializer_class = RoutingDetailHookSerializer
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('name','title')
+
+
+class RoutingDetailParameterViewSet(viewsets.ModelViewSet):
+	queryset = RoutingDetailParameterSet.objects.all()
+	serializer_class = RoutingDetailParameterSetSerializer
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('title')

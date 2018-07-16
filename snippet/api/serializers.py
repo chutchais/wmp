@@ -15,6 +15,10 @@ class SnippetSerializer(serializers.ModelSerializer):
 		fields = ['name','title','description','code',
 				'category1','category2','url']
 
+class SnippetUrlSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Snippet
+		fields = ['name','url']
 
 # from rest_framework.serializers import (
 # 	ModelSerializer,

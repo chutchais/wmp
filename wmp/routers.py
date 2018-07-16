@@ -7,7 +7,9 @@ from parameter.api.viewsets import ParameterViewSet
 from product.api.viewsets import ProductViewSet
 from user_profile.api.viewsets import ProfileViewSet
 from routing.api.viewsets import (RoutingViewSet,RoutingDetailViewSet,
-                                RoutingDetailNextViewSet,RoutingDetailAcceptViewSet,RoutingDetailRejectViewSet)
+                                RoutingDetailNextViewSet,RoutingDetailAcceptViewSet,
+                                RoutingDetailRejectViewSet,RoutingDetailHookViewSet,
+                                RoutingDetailParameterViewSet)
 from snippet.api.viewsets import SnippetViewSet
 from workorder.api.viewsets import WorkorderViewSet
 
@@ -26,5 +28,8 @@ router.register(r'routing-detail', RoutingDetailViewSet)
 router.register(r'routing-detail-next', RoutingDetailNextViewSet)
 router.register(r'routing-detail-accept', RoutingDetailAcceptViewSet)
 router.register(r'routing-detail-reject', RoutingDetailRejectViewSet)
-router.register(r'snippet', SnippetViewSet)
+router.register(r'routing-detail-hook', RoutingDetailHookViewSet)
+router.register(r'routing-detail-parameter', RoutingDetailParameterViewSet)
+router.register(r'snippet', SnippetViewSet),
+# router.register(r'snippet-detail', SnippetViewSet),
 router.register(r'workorder', WorkorderViewSet)

@@ -14,7 +14,7 @@ class ItemListline(admin.TabularInline):
 
 
 class ItemAdmin(admin.ModelAdmin):
-    search_fields = ['name','title','description','product__name','category1','category2']
+    search_fields = ['name','title','description','category1','category2']
     list_filter = ['input_type','category1','category2']
     list_display = ('name','title','input_type','has_validation_code','description','created_date')
     # list_editable = ('color','move_performa')
@@ -23,7 +23,7 @@ class ItemAdmin(admin.ModelAdmin):
 
 
     fieldsets = [
-        ('Basic Information',{'fields': ['name','title','product','description','has_validation_code','slug','category1','category2','user']}),
+        ('Basic Information',{'fields': ['name','title','description','has_validation_code','slug','category1','category2','user']}),
         ('Input Type',{'fields': ['input_type','help_text']}),
         ('Text Box Information',{'fields': ['default_value','regexp']}),
         ('Validation Code',{'fields': ['snippet','expected_return']}),

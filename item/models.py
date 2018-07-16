@@ -49,7 +49,8 @@ class Item(models.Model):
 							on_delete=models.SET_NULL,blank=True,null=True)
 	snippet 			= models.ForeignKey(Snippet, 
 							on_delete=models.SET_NULL,verbose_name='Snippet Code',
-							blank=True, null=True)
+							blank=True, null=True,
+							related_name='items')
 	expected_return 	= models.CharField(verbose_name='Expected Return',
 							default='TRUE',max_length=100,blank=True, null=True)
 

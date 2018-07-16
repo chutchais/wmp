@@ -23,10 +23,11 @@ admin.site.register(Routing,RoutingAdmin)
 
 
 from routing.models import (RoutingDetail,RoutingDetailParameterSet,
-                                    RoutingDetailAcceptSet,RoutingDetailRejectSet,RoutingDetailNextSet)
+                                    RoutingDetailAcceptSet,RoutingDetailRejectSet,RoutingDetailNextSet,
+                                    RoutingDetailHook)
 from routing.models import RoutingDetailAccept
 from routing.models import RoutingDetailReject
-from hook.models import Hook
+
 
 
 class NextOperationInline(admin.TabularInline):
@@ -36,7 +37,7 @@ class NextOperationInline(admin.TabularInline):
     verbose_name_plural = 'Next Operation Condition'
 
 class HookInline(admin.TabularInline):
-    model = Hook
+    model = RoutingDetailHook
     extra = 0 # how many rows to show
     verbose_name = 'Hook - Local event Configuration'
     verbose_name_plural = 'Hook - Local event Configuration'
@@ -139,3 +140,29 @@ class RoutingDetailRejectAdmin(admin.ModelAdmin):
         obj.user = request.user
         super(RoutingDetailRejectAdmin, self).save_model(request, obj, form, change)
 admin.site.register(RoutingDetailReject,RoutingDetailRejectAdmin)
+
+
+
+
+from routing.models import RoutingDetailHook
+
+    
+class RoutingDetailHookAdmin(admin.ModelAdmin):
+    search_fields = ['name','description','title','event','category1','category2']
+    list_filter = ['category1','category2','name','event','routing_detail']
+    list_display = ('name','event','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+    
+
+    fieldsets = [
+        ('Local Object',{'fields': ['name','title']}),
+        ('Event Information',{'fields': ['ordered',('event','snippet'),'routing_detail']}),
+         ('Basic Information',{'fields': ['description','slug','category1','category2','user']}),
+    ]
+    
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingDetailHookAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(RoutingDetailHook,RoutingDetailHookAdmin)

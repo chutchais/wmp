@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'defect_code',
     'failure',
     # 'freeze',
-    'hook',
+    # 'hook',
     'item',
     # 'item_list',
     'operation',
