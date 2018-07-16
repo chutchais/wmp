@@ -6,7 +6,9 @@ from rest_framework.serializers import (
 	SerializerMethodField
 	)
 
-from routing.models import Routing,RoutingDetail,RoutingDetailNext,RoutingDetailNextSet
+from routing.models import (Routing,RoutingDetail,RoutingDetailNext,
+							RoutingDetailNextSet,RoutingDetailAccept,RoutingDetailAcceptSet,
+							RoutingDetailReject,RoutingDetailRejectSet)
 
 
 
@@ -17,12 +19,18 @@ class RoutingSerializer(serializers.ModelSerializer):
 				'category1','category2','url']
 
 class RoutingDetailSerializer(serializers.ModelSerializer):
-	next_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailnext-detail')
+	accept_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailaccept-detail')
+	reject_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailreject-detail')
+	next_code   = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailnext-detail')
 	class Meta:
 		model = RoutingDetail
 		fields =  ['operation','routing','position','title','description',
-				'category1','category2','next_pass','next_fail','next_code','status','url']
+				'category1','category2','next_pass','next_fail',
+				'accept_code','reject_code','next_code','status','url']
 
+
+
+# Next Code Serialize
 class RoutingDetailNextSerializer(serializers.ModelSerializer):
 	snippet = HyperlinkedIdentityField(view_name='snippet-detail')
 	class Meta:
@@ -30,105 +38,38 @@ class RoutingDetailNextSerializer(serializers.ModelSerializer):
 		fields = ['name','title','description','slug',
 				'category1','category2','status','snippet','url']
 
-
 class RoutingNextSetSerializer(serializers.ModelSerializer):
 	routingnext = RoutingDetailNextSerializer(many=False, read_only=True)
 	class Meta:
 		model = RoutingDetailNextSet
 		fields =  ['title','ordered','operation','routingnext','status']
+# ---------------------------
+
+# Accept Serialize
+class RoutingDetailAcceptSerializer(serializers.ModelSerializer):
+	snippet = HyperlinkedIdentityField(view_name='snippet-detail')
+	class Meta:
+		model = RoutingDetailAccept
+		fields = ['name','title','description','slug',
+				'category1','category2','status','snippet','url']
+
+class RoutingDetailAcceptSetSerializer(serializers.ModelSerializer):
+	routingnext = RoutingDetailAcceptSerializer(many=False, read_only=True)
+	class Meta:
+		model = RoutingDetailAcceptSet
+		fields =  ['title','ordered','operation','routingnext','status']
 
 
+# Reject Serialize
+class RoutingDetailRejectSerializer(serializers.ModelSerializer):
+	snippet = HyperlinkedIdentityField(view_name='snippet-detail')
+	class Meta:
+		model = RoutingDetailReject
+		fields = ['name','title','description','slug',
+				'category1','category2','status','snippet','url']
 
-
-# from rest_framework.serializers import (
-# 	ModelSerializer,
-# 	HyperlinkedIdentityField,
-# 	SerializerMethodField
-# 	)
-
-# from rest_framework import serializers
-
-
-# from routing.models import Routing
-# from routing_detail.api.serialize import RoutingDetailListSerializer
-# # from vessel.api.serialize import VesselSerializer
-
-# routing_detail_url=HyperlinkedIdentityField(
-# 		view_name='routing-api:detail',
-# 		lookup_field='slug'
-# 		)
-
-
-
-
-
-# class RoutingListSerializer(ModelSerializer):
-# 	url = routing_detail_url
-# 	class Meta:
-# 		model = Routing
-# 		# exclude = ('users',)
-# 		# fields ='__all__'
-# 		# depth = 1
-# 		fields =[
-# 			'name',
-# 			'title',
-# 			'url',
-# 			'slug'
-# 		]
-
-# class RoutingDetailSerializer(ModelSerializer):
-# 	# details =  RoutingDetailListSerializer()
-# 	# operations = serializers.StringRelatedField(many=True)
-# 	# operations = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-# 	# operations = serializers.HyperlinkedRelatedField(
-# 	# 			        many=True,
-# 	# 			        read_only=True,
-# 	# 			        view_name='routing-api:detail'
-# 	# 			    )
-# 	# operations = serializers.SlugRelatedField(
-#  #        many=True,
-#  #        read_only=True,
-#  #        slug_field='slug'
-#  #     )
-# 	# operations = RoutingDetailListSerializer(many=True, read_only=True)
-# 	class Meta:
-# 		model = Routing
-# 		fields ='__all__'
-# 		# fields =[
-# 		# 	'name',
-# 		# 	'title',
-# 		# 	# 'url',
-# 		# 	# 'details',
-# 		# 	'description',
-# 		# 	'category1',
-# 		# 	'category2',
-# 		# 	'user',
-# 		# 	'operations'
-# 		# ]
-
-# class RoutingCreateSerializer (ModelSerializer):
-# 	class Meta:
-# 		model = Routing
-# 		fields =[
-# 			'name',
-# 			'title',
-# 			'description',
-# 			'category1',
-# 			'category2',
-# 			'user'
-# 		]
-
-# class RoutingUpdateSerializer (ModelSerializer):
-# 	class Meta:
-# 		model = Routing
-# 		fields =[
-# 			'name',
-# 			'title',
-# 			'description',
-# 			'category1',
-# 			'category2',
-# 			'user'
-# 		]
-
-
-
+class RoutingDetailRejectSetSerializer(serializers.ModelSerializer):
+	routingnext = RoutingDetailRejectSerializer(many=False, read_only=True)
+	class Meta:
+		model = RoutingDetailRejectSet
+		fields =  ['title','ordered','operation','routingnext','status']

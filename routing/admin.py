@@ -24,8 +24,8 @@ admin.site.register(Routing,RoutingAdmin)
 
 from routing.models import (RoutingDetail,RoutingDetailParameterSet,
                                     RoutingDetailAcceptSet,RoutingDetailRejectSet,RoutingDetailNextSet)
-from routing_accept.models import RoutingAccept
-from routing_reject.models import RoutingReject
+from routing.models import RoutingDetailAccept
+from routing.models import RoutingDetailReject
 from hook.models import Hook
 
 
@@ -97,3 +97,45 @@ class RoutingDetailNextAdmin(admin.ModelAdmin):
         obj.user = request.user
         super(RoutingDetailNextAdmin, self).save_model(request, obj, form, change)
 admin.site.register(RoutingDetailNext,RoutingDetailNextAdmin)
+
+
+
+
+from routing.models import RoutingDetailAccept
+
+
+class RoutingDetailAcceptAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','category1','category2']
+    list_filter = ['category1','category2']
+    list_display = ('name','title','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Accept Code',{'fields': ['snippet']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingDetailAcceptAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingDetailAccept,RoutingDetailAcceptAdmin)
+
+
+
+class RoutingDetailRejectAdmin(admin.ModelAdmin):
+    search_fields = ['name','title','description','category1','category2']
+    list_filter = ['category1','category2']
+    list_display = ('name','title','description','category1','category2','created_date')
+    # list_editable = ('color','move_performa')
+    readonly_fields = ('user','slug')
+
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Except Code',{'fields': ['snippet']}),
+    ]
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(RoutingDetailRejectAdmin, self).save_model(request, obj, form, change)
+admin.site.register(RoutingDetailReject,RoutingDetailRejectAdmin)

@@ -100,11 +100,103 @@ def pre_save_routingnext_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_routingnext_receiver, sender=RoutingDetailNext)
 
 
+# Routing Accept
+class RoutingDetailAccept(models.Model):
+	name 				= models.CharField(max_length=100)
+	title 				= models.CharField(max_length=100,blank=True, null=True)
+	description 		= models.TextField(max_length=255,blank=True, null=True)
+	slug 				= models.SlugField(unique=True,blank=True, null=True)
+	snippet 			= models.ForeignKey(
+							Snippet,
+							on_delete=models.CASCADE,
+							related_name='routing_accept',blank=True, null=True
+						)
+	category1 			= models.CharField(max_length=50,blank=True, null=True)
+	category2 			= models.CharField(max_length=50,blank=True, null=True)
+	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date 		= models.DateTimeField(auto_now_add=True)
+	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
+	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
+							on_delete=models.SET_NULL,
+							blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.name))
+
+	def get_absolute_url(self):
+		return reverse('routing-accept:detail', kwargs={'slug': self.slug})
+
+def create_routingaccept_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s' % (instance.name)
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = RoutingDetailAccept.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_routingaccept_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_routingaccept_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_routingaccept_slug(instance)
+
+pre_save.connect(pre_save_routingaccept_receiver, sender=RoutingDetailAccept)
+
+
+# Reject
+class RoutingDetailReject(models.Model):
+	name 			= models.CharField(max_length=100)
+	title 			= models.CharField(max_length=100,blank=True, null=True)
+	description 	= models.TextField(max_length=255,blank=True, null=True)
+	slug 			= models.SlugField(unique=True,blank=True, null=True)
+	snippet 		= models.ForeignKey(
+							Snippet,
+							on_delete=models.CASCADE,
+							related_name='routing_reject',blank=True, null=True
+						)
+	category1 		= models.CharField(max_length=50,blank=True, null=True)
+	category2 		= models.CharField(max_length=50,blank=True, null=True)
+	status 			= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
+	created_date 	= models.DateTimeField(auto_now_add=True)
+	modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
+						on_delete=models.SET_NULL,
+						blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.name))
+
+	def get_absolute_url(self):
+		return reverse('routing-reject:detail', kwargs={'slug': self.slug})
+
+def create_routingreject_slug(instance, new_slug=None):
+    # import datetime
+    default_slug = '%s' % (instance.name)
+    slug = slugify(default_slug)
+    if new_slug is not None:
+        slug = new_slug
+    qs = RoutingDetailReject.objects.filter(slug=slug)
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug,qs.first().id)
+        return create_routingreject_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_routingreject_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_routingreject_slug(instance)
+
+pre_save.connect(pre_save_routingreject_receiver, sender=RoutingDetailReject)
+
+
 # Routing Details
 from operation.models import Operation
 from parameter.models import Parameter
-from routing_accept.models import RoutingAccept
-from routing_reject.models import RoutingReject
+# from routing_accept.models import RoutingAccept
+# from routing_reject.models import RoutingReject
 # from routing.models import RoutingNext
 
 class RoutingDetail(models.Model):
@@ -136,8 +228,8 @@ class RoutingDetail(models.Model):
 								related_name='nextfails',
 								on_delete=models.SET_NULL,blank=True, null=True)
 	parameter 			= models.ManyToManyField(Parameter, through='RoutingDetailParameterSet')
-	accept_code 		= models.ManyToManyField(RoutingAccept, through='RoutingDetailAcceptSet')
-	reject_code 		= models.ManyToManyField(RoutingReject, through='RoutingDetailRejectSet')
+	accept_code 		= models.ManyToManyField(RoutingDetailAccept, through='RoutingDetailAcceptSet')
+	reject_code 		= models.ManyToManyField(RoutingDetailReject, through='RoutingDetailRejectSet')
 	next_code 			= models.ManyToManyField(RoutingDetailNext, through='RoutingDetailNextSet')
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
@@ -190,7 +282,7 @@ class RoutingDetailParameterSet(models.Model):
 
 class RoutingDetailAcceptSet(models.Model):
 	routingdetail 			= models.ForeignKey('RoutingDetail', on_delete=models.CASCADE)
-	routingaccept 			= models.ForeignKey(RoutingAccept, on_delete=models.CASCADE)
+	routingaccept 			= models.ForeignKey(RoutingDetailAccept, on_delete=models.CASCADE)
 	ordered 				= models.IntegerField(default=1)
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
@@ -205,7 +297,7 @@ class RoutingDetailAcceptSet(models.Model):
 
 class RoutingDetailRejectSet(models.Model):
 	routingdetail 			= models.ForeignKey('RoutingDetail', on_delete=models.CASCADE)
-	routingreject 			= models.ForeignKey(RoutingReject, on_delete=models.CASCADE)
+	routingreject 			= models.ForeignKey(RoutingDetailReject, on_delete=models.CASCADE)
 	ordered 				= models.IntegerField(default=1)
 	status 					= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 			= models.DateTimeField(auto_now_add=True)
@@ -237,5 +329,7 @@ class RoutingDetailNextSet(models.Model):
 
 	def __str__(self):
 		return ('%s of %s' % (self.routingnext,self.routingdetail))
+
+
 
 

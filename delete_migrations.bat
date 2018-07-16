@@ -10,9 +10,6 @@ rmdir parametric\migrations /s/q
 rmdir performing\migrations /s/q
 rmdir product\migrations /s/q
 rmdir routing\migrations /s/q
-rmdir routing_accept\migrations /s/q
-rmdir routing_next\migrations /s/q
-rmdir routing_reject\migrations /s/q
 rmdir serialnumber\migrations /s/q
 rmdir snippet\migrations /s/q
 rmdir symptom\migrations /s/q
