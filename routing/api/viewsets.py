@@ -4,8 +4,8 @@ from rest_framework.decorators import action,detail_route
 from rest_framework.response import Response
 
 
-from routing.models import Routing,RoutingDetail
-from routing.api.serializers import RoutingSerializer,RoutingDetailSerializer,RoutingNextSetSerializer
+from routing.models import Routing,RoutingDetail,RoutingDetailNext
+from routing.api.serializers import RoutingSerializer,RoutingDetailSerializer,RoutingNextSetSerializer,RoutingDetailNextSerializer
 
 
 class RoutingViewSet(viewsets.ModelViewSet):
@@ -17,8 +17,9 @@ class RoutingViewSet(viewsets.ModelViewSet):
 	@detail_route()
 	def details(self, request, pk=None):
 		routing = self.get_object()
+		print (routing)
 		serializer = RoutingDetailSerializer(routing.details.all(), 
-		context={'request': request}, many=True)
+					context={'request': request}, many=True)
 		return Response(serializer.data)
 
 class RoutingDetailViewSet(viewsets.ModelViewSet):
@@ -31,5 +32,12 @@ class RoutingDetailViewSet(viewsets.ModelViewSet):
 	def nexts(self, request, pk=None):
 		routingdetail = self.get_object()
 		serializer = RoutingNextSetSerializer(routingdetail.nexts.all(), 
-		context={'request': request}, many=True)
+					context={'request': request}, many=True)
 		return Response(serializer.data)
+
+
+class RoutingDetailNextViewSet(viewsets.ModelViewSet):
+	queryset = RoutingDetailNext.objects.all()
+	serializer_class = RoutingDetailNextSerializer
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('name','title')

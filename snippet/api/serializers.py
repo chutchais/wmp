@@ -15,6 +15,7 @@ class SnippetSerializer(serializers.ModelSerializer):
 		fields = ['name','title','description','code',
 				'category1','category2','url']
 
+
 # from rest_framework.serializers import (
 # 	ModelSerializer,
 # 	HyperlinkedIdentityField,

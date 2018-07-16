@@ -85,7 +85,7 @@ def create_routingnext_slug(instance, new_slug=None):
     slug = slugify(default_slug)
     if new_slug is not None:
         slug = new_slug
-    qs = RoutingNext.objects.filter(slug=slug)
+    qs = RoutingDetailNext.objects.filter(slug=slug)
     exists = qs.exists()
     if exists:
         new_slug = "%s-%s" %(slug,qs.first().id)
@@ -220,7 +220,7 @@ class RoutingDetailRejectSet(models.Model):
 
 class RoutingDetailNextSet(models.Model):
 	routingdetail 			= models.ForeignKey('RoutingDetail',
-									related_name='nexts', 
+									related_name='nexts',
 									on_delete=models.CASCADE)
 	routingnext 			= models.ForeignKey(RoutingDetailNext, 
 									related_name='nexts',

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
+	HyperlinkedRelatedField,
 	SerializerMethodField
 	)
 
@@ -16,21 +17,26 @@ class RoutingSerializer(serializers.ModelSerializer):
 				'category1','category2','url']
 
 class RoutingDetailSerializer(serializers.ModelSerializer):
+	next_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailnext-detail')
 	class Meta:
 		model = RoutingDetail
 		fields =  ['operation','routing','position','title','description',
-				'category1','category2','next_pass','next_fail','status','url']
+				'category1','category2','next_pass','next_fail','next_code','status','url']
 
 class RoutingDetailNextSerializer(serializers.ModelSerializer):
+	snippet = HyperlinkedIdentityField(view_name='snippet-detail')
 	class Meta:
 		model = RoutingDetailNext
-		fields = '__all__'
+		fields = ['name','title','description','slug',
+				'category1','category2','status','snippet','url']
+
 
 class RoutingNextSetSerializer(serializers.ModelSerializer):
-	routingnext = RoutingDetailNextSerializer(many=True, read_only=True)
+	routingnext = RoutingDetailNextSerializer(many=False, read_only=True)
 	class Meta:
 		model = RoutingDetailNextSet
 		fields =  ['title','ordered','operation','routingnext','status']
+
 
 
 

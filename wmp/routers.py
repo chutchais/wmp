@@ -6,7 +6,7 @@ from operation.api.viewsets import OperationViewSet
 from parameter.api.viewsets import ParameterViewSet
 from product.api.viewsets import ProductViewSet
 from user_profile.api.viewsets import ProfileViewSet
-from routing.api.viewsets import RoutingViewSet,RoutingDetailViewSet
+from routing.api.viewsets import RoutingViewSet,RoutingDetailViewSet,RoutingDetailNextViewSet
 from snippet.api.viewsets import SnippetViewSet
 from workorder.api.viewsets import WorkorderViewSet
 
@@ -22,5 +22,6 @@ router.register(r'product', ProductViewSet)
 router.register(r'profile', ProfileViewSet)
 router.register(r'routing', RoutingViewSet)
 router.register(r'routing-detail', RoutingDetailViewSet)
+router.register(r'routing-detail-next', RoutingDetailNextViewSet)
 router.register(r'snippet', SnippetViewSet)
 router.register(r'workorder', WorkorderViewSet)

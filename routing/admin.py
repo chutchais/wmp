@@ -95,5 +95,5 @@ class RoutingDetailNextAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
-        super(RoutingNextAdmin, self).save_model(request, obj, form, change)
+        super(RoutingDetailNextAdmin, self).save_model(request, obj, form, change)
 admin.site.register(RoutingDetailNext,RoutingDetailNextAdmin)
