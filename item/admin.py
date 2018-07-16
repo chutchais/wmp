@@ -15,7 +15,7 @@ class ItemListline(admin.TabularInline):
 
 class ItemAdmin(admin.ModelAdmin):
     search_fields = ['name','title','description','product__name','category1','category2']
-    list_filter = ['input_type','product','category1','category2']
+    list_filter = ['input_type','category1','category2']
     list_display = ('name','title','input_type','has_validation_code','description','created_date')
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug','has_validation_code')

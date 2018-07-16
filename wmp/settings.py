@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'product',
     'routing',
     'routing_accept',
-    'routing_detail',
+    # 'routing_detail',
     'routing_next',
     'routing_reject',
     'serialnumber',

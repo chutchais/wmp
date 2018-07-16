@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from snippet.models import Snippet
-from routing_detail.models import RoutingDetail
+from routing.models import RoutingDetail
 
 ACTIVE='A'
 DEACTIVE='D'

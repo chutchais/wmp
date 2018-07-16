@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 	SerializerMethodField
 	)
 
-from routing.models import Routing
+from routing.models import Routing,RoutingDetail,RoutingDetailNext,RoutingDetailNextSet
 
 
 
@@ -14,6 +14,25 @@ class RoutingSerializer(serializers.ModelSerializer):
 		model = Routing
 		fields = ['name','title','description',
 				'category1','category2','url']
+
+class RoutingDetailSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RoutingDetail
+		fields =  ['operation','routing','position','title','description',
+				'category1','category2','next_pass','next_fail','status','url']
+
+class RoutingDetailNextSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RoutingDetailNext
+		fields = '__all__'
+
+class RoutingNextSetSerializer(serializers.ModelSerializer):
+	routingnext = RoutingDetailNextSerializer(many=True, read_only=True)
+	class Meta:
+		model = RoutingDetailNextSet
+		fields =  ['title','ordered','operation','routingnext','status']
+
+
 
 # from rest_framework.serializers import (
 # 	ModelSerializer,

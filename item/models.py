@@ -5,8 +5,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.conf import settings
 
-from product.models import Product
-# from product.models import Product
+
 from snippet.models import Snippet
 
 ACTIVE='A'
@@ -34,8 +33,8 @@ class Item(models.Model):
 	name 				= models.CharField(max_length=50)
 	title 				= models.CharField(max_length=100,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
-	product 			= models.ForeignKey(Product,
-							on_delete=models.SET_NULL,blank=True, null=True)
+	# product 			= models.ForeignKey(Product,
+	# 						on_delete=models.SET_NULL,blank=True, null=True)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	help_text 			= models.CharField(verbose_name='Help Text',max_length=100,blank=True, null=True)
 	input_type 			= models.CharField(verbose_name='Input Type',max_length=10,choices=PARAM_TYPE_CHOICES,default=TEXTBOX)
@@ -51,7 +50,8 @@ class Item(models.Model):
 	snippet 			= models.ForeignKey(Snippet, 
 							on_delete=models.SET_NULL,verbose_name='Snippet Code',
 							blank=True, null=True)
-	expected_return 	= models.CharField(verbose_name='Expected Return',default='TRUE',max_length=100,blank=True, null=True)
+	expected_return 	= models.CharField(verbose_name='Expected Return',
+							default='TRUE',max_length=100,blank=True, null=True)
 
 	# @property
 	def has_validation_code(self):

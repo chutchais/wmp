@@ -1,11 +1,9 @@
 rmdir bom\migrations /s/q
-rmdir bom_detail\migrations /s/q
 rmdir defect_code\migrations /s/q
 rmdir failure\migrations /s/q
 rmdir freeze\migrations /s/q
 rmdir hook\migrations /s/q
 rmdir item\migrations /s/q
-rmdir item_list\migrations /s/q
 rmdir operation\migrations /s/q
 rmdir parameter\migrations /s/q
 rmdir parametric\migrations /s/q
@@ -13,7 +11,6 @@ rmdir performing\migrations /s/q
 rmdir product\migrations /s/q
 rmdir routing\migrations /s/q
 rmdir routing_accept\migrations /s/q
-rmdir routing_detail\migrations /s/q
 rmdir routing_next\migrations /s/q
 rmdir routing_reject\migrations /s/q
 rmdir serialnumber\migrations /s/q

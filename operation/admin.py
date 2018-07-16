@@ -21,3 +21,5 @@ class OperationAdmin(admin.ModelAdmin):
         super(OperationAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Operation,OperationAdmin)
+
+
