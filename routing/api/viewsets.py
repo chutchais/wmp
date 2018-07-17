@@ -59,12 +59,19 @@ class RoutingDetailViewSet(viewsets.ModelViewSet):
 					context={'request': request}, many=True)
 		return Response(serializer.data)
 	
-	# @detail_route()
-	# def parameters(self, request, pk=None):
-	# 	routingdetail = self.get_object()
-	# 	serializer = RoutingDetailParameterSetSerializer(routingdetail.parameters.all(), 
-	# 				context={'request': request}, many=True)
-	# 	return Response(serializer.data)
+	@detail_route()
+	def parameters(self, request, pk=None):
+		routingdetail = self.get_object()
+		serializer = RoutingDetailParameterSetSerializer(routingdetail.parameters.all(), 
+					context={'request': request}, many=True)
+		return Response(serializer.data)
+	
+	@detail_route()
+	def hooks(self, request, pk=None):
+		routingdetail = self.get_object()
+		serializer = RoutingDetailHookSerializer(routingdetail.hooks.all(), 
+					context={'request': request}, many=True)
+		return Response(serializer.data)
 
 
 class RoutingDetailNextViewSet(viewsets.ModelViewSet):

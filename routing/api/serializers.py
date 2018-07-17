@@ -13,6 +13,7 @@ from routing.models import (Routing,RoutingDetail,RoutingDetailNext,
 							RoutingDetailParameterSet)
 
 from snippet.api.serializers import SnippetUrlSerializer
+from parameter.api.serializers import ParameterSerializer
 
 
 class RoutingSerializer(serializers.ModelSerializer):
@@ -61,7 +62,7 @@ class RoutingDetailAcceptSerializer(serializers.ModelSerializer):
 				'category1','category2','status','snippet','url']
 
 class RoutingDetailAcceptSetSerializer(serializers.ModelSerializer):
-	routingnext = RoutingDetailAcceptSerializer(many=False, read_only=True)
+	routingaccept = RoutingDetailAcceptSerializer(many=False, read_only=True)
 	class Meta:
 		model = RoutingDetailAcceptSet
 		fields =  '__all__'
@@ -77,7 +78,7 @@ class RoutingDetailRejectSerializer(serializers.ModelSerializer):
 				'category1','category2','status','snippet','url']
 
 class RoutingDetailRejectSetSerializer(serializers.ModelSerializer):
-	routingnext = RoutingDetailRejectSerializer(many=False, read_only=True)
+	routingreject = RoutingDetailRejectSerializer(many=False, read_only=True)
 	class Meta:
 		model = RoutingDetailRejectSet
 		fields =  '__all__'
@@ -87,6 +88,7 @@ class RoutingDetailRejectSetSerializer(serializers.ModelSerializer):
 class RoutingDetailParameterSetSerializer(serializers.ModelSerializer):
     # routingnext = RoutingDetailRejectSerializer(many=False, read_only=True)
 	# parameter = HyperlinkedIdentityField(view_name='parameter-detail')
+	parameter = ParameterSerializer(many=False , read_only=True)
 	class Meta:
 		model = RoutingDetailParameterSet
 		fields =  '__all__'
