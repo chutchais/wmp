@@ -11,7 +11,7 @@ from rest_framework import serializers
 from user_profile.models import Profile,AccessOperation
 # from snippet.models import Snippet
 
-# from operation.api.serializers import  OperationSerializer
+from operation.api.serializers import  OperationSerializer
 
 # userprofile_detail_url = HyperlinkedIdentityField(
 #     view_name='profile-api:detail',
@@ -26,6 +26,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class UserAccessListSerializer(serializers.ModelSerializer):
+    operation = OperationSerializer(many=False,read_only=True)
     class Meta:
         model = AccessOperation
         fields = ['profile','operation']

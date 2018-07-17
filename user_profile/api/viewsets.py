@@ -15,8 +15,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
 	search_fields = ('user','department','title')
 
 	@detail_route()
-	def access(self, request, pk=None):
+	def operations(self, request, pk=None):
 		profile = self.get_object()
-		serializer = UserAccessListSerializer(profile.access.all(), 
+		serializer = UserAccessListSerializer(profile.operations.all(), 
 		context={'request': request}, many=True)
 		return Response(serializer.data)

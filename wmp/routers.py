@@ -11,6 +11,7 @@ from routing.api.viewsets import (RoutingViewSet,RoutingDetailViewSet,
                                 RoutingDetailRejectViewSet,RoutingDetailHookViewSet,
                                 RoutingDetailParameterViewSet)
 from snippet.api.viewsets import SnippetViewSet
+from serialnumber.api.viewsets import SerialNumberViewSet
 from workorder.api.viewsets import WorkorderViewSet
 
 router = routers.DefaultRouter()
@@ -31,5 +32,5 @@ router.register(r'routing-detail-reject', RoutingDetailRejectViewSet)
 router.register(r'routing-detail-hook', RoutingDetailHookViewSet)
 router.register(r'routing-detail-parameter', RoutingDetailParameterViewSet)
 router.register(r'snippet', SnippetViewSet),
-# router.register(r'snippet-detail', SnippetViewSet),
+router.register(r'serialnumber', SerialNumberViewSet),
 router.register(r'workorder', WorkorderViewSet)

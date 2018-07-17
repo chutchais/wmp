@@ -38,7 +38,7 @@ class SerialNumber(models.Model):
 							related_name='lastoperation',
 							on_delete=models.SET_NULL,
 							blank=True, null=True)
-	last_modified_date 	= models.DateTimeField(blank=True, null=True)
+	last_modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	last_result 		= models.BooleanField(verbose_name = 'Last Result',default=False)
 	finished_date 		= models.DateTimeField(blank=True, null=True)
 	wip 				= models.BooleanField(verbose_name = 'Work In Process',default=True)

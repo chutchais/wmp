@@ -43,7 +43,7 @@ class Profile(models.Model):
 class AccessOperation(models.Model):
 	profile 			= models.ForeignKey(Profile, 
 											on_delete=models.CASCADE,
-											related_name = 'access')
+											related_name = 'operations')
 	operation 			= models.ForeignKey(Operation, 
 											on_delete=models.CASCADE,
 											related_name = 'users')
