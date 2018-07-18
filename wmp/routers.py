@@ -13,6 +13,8 @@ from routing.api.viewsets import (RoutingViewSet,RoutingDetailViewSet,
 from snippet.api.viewsets import SnippetViewSet
 from serialnumber.api.viewsets import SerialNumberViewSet
 from workorder.api.viewsets import WorkorderViewSet
+from performing.api.viewsets import PerformingViewSet
+from parametric.api.viewsets import ParametricViewSet
 
 router = routers.DefaultRouter()
 router.register(r'bom', BomViewSet)
@@ -22,6 +24,8 @@ router.register(r'item', ItemViewSet)
 router.register(r'item-list', ItemListViewSet)
 router.register(r'parameter', ParameterViewSet)
 router.register(r'operation', OperationViewSet)
+router.register(r'parametric', ParametricViewSet)
+router.register(r'performing', PerformingViewSet)
 router.register(r'product', ProductViewSet)
 router.register(r'profile', ProfileViewSet)
 router.register(r'routing', RoutingViewSet)

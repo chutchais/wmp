@@ -12,9 +12,11 @@ from item.models import Item
 class Parametric(models.Model):
 	performing		= models.ForeignKey(Performing,
 						on_delete=models.CASCADE,)
-	# item 			= models.ForeignKey(Item,
-	# 					on_delete=models.CASCADE,)
-	name 			= models.CharField(max_length=255,blank=True, null=True)
+	item 			= models.ForeignKey(Item,
+						blank=True, null=True,
+						on_delete=models.CASCADE,
+						related_name ='parametrics')
+	# name 			= models.CharField(max_length=255,blank=True, null=True)
 	value 			= models.TextField(max_length=255,blank=True, null=True)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,

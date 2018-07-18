@@ -17,6 +17,10 @@ class SerialNumberSerializer(serializers.ModelSerializer):
 				'last_modified_date','last_result','finished_date','wip',
 				'perform_start_date','perform_operation','status','slug','url']
 
+class SerialNumberUrlSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = SerialNumber
+		fields = ['number','workorder','url']
 
 # from rest_framework.serializers import (
 # 	ModelSerializer,
