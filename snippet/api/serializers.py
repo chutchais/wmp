@@ -12,8 +12,9 @@ from snippet.models import Snippet
 class SnippetSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Snippet
-		fields = ['name','title','description','code',
-				'category1','category2','url']
+		fields = ['name','code',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
 class SnippetUrlSerializer(serializers.ModelSerializer):
 	class Meta:

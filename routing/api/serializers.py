@@ -22,6 +22,11 @@ class RoutingSerializer(serializers.ModelSerializer):
 		fields = ['name','title','description',
 				'category1','category2','url']
 
+class RoutingUrlSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Routing
+		fields = ['name','url']
+
 class RoutingDetailSerializer(serializers.ModelSerializer):
 	accept_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailaccept-detail')
 	reject_code = HyperlinkedRelatedField(many=True,read_only=True,view_name='routingdetailreject-detail')

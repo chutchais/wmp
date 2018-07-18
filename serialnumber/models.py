@@ -41,7 +41,7 @@ class SerialNumber(models.Model):
 	last_modified_date 	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	last_result 		= models.BooleanField(verbose_name = 'Last Result',default=False)
 	finished_date 		= models.DateTimeField(blank=True, null=True)
-	wip 				= models.BooleanField(verbose_name = 'Work In Process',default=True)
+	wip 				= models.BooleanField(verbose_name = 'Still In Process',default=True)
 	perform_start_date 	= models.DateTimeField(blank=True, null=True)
 	perform_operation 	= models.ForeignKey(Operation,
 							related_name='performoperation',

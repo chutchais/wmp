@@ -35,7 +35,7 @@ class WorkOrder(models.Model):
 	status 				= models.CharField(max_length=1,choices=STATUS_CHOICES,default=ACTIVE)
 	created_date 		= models.DateTimeField(auto_now_add=True)
 	modified_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
-	finished_date 		= models.DateTimeField(blank=True, null=True,auto_now=True)
+	finished_date 		= models.DateTimeField(blank=True, null=True)
 	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
 							on_delete=models.SET_NULL,
 							blank=True,null=True)

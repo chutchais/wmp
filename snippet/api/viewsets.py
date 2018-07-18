@@ -11,7 +11,7 @@ from snippet.api.serializers import SnippetSerializer
 class SnippetViewSet(viewsets.ModelViewSet):
 	queryset = Snippet.objects.all()
 	serializer_class = SnippetSerializer
-	filter_backends = (filters.SearchFilter,)
+	filter_backends = (filters.SearchFilter,filters.OrderingFilter)
 	search_fields = ('name','title','category1','category2', 'description')
 
 	# @detail_route()

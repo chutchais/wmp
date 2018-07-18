@@ -12,8 +12,9 @@ from user_profile.api.serializers import ProfileSerializer,UserAccessListSeriali
 class OperationViewSet(viewsets.ModelViewSet):
 	queryset = Operation.objects.all()
 	serializer_class = OperationSerializer
-	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'description')
+	filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+	search_fields = ('name','operation_type','title','description',
+				'customer_name','category1','category2')
 
 	@detail_route()
 	def users(self, request, pk=None):

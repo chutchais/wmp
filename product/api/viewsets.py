@@ -13,7 +13,7 @@ from workorder.api.serializers import WorkorderSerializer
 class ProductViewSet(viewsets.ModelViewSet):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
-	filter_backends = (filters.SearchFilter,)
+	filter_backends = (filters.SearchFilter,filters.OrderingFilter)
 	search_fields = ('name','title','category1','category2', 'description')
 
 	@detail_route()

@@ -11,8 +11,8 @@ from parameter.api.serializers import ParameterSerializer,ParameterDetailSeriali
 class ParameterViewSet(viewsets.ModelViewSet):
 	queryset = Parameter.objects.all()
 	serializer_class = ParameterSerializer
-	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'description')
+	filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+	search_fields = ('name','title', 'description','category1','category2')
 
 	@detail_route()
 	def items(self, request, pk=None):

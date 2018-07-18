@@ -6,15 +6,23 @@ from rest_framework.serializers import (
 	)
 
 from product.models import Product
+from routing.api.serializers import RoutingUrlSerializer
 
 
 
 class ProductSerializer(serializers.ModelSerializer):
+	routing = RoutingUrlSerializer(many=False)
 	class Meta:
 		model = Product
-		fields = ['name','title','description',
-				'category1','category2','url']
+		fields = ['name','pn','rev','routing',
+				'regexp','customer_pn','customer_rev',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
+class ProductUrlSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Product
+		fields = ['name','url']
 
 # from rest_framework.serializers import (
 # 	ModelSerializer,

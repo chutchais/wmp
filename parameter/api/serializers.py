@@ -19,8 +19,9 @@ class ParameterSerializer(serializers.ModelSerializer):
 	items = HyperlinkedIdentityField(view_name='item-detail',read_only=True, many=True)
 	class Meta:
 		model = Parameter
-		fields = ['name','title','description',
-				'category1','category2','items','url']
+		fields = ['name','items',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
 
 

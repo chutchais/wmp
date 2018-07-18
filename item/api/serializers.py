@@ -15,18 +15,21 @@ class ItemSerializer(serializers.ModelSerializer):
 	# 										many=False, read_only=False)
 	lists = serializers.HyperlinkedIdentityField(view_name='itemlist-detail',
 											many=True, read_only=False)
-	snippet = SnippetUrlSerializer(many=False, read_only=True)
+	snippet = SnippetUrlSerializer(many=False)
 
 	class Meta:
 		model = Item
-		fields = ['name','title','help_text','input_type','default_value','regexp','description',
-				'category1','category2','expected_return','snippet','lists','status','url','slug']
+		fields = ['name','help_text','input_type','default_value','regexp',
+				'expected_return','snippet','lists',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
 class ItemListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ItemList
-		fields = ['ordered','name','item','value','default','title','description',
-		'category1','category2','status','url','slug']
+		fields = ['ordered','name','item','value','default',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
 # from rest_framework.serializers import (
 # 	ModelSerializer,

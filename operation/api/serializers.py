@@ -12,10 +12,14 @@ from operation.models import Operation
 class OperationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Operation
-		fields = ['name','operation_type','title','slug','description',
-				'customer_name','category1','category2','url']
+		fields = ['name','operation_type','customer_name',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
-
+class OperationUrlSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Operation
+		fields = ['name','url']
 
 
 

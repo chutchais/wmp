@@ -12,8 +12,8 @@ from parameter.api.serializers import ParameterSerializer
 class ItemViewSet(viewsets.ModelViewSet):
 	queryset = Item.objects.all()
 	serializer_class = ItemSerializer
-	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'description')
+	filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+	search_fields = ('name','title','category1','category2','description')
 
 	@detail_route()
 	def lists(self, request, pk=None):

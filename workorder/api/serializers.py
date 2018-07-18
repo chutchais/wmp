@@ -6,14 +6,19 @@ from rest_framework.serializers import (
 	)
 
 from workorder.models import WorkOrder
+from product.api.serializers import ProductUrlSerializer
+from routing.api.serializers import RoutingUrlSerializer
 
 
 
 class WorkorderSerializer(serializers.ModelSerializer):
+	routing = ProductUrlSerializer(many=False)
+	product = ProductUrlSerializer(many=False)
 	class Meta:
 		model = WorkOrder
-		fields = ['name','title','description',
-				'category1','category2','product','routing','qty','url']
+		fields = ['name','product','routing','qty','regexp',
+				'title','description','category1','category2',
+				'created_date','modified_date','status','slug','url']
 
 
 # from rest_framework.serializers import (
