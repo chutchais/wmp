@@ -24,11 +24,23 @@ class RoutingViewSet(viewsets.ModelViewSet):
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('name','title','category1','category2', 'description')
 
+	# @detail_route(url_name='routing_detail', url_path='details/(?P<chapter_id>[0-9]+)')
+	# @detail_route(url_path='details/(?P<operation_id>[/w]+)')
+	# @detail_route(url_path='details/(?P<chapter_id>[0-9]+)')
 	@detail_route()
 	def details(self, request, pk=None):
 		routing = self.get_object()
-		print (routing)
+		# print (routing)
 		serializer = RoutingDetailSerializer(routing.details.all(), 
+					context={'request': request}, many=True)
+		return Response(serializer.data)
+	
+	@detail_route(url_path='(?P<operation>[\w]+)')
+	def get_operation(self, request, pk=None,operation=None):
+		routing = self.get_object()
+		serializer = RoutingDetailSerializer(
+						RoutingDetail.objects.filter(routing = routing ,operation=operation
+						), 
 					context={'request': request}, many=True)
 		return Response(serializer.data)
 
