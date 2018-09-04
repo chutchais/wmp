@@ -20,7 +20,7 @@ class RoutingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Routing
 		fields = ['name','title','description',
-				'category1','category2','url']
+				'category1','category2','url','status']
 
 class RoutingUrlSerializer(serializers.ModelSerializer):
 	class Meta:

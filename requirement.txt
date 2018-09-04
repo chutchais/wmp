@@ -5,3 +5,4 @@ djangorestframework-simplejwt==3.2.3
 Pygments==2.2.0
 PyJWT==1.6.1
 pytz==2018.4
+django-filter==2.0.0

@@ -21,7 +21,7 @@ from operation.api.serializers import  OperationSerializer
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['user','department','title','url']
+        fields = ['user','department','title','url','status']
 
 
 

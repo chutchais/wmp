@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
     'bom',
     # 'bom_detail',
     'defect_code',
@@ -166,7 +167,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.TokenAuthentication',
 
     ),
-
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
 
