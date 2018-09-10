@@ -12,7 +12,7 @@ from routing.api.serializers import RoutingUrlSerializer
 
 
 class WorkorderSerializer(serializers.ModelSerializer):
-	routing = ProductUrlSerializer(many=False)
+	routing = RoutingUrlSerializer(many=False)
 	product = ProductUrlSerializer(many=False)
 	class Meta:
 		model = WorkOrder

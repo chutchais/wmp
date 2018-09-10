@@ -13,7 +13,7 @@ class SerialNumberAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Basic Information',{'fields': ['number','workorder','description','slug','category1','category2','wip','user']}),
         ('Performing',{'fields': ['current_operation',('perform_operation','perform_start_date')]}),
-        ('Last Performance',{'classes': ('collapse','wide', 'extrapretty'),'fields': ['last_operation','last_result','last_modified_date','routing']}),
+        ('Last Performance',{'classes': ('collapse','wide', 'extrapretty'),'fields': ['last_operation','last_result','routing']}),
         ]
 
     def save_model(self, request, obj, form, change):
