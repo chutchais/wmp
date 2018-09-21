@@ -19,7 +19,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Item
-		fields = ['name','help_text','input_type','default_value','regexp',
+		fields = ['id','name','help_text','input_type','default_value','regexp',
 				'expected_return','snippet','lists',
 				'title','description','category1','category2',
 				'created_date','modified_date','status','slug','url']
