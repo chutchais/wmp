@@ -9,9 +9,10 @@ class SerialNumberAdmin(admin.ModelAdmin):
     list_filter = ['current_operation','wip']
     list_display = ('number','workorder','current_operation','wip')
     # list_editable = ('color','move_performa')
-    readonly_fields = ('user','slug')
+    readonly_fields = ('user','slug','parent','unit_type')
     fieldsets = [
-        ('Basic Information',{'fields': ['number','workorder','description','slug','category1','category2','wip','user']}),
+        ('Basic Information',{'fields': ['number','workorder','unit_type','description','category1','category2','wip','user']}),
+        ('Assembly Imformation',{'fields': ['parent']}),
         ('Performing',{'fields': ['current_operation',('perform_operation','perform_start_date')]}),
         ('Last Performance',{'classes': ('collapse','wide', 'extrapretty'),'fields': ['last_operation','last_result','routing']}),
         ]

@@ -15,7 +15,8 @@ class SerialNumberSerializer(serializers.ModelSerializer):
 		fields = ['id','number','workorder','description','category1','category2',
 				'registered_date','routing','current_operation','last_operation',
 				'last_modified_date','last_result','finished_date','wip',
-				'perform_start_date','perform_operation','status','slug','url']
+				'perform_start_date','perform_operation','status','slug','url',
+				'parent','unit_type']
 
 class SerialNumberUrlSerializer(serializers.ModelSerializer):
 	class Meta:

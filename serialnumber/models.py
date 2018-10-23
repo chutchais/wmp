@@ -18,6 +18,14 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
+# Build Type Choice
+BUILT 		= 'BUILT'
+COMPONENT 	= 'COMPONENT'
+BUILT_CHOICES = (
+        (BUILT, 'Built'),
+        (COMPONENT, 'Component'),
+    )
+
 class SerialNumber(models.Model):
 	number 				= models.CharField(max_length=100)
 	workorder 			= models.ForeignKey(WorkOrder,
@@ -51,6 +59,9 @@ class SerialNumber(models.Model):
 	user 				= models.ForeignKey(settings.AUTH_USER_MODEL,
 							on_delete=models.SET_NULL,
 							blank=True,null=True)
+	parent				= models.ForeignKey('self', null=True, 
+							on_delete=models.SET_NULL,related_name='child')
+	unit_type			= models.CharField(max_length=10,choices=BUILT_CHOICES,default = BUILT)
 
 	class Meta:
 		unique_together = ('number','workorder')
