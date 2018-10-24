@@ -13,7 +13,7 @@ class PerformingSerializer(serializers.ModelSerializer):
 	# sn = SerialNumberUrlSerializer(many=False,read_only=True)
 	class Meta:
 		model = Performing
-		fields = ['sn','operation','resource_name',
+		fields = ['id','sn','operation','resource_name',
 				'start_time','stop_time','result','remark','created_date','url']
 
 class PerformingUrlSerializer(serializers.ModelSerializer):

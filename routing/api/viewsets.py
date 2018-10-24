@@ -49,8 +49,8 @@ class RoutingDetailViewSet(viewsets.ModelViewSet):
 	queryset = RoutingDetail.objects.all()
 	serializer_class = RoutingDetailSerializer
 	filter_backends = (filters.SearchFilter,filters.OrderingFilter,DjangoFilterBackend)
-	search_fields = ('operation','status')
-	filter_fields = ('operation','status')
+	search_fields = ('operation','status','routing')
+	filter_fields = ('operation','status','routing')
 	
 
 	@detail_route()
