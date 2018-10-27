@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from performing.models import Performing
-from symptom_code.models import SymptomCode
+from symptom.models import SymptomCode
 
 class Failure(models.Model):
 	performing		= models.ForeignKey(Performing,

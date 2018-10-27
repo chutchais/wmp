@@ -12,6 +12,8 @@ from routing.api.viewsets import (RoutingViewSet,RoutingDetailViewSet,
                                 RoutingDetailParameterViewSet)
 from snippet.api.viewsets import SnippetViewSet
 from serialnumber.api.viewsets import SerialNumberViewSet
+from symptom.api.viewsets import (SymptomCodeViewSet,
+									SymptomViewSet)
 from workorder.api.viewsets import WorkorderViewSet
 from performing.api.viewsets import PerformingViewSet
 from parametric.api.viewsets import ParametricViewSet
@@ -37,4 +39,6 @@ router.register(r'routing-detail-hook', RoutingDetailHookViewSet)
 router.register(r'routing-detail-parameter', RoutingDetailParameterViewSet)
 router.register(r'snippet', SnippetViewSet),
 router.register(r'serialnumber', SerialNumberViewSet),
+router.register(r'symptom-code', SymptomCodeViewSet),
+router.register(r'symptom', SymptomViewSet),
 router.register(r'workorder', WorkorderViewSet)

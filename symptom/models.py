@@ -50,3 +50,27 @@ def pre_save_symptomcode_receiver(sender, instance, *args, **kwargs):
 		instance.slug = create_symptomcode_slug(instance)
 
 pre_save.connect(pre_save_symptomcode_receiver, sender=SymptomCode)
+
+
+
+from performing.models import Performing
+from symptom.models import SymptomCode
+
+class Symptom(models.Model):
+	performing		= models.ForeignKey(Performing,
+						related_name='symptoms',
+						on_delete=models.CASCADE,)
+	symptomcode		= models.ForeignKey(SymptomCode,
+						related_name='symptoms',
+						on_delete=models.CASCADE,)
+	remark 			= models.TextField(max_length=255,blank=True, null=True)
+	created_date 	= models.DateTimeField(auto_now_add=True)
+	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
+						on_delete=models.SET_NULL,
+						blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.symptomcode))
+
+	def get_absolute_url(self):
+		return reverse('symptom:performing', kwargs={'pk': self.pk})
