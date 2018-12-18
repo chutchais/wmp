@@ -50,3 +50,28 @@ def pre_save_defectcode_receiver(sender, instance, *args, **kwargs):
 		instance.slug = create_defectcode_slug(instance)
 
 pre_save.connect(pre_save_defectcode_receiver, sender=DefectCode)
+
+
+
+
+from symptom.models import Symptom
+
+class Defect(models.Model):
+	symptom			= models.ForeignKey(Symptom,
+						related_name='defects',
+						on_delete=models.CASCADE,)
+	defectcode		= models.ForeignKey(DefectCode,
+						related_name='defects',
+						on_delete=models.CASCADE,)
+	ndf				= models.BooleanField(verbose_name='No Defect Found',default=False)
+	note 			= models.TextField(max_length=255,blank=True, null=True)
+	created_date 	= models.DateTimeField(auto_now_add=True)
+	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
+						on_delete=models.SET_NULL,
+						blank=True,null=True)
+
+	def __str__(self):
+		return ('%s' % (self.defectcode))
+
+	def get_absolute_url(self):
+		return reverse('defect:defect', kwargs={'pk': self.pk})

@@ -1,6 +1,7 @@
 from rest_framework import routers
 
 from bom.api.viewsets import BomViewSet,BomDetailViewSet,BomAlternateViewSet
+from defect.api.viewsets import DefectCodeViewSet,DefectViewSet
 from item.api.viewsets import ItemViewSet,ItemListViewSet
 from operation.api.viewsets import OperationViewSet
 from parameter.api.viewsets import ParameterViewSet
@@ -22,6 +23,8 @@ router = routers.DefaultRouter()
 router.register(r'bom', BomViewSet)
 router.register(r'bom-detail', BomDetailViewSet)
 router.register(r'bom-alternate', BomAlternateViewSet)
+router.register(r'defect-code', DefectCodeViewSet),
+router.register(r'defect', DefectViewSet),
 router.register(r'item', ItemViewSet)
 router.register(r'item-list', ItemListViewSet)
 router.register(r'parameter', ParameterViewSet)

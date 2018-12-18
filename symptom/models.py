@@ -14,10 +14,17 @@ STATUS_CHOICES = (
         (DEACTIVE, 'Deactive'),
     )
 
+DEFECT_TYPE_CHOICE =(
+		('VISUAL'			, 'Visual Inspection'),
+		('FUNCTIONAL'		, 'Functional Test')
+	)
+
 class SymptomCode(models.Model):
 	name 				= models.CharField(max_length=50,primary_key=True)
 	title 				= models.CharField(max_length=100,blank=True, null=True)
 	description 		= models.TextField(max_length=255,blank=True, null=True)
+	symptom_type		= models.CharField(max_length=20,choices=DEFECT_TYPE_CHOICE,
+							default='VISUAL')
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
 	category1 			= models.CharField(max_length=50,blank=True, null=True)
 	category2 			= models.CharField(max_length=50,blank=True, null=True)
@@ -63,7 +70,8 @@ class Symptom(models.Model):
 	symptomcode		= models.ForeignKey(SymptomCode,
 						related_name='symptoms',
 						on_delete=models.CASCADE,)
-	remark 			= models.TextField(max_length=255,blank=True, null=True)
+	cnd				= models.BooleanField(verbose_name='Can Not Duplicate',default=False)
+	note 			= models.TextField(max_length=255,blank=True, null=True)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL,
 						on_delete=models.SET_NULL,

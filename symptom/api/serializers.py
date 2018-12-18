@@ -14,7 +14,7 @@ class SymptomCodeSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = SymptomCode
 		fields = ['name',
-				'title','description','category1','category2',
+				'title','description','symptom_type','category1','category2',
 				'created_date','status','slug','url']
 
 class SymptomCodeUrlSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class SymptomCodeUrlSerializer(serializers.ModelSerializer):
 class SymptomSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Symptom
-		fields = ['performing','symptomcode','remark',
+		fields = ['performing','symptomcode','note','cnd',
 					'created_date','user','url']
 
 class SymptomUrlSerializer(serializers.ModelSerializer):

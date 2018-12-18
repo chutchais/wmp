@@ -12,7 +12,7 @@ class SymptomCodeAdmin(admin.ModelAdmin):
     # list_editable = ('color','move_performa')
     readonly_fields = ('user','slug')
     fieldsets = [
-        ('Basic Information',{'fields': ['name','title','description','slug','category1','category2','user']}),
+        ('Basic Information',{'fields': ['name','title','description','cnd','slug','category1','category2','user']}),
     ]
 
     def save_model(self, request, obj, form, change):

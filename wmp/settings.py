@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'bom',
     # 'bom_detail',
-    # 'defect_code',
+    'defect',
     # 'failure',
     # 'freeze',
     # 'hook',
