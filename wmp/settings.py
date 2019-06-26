@@ -149,8 +149,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-admin.site.site_header = '8 O\'Clock Manufacturing Platform'
-admin.site.site_title = '8 O\'Clock Manufacturing Platform'
+# admin.site.site_header = '8 O\'Clock Manufacturing Platform'
+# admin.site.site_title = '8 O\'Clock Manufacturing Platform'
 
 # AUTH_USER_MODEL = 'user.WMPUser'
 AUTH_USER_MODEL = 'auth.User'

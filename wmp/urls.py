@@ -41,6 +41,13 @@ urlpatterns = [
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
+from django.contrib import admin
+# admin.site.site_header = '8 O\'Clock Manufacturing Platform'
+# admin.site.site_title = '8 O\'Clock Manufacturing Platform'
+
+admin.site.site_header = '8AM Manufacturing Platform'
+admin.site.site_title = '8AM Manufacturing Platform'
+
 # urlpatterns = [
 #     url(r'^admin/', admin.site.urls),
 #     # Page
