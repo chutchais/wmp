@@ -45,3 +45,7 @@ router.register(r'serialnumber', SerialNumberViewSet),
 router.register(r'symptom-code', SymptomCodeViewSet),
 router.register(r'symptom', SymptomViewSet),
 router.register(r'workorder', WorkorderViewSet)
+
+
+router.get_api_root_view().cls.__name__ = "8 Oclock Manufacturing Platform - API"
+router.get_api_root_view().cls.__doc__ = "8 Oclock Manufacturing Platform"
